@@ -7,16 +7,20 @@ public class PropertyLocator<T> {
 
 	private String name;
 
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
 	public PropertyLocator(String name) {
 		this.name = name;
 	}
 
 	public Property<T> get(Entity entity) {
 		return (Property<T>) entity.getProperty(name);
-	}
-
-	public String getName() {
-		return name;
 	}
 
 	public T getValue(Entity entity) {

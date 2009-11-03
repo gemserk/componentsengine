@@ -5,6 +5,7 @@ import groovy.lang.Closure;
 import groovy.lang.Script;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -33,6 +34,11 @@ public class GroovyEntityTemplate implements EntityTemplate {
 	}
 
 	@Override
+	public Entity instantiate(String entityName) {
+		return instantiate(entityName, new HashMap<String, Object>());
+	}
+	
+	@Override
 	public Entity instantiate(String entityName, Map<String, Object> parameters) {
 		Binding binding = new Binding();
 		binding.setVariable("entityName", entityName);
@@ -41,6 +47,13 @@ public class GroovyEntityTemplate implements EntityTemplate {
 		
 		return executeTemplate(this.scriptClass,binding);
 	}
+
+	@Override
+	public Entity apply(Entity entity) {
+		// I suppose we have to use null instead.
+		return apply(entity, new HashMap<String, Object>());
+	}
+
 	
 	@Override
 	public Entity apply(Entity entity, Map<String, Object> parameters) {
@@ -71,10 +84,7 @@ public class GroovyEntityTemplate implements EntityTemplate {
 		private final String defaultEntityName;
 		private final Map<String, Object> parameters;
 		private final ImageManager imageManager;
-		private final AnimationManager animationManager;
-		
-		
-		
+		private final AnimationManager animationManager;		
 		
 		public EntityBuilder(String defaultEntityName, ComponentManager componentManager, ImageManager imageManager, AnimationManager animationManager, Map<String,Object> parameters) {
 			this.defaultEntityName = defaultEntityName;
@@ -90,8 +100,7 @@ public class GroovyEntityTemplate implements EntityTemplate {
 			this.imageManager = imageManager;
 			this.animationManager = animationManager;
 			this.parameters = parameters;
-			this.defaultEntityName = entity.getId();
-			
+			this.defaultEntityName = entity.getId();			
 		}
 
 		Entity entity(Closure closure){

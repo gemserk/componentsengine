@@ -5,9 +5,13 @@ import java.util.Map;
 import com.gemserk.componentsengine.entities.Entity;
 
 public interface EntityTemplate {
-	
-	Entity instantiate(String entityName, Map<String,Object> parameters);
+
+	Entity instantiate(String entityName);
+
+	Entity instantiate(String entityName, Map<String, Object> parameters);
+
+	Entity apply(Entity entity);
 
 	Entity apply(Entity entity, Map<String, Object> parameters);
-	
+
 }
