@@ -11,6 +11,14 @@
 		<url>http://www.gemserk.com</url>
 	</organization>
 	<url>https://trac.gemserk.com/componentsengine</url>
+	<issueManagement>
+		<system>Trac</system>
+		<url>https://trac.gemserk.com/componentsengine</url>
+	</issueManagement>
+	<ciManagement>
+		<system>Hudson</system>
+		<url>https://ci.gemserk.com/hudson/job/componentsengine/</url>
+	</ciManagement>
 	<scm>
 		<url>https://svn.gemserk.com/componentsengine/trunk/componentsengine</url>
 		<connection>scm:https://svn.gemserk.com/componentsengine/trunk/componentsengine</connection>
