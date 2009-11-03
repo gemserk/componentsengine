@@ -3,12 +3,14 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.gemserk.componentsengine</groupId>
 	<artifactId>componentsengine</artifactId>
+	<name>Components Engine</name>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<organization>
 		<name>Gemserk</name>
 		<url>http://www.gemserk.com</url>
 	</organization>
+	<url>https://trac.gemserk.com/componentsengine</url>
 	<scm>
 		<url>https://svn.gemserk.com/componentsengine/trunk/componentsengine</url>
 		<connection>scm:https://svn.gemserk.com/componentsengine/trunk/componentsengine</connection>

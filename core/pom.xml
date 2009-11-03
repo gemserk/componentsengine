@@ -8,6 +8,7 @@
 	</parent>
 	<groupId>com.gemserk.componentsengine</groupId>
 	<artifactId>core</artifactId>
+	<name>Components Engine - Core</name>
 	<version>0.0.1-SNAPSHOT</version>
 
 
