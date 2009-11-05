@@ -7,13 +7,19 @@ public class CachingTemplateProvider implements TemplateProvider {
 
 	Map<String, EntityTemplate> templates = new HashMap<String, EntityTemplate>();
 	
-	final TemplateProvider delegate;
+	TemplateProvider delegate;
 	
+	public CachingTemplateProvider() {
+	}
 	
 	public CachingTemplateProvider(TemplateProvider delegate) {
 		this.delegate = delegate;
 	}
 
+	
+	public void setDelegate(TemplateProvider delegate) {
+		this.delegate = delegate;
+	}
 
 	@Override
 	public EntityTemplate getTemplate(String name) {

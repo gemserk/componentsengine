@@ -6,15 +6,20 @@ import groovy.lang.Script;
 import com.gemserk.componentsengine.components.ComponentManager;
 import com.gemserk.componentsengine.resources.AnimationManager;
 import com.gemserk.componentsengine.resources.ImageManager;
+import com.google.inject.Inject;
 
 @SuppressWarnings("unchecked")
 public class GroovyTemplateProvider implements TemplateProvider{
 
 	private GroovyClassLoader groovyClassloader;
-	private final ComponentManager componentManager;
+	private ComponentManager componentManager;
 	private ImageManager imageManager;
-	private final AnimationManager animationManager;
+	private AnimationManager animationManager;
 
+	public GroovyTemplateProvider(){
+		this(null,null,null);
+	}
+	
 	public GroovyTemplateProvider(ComponentManager componentManager, ImageManager imageManager, AnimationManager animationManager) {
 		this.componentManager = componentManager;
 		this.imageManager = imageManager;
@@ -22,6 +27,19 @@ public class GroovyTemplateProvider implements TemplateProvider{
 		groovyClassloader = new GroovyClassLoader();
 		groovyClassloader.setShouldRecompile(true);
 	}
+	
+	@Inject public void setAnimationManager(AnimationManager animationManager) {
+		this.animationManager = animationManager;
+	}
+	
+	@Inject public void setComponentManager(ComponentManager componentManager) {
+		this.componentManager = componentManager;
+	}
+	
+	@Inject public void setImageManager(ImageManager imageManager) {
+		this.imageManager = imageManager;
+	}
+	
 	
 	@Override
 	public EntityTemplate getTemplate(String name) {
