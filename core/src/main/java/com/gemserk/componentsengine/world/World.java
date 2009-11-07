@@ -14,34 +14,35 @@ import com.google.common.collect.Collections2;
 
 public class World {
 	Map<String, Entity> entities = new LinkedHashMap<String, Entity>(100);
-	
+
 	List<Entity> queuedAdds = new ArrayList<Entity>();
+
 	List<Entity> queuedRemoves = new ArrayList<Entity>();
-	
+
 	public World() {
 	}
-	
-	public void addEntity(Entity entity){
+
+	public void addEntity(Entity entity) {
 		this.entities.put(entity.getId(), entity);
 	}
-	
-	public void removeEntity(Entity entity){
+
+	public void removeEntity(Entity entity) {
 		this.entities.remove(entity.getId());
 	}
-	
-	public void removeEntity(String entityId){
+
+	public void removeEntity(String entityId) {
 		this.entities.remove(entityId);
 	}
-	
-	public void queueAddEntity(Entity entity){
+
+	public void queueAddEntity(Entity entity) {
 		this.queuedAdds.add(entity);
 	}
-	
-	public void queueRemoveEntity(Entity entity){
+
+	public void queueRemoveEntity(Entity entity) {
 		this.queuedRemoves.add(entity);
 	}
-	
-	public void processPending(){
+
+	public void processPending() {
 		for (Entity entity : queuedAdds) {
 			this.addEntity(entity);
 		}
@@ -51,8 +52,8 @@ public class World {
 		}
 		queuedRemoves.clear();
 	}
-	
-	public void broadcastMessage(Message message){
+
+	public void broadcastMessage(Message message) {
 		for (Entry<String, Entity> entry : entities.entrySet()) {
 			Entity entity = entry.getValue();
 			entity.handleMessage(message);
@@ -62,5 +63,14 @@ public class World {
 	public Collection<Entity> getEntities(Predicate<? super Entity> predicate) {
 		return Collections2.filter(this.entities.values(), predicate);
 	}
-	
+
+	/**
+	 * removes all entities in the world
+	 */
+	public void clear() {
+		entities.clear();
+		queuedAdds.clear();
+		queuedRemoves.clear();
+	}
+
 }
