@@ -24,6 +24,19 @@
 		<connection>scm:https://svn.gemserk.com/componentsengine/trunk/componentsengine</connection>
 		<developerConnection>scm:svn:https://svn.gemserk.com/componentsengine/trunk/componentsengine</developerConnection>
 	</scm>
+	<distributionManagement>
+		<repository>
+			<id>gemserk.releases</id>
+			<name>Gemserk Releases</name>
+			<url>https://maven.gemserk.com/nexus/content/repositories/releases/</url>
+		</repository>
+		<snapshotRepository>
+			<id>gemserk.snapshots</id>
+			<name>Gemserk Snapshots</name>
+			<url>https://maven.gemserk.com/nexus/content/repositories/snapshots/</url>
+		</snapshotRepository>
+	</distributionManagement>
+
 
 	<modules>
 		<module>core</module>
