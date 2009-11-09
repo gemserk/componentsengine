@@ -9,9 +9,10 @@ import java.util.Map.Entry;
 
 import com.gemserk.componentsengine.components.Component;
 import com.gemserk.componentsengine.messages.Message;
+import com.gemserk.componentsengine.properties.PropertiesHolder;
 import com.gemserk.componentsengine.properties.Property;
 
-public class Entity {
+public class Entity implements PropertiesHolder {
 
 	private final String id;
 

@@ -1,6 +1,5 @@
 package com.gemserk.componentsengine.properties;
 
-import com.gemserk.componentsengine.entities.Entity;
 
 @SuppressWarnings("unchecked")
 public class PropertyLocator<T> {
@@ -19,21 +18,21 @@ public class PropertyLocator<T> {
 		this.name = name;
 	}
 
-	public Property<T> get(Entity entity) {
-		return (Property<T>) entity.getProperty(name);
+	public Property<T> get(PropertiesHolder propertiesHolder) {
+		return (Property<T>) propertiesHolder.getProperty(name);
 	}
 
-	public T getValue(Entity entity) {
-		Property<T> prop = get(entity);
+	public T getValue(PropertiesHolder propertiesHolder) {
+		Property<T> prop = get(propertiesHolder);
 
 		return prop != null ? prop.get() : null;
 	}
 
-	public void setValue(Entity entity, T value) {
-		Property<Object> property = (Property<Object>) get(entity);
+	public void setValue(PropertiesHolder propertiesHolder, T value) {
+		Property<Object> property = (Property<Object>) get(propertiesHolder);
 		if (property == null) {
 			property = new Property<Object>(value);
-			entity.addProperty(name, property);
+			propertiesHolder.addProperty(name, property);
 		}
 		property.set(value);
 	}
