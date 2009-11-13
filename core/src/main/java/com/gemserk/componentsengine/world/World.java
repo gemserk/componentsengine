@@ -73,4 +73,8 @@ public class World {
 		queuedRemoves.clear();
 	}
 
+	public Entity getEntityById(String id) {
+		return entities.get(id);
+	}
+
 }
