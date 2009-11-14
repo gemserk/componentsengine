@@ -1,6 +1,5 @@
 package com.gemserk.componentsengine.properties;
 
-
 @SuppressWarnings("unchecked")
 public class PropertyLocator<T> {
 
@@ -26,6 +25,12 @@ public class PropertyLocator<T> {
 		Property<T> prop = get(propertiesHolder);
 
 		return prop != null ? prop.get() : null;
+	}
+
+	public T getValue(PropertiesHolder propertiesHolder, T defaultValue) {
+		T t = getValue(propertiesHolder);
+
+		return t != null ? t : defaultValue;
 	}
 
 	public void setValue(PropertiesHolder propertiesHolder, T value) {
