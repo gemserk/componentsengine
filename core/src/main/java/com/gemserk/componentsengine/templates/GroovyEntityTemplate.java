@@ -15,6 +15,8 @@ import org.newdawn.slick.Image;
 import com.gemserk.componentsengine.components.ComponentManager;
 import com.gemserk.componentsengine.entities.Entity;
 import com.gemserk.componentsengine.properties.Property;
+import com.gemserk.componentsengine.properties.ReferenceProperty;
+import com.gemserk.componentsengine.properties.SimpleProperty;
 import com.gemserk.componentsengine.resources.AnimationManager;
 import com.gemserk.componentsengine.resources.ImageManager;
 
@@ -120,8 +122,13 @@ public class GroovyEntityTemplate implements EntityTemplate {
 		}
 		
 		void property(String key, Object value){
-			entity.addProperty(key, new Property<Object>(value));
+			entity.addProperty(key, new SimpleProperty<Object>(value));
 		}
+		
+		void propertyRef(String key, String referencedPropertyName){
+			entity.addProperty(key,new ReferenceProperty<Object>(referencedPropertyName, entity));
+		}
+		
 		
 		void parent(String parent){
 			EntityTemplate parentTemplate = templateProvider.getTemplate(parent);
@@ -149,5 +156,14 @@ public class GroovyEntityTemplate implements EntityTemplate {
 			return this.animationManager.getAnimation(key);
 		}
 	}
+	
+	
+//	class Utils {
+//		Object properties = new Object(){
+//			public Property<Object> ref(String referencedPropertyName){
+//				return new ReferenceProperty<Object>(referencedPropertyName, holder)
+//			}
+//		};
+//	}
 
 }

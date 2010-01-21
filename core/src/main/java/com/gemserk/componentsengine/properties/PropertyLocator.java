@@ -36,7 +36,7 @@ public class PropertyLocator<T> {
 	public void setValue(PropertiesHolder propertiesHolder, T value) {
 		Property<Object> property = (Property<Object>) get(propertiesHolder);
 		if (property == null) {
-			property = new Property<Object>(value);
+			property = new SimpleProperty<Object>(value);
 			propertiesHolder.addProperty(name, property);
 		}
 		property.set(value);

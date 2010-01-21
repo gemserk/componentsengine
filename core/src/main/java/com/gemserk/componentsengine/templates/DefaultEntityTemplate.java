@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.gemserk.componentsengine.entities.Entity;
-import com.gemserk.componentsengine.properties.Property;
+import com.gemserk.componentsengine.properties.SimpleProperty;
 import com.gemserk.componentsengine.templates.EntityTemplate;
 
 public class DefaultEntityTemplate implements EntityTemplate {
@@ -37,7 +37,7 @@ public class DefaultEntityTemplate implements EntityTemplate {
 	private void addProperties(Entity entity, Map<String, Object> parameters) {
 		Set<String> keySet = parameters.keySet();
 		for (String key : keySet) {
-			entity.addProperty(key, new Property<Object>(parameters.get(key)));
+			entity.addProperty(key, new SimpleProperty<Object>(parameters.get(key)));
 		}
 	}
 
