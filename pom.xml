@@ -20,7 +20,8 @@
 		<url>https://ci.gemserk.com/hudson/job/componentsengine/</url>
 	</ciManagement>
 	<scm>
-		<url>https://svn.gemserk.com/componentsengine/trunk/componentsengine</url>
+		<url>https://svn.gemserk.com/componentsengine/trunk/componentsengine
+		</url>
 		<connection>scm:https://svn.gemserk.com/componentsengine/trunk/componentsengine</connection>
 		<developerConnection>scm:svn:https://svn.gemserk.com/componentsengine/trunk/componentsengine</developerConnection>
 	</scm>
@@ -28,15 +29,16 @@
 		<repository>
 			<id>gemserk.releases</id>
 			<name>Gemserk Releases</name>
-			<url>https://maven.gemserk.com/nexus/content/repositories/releases/</url>
+			<url>https://maven.gemserk.com/nexus/content/repositories/releases/
+			</url>
 		</repository>
 		<snapshotRepository>
 			<id>gemserk.snapshots</id>
 			<name>Gemserk Snapshots</name>
-			<url>https://maven.gemserk.com/nexus/content/repositories/snapshots/</url>
+			<url>https://maven.gemserk.com/nexus/content/repositories/snapshots/
+			</url>
 		</snapshotRepository>
 	</distributionManagement>
-
 
 	<modules>
 		<module>core</module>
@@ -60,10 +62,40 @@
 					<encoding>UTF-8</encoding>
 				</configuration>
 			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<!--				<version>2.1.1</version>-->
+				<configuration>
+
+				</configuration>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>jar</goal>
+							<goal>test-jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>test-jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
 		</plugins>
+
 	</build>
-
-
 
 	<dependencyManagement>
 		<dependencies>
