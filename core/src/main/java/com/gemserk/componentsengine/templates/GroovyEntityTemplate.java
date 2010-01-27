@@ -12,8 +12,11 @@ import java.util.Map;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Image;
 
+import com.gemserk.componentsengine.components.Component;
 import com.gemserk.componentsengine.components.ComponentManager;
 import com.gemserk.componentsengine.entities.Entity;
+import com.gemserk.componentsengine.messages.GenericMessage;
+import com.gemserk.componentsengine.messages.Message;
 import com.gemserk.componentsengine.properties.Property;
 import com.gemserk.componentsengine.properties.ReferenceProperty;
 import com.gemserk.componentsengine.properties.SimpleProperty;
@@ -119,6 +122,25 @@ public class GroovyEntityTemplate implements EntityTemplate {
 		
 		void component(String idComponent){
 			entity.addComponent(componentManager.getComponent(idComponent));
+		}
+		
+		void component(Component component){
+			entity.addComponent(component);
+		}
+		
+		void genericComponent(final Map<String,Object> parameters, final Closure closure){
+			entity.addComponent(new Component((String)parameters.get("id")) {
+				@Override
+				public void handleMessage(Message message) {
+					if (message instanceof GenericMessage) {
+						GenericMessage genericMessage = (GenericMessage) message;
+						if(!parameters.get("messageId").equals(genericMessage.getId()))
+							return;
+						
+						closure.call(genericMessage);
+					}
+				}
+			});
 		}
 		
 		void property(String key, Object value){

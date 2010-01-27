@@ -1,0 +1,54 @@
+package com.gemserk.componentsengine.components;
+
+import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.Map;
+
+import com.gemserk.componentsengine.components.Component;
+import com.gemserk.componentsengine.messages.Message;
+
+@SuppressWarnings("unchecked")
+public abstract class ReflectionComponent extends Component{
+
+	static final Map<Class,Map<Class,Method>> cache = new HashMap<Class,Map<Class,Method>>();
+	
+	public ReflectionComponent(String id) {
+		super(id);
+	}
+	
+	@Override
+	public void handleMessage(Message message) {
+		try {
+			Method method = getMethod(message);
+			if(method!=null)
+				method.invoke(this, message);
+		} catch (Exception e) {
+			throw new RuntimeException("error while invoking handleMessage for message of type: " + message.getClass(), e);
+		}
+		
+	}
+	
+	Method getMethod(Message message){
+		Map<Class,Method> methods = cache.get(this.getClass());
+		if(methods==null){
+			methods = new HashMap<Class, Method>();
+			cache.put(getClass(), methods);
+		}
+		if(methods.containsKey(message.getClass())){
+			Method method = methods.get(message.getClass());
+			return method;
+		}
+		else
+		{
+			Method method = null;
+			try {
+				method = this.getClass().getMethod("handleMessage", message.getClass());
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			methods.put(message.getClass(), method);
+			return method;
+		}
+	}
+
+}

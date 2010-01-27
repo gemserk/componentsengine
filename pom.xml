@@ -20,8 +20,7 @@
 		<url>https://ci.gemserk.com/hudson/job/componentsengine/</url>
 	</ciManagement>
 	<scm>
-		<url>https://svn.gemserk.com/componentsengine/trunk/componentsengine
-		</url>
+		<url>https://svn.gemserk.com/componentsengine/trunk/componentsengine</url>
 		<connection>scm:https://svn.gemserk.com/componentsengine/trunk/componentsengine</connection>
 		<developerConnection>scm:svn:https://svn.gemserk.com/componentsengine/trunk/componentsengine</developerConnection>
 	</scm>
@@ -29,16 +28,15 @@
 		<repository>
 			<id>gemserk.releases</id>
 			<name>Gemserk Releases</name>
-			<url>https://maven.gemserk.com/nexus/content/repositories/releases/
-			</url>
+			<url>https://maven.gemserk.com/nexus/content/repositories/releases/</url>
 		</repository>
 		<snapshotRepository>
 			<id>gemserk.snapshots</id>
 			<name>Gemserk Snapshots</name>
-			<url>https://maven.gemserk.com/nexus/content/repositories/snapshots/
-			</url>
+			<url>https://maven.gemserk.com/nexus/content/repositories/snapshots/</url>
 		</snapshotRepository>
 	</distributionManagement>
+
 
 	<modules>
 		<module>core</module>
@@ -94,8 +92,9 @@
 			</plugin>
 
 		</plugins>
-
 	</build>
+
+
 
 	<dependencyManagement>
 		<dependencies>
@@ -130,7 +129,7 @@
 			<dependency>
 				<groupId>org.codehaus.groovy</groupId>
 				<artifactId>groovy-all</artifactId>
-				<version>1.6.5</version>
+				<version>1.7.0</version>
 				<exclusions>
 					<exclusion>
 						<groupId>junit</groupId>
