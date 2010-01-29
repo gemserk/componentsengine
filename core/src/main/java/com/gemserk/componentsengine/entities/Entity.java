@@ -8,11 +8,12 @@ import java.util.Set;
 import java.util.Map.Entry;
 
 import com.gemserk.componentsengine.components.Component;
+import com.gemserk.componentsengine.components.MessageHandler;
 import com.gemserk.componentsengine.messages.Message;
 import com.gemserk.componentsengine.properties.PropertiesHolder;
 import com.gemserk.componentsengine.properties.Property;
 
-public class Entity implements PropertiesHolder {
+public class Entity implements PropertiesHolder, MessageHandler {
 
 	private final String id;
 
@@ -49,7 +50,7 @@ public class Entity implements PropertiesHolder {
 	public void handleMessage(Message message) {
 		message.setEntity(this);
 		for (Entry<String, Component> entry : components.entrySet()) {
-			Component component = entry.getValue();
+			MessageHandler component = entry.getValue();
 			component.handleMessage(message);
 		}
 	}

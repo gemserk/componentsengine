@@ -1,18 +1,20 @@
 package com.gemserk.componentsengine.world;
 
 import java.util.ArrayList;
+
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import com.gemserk.componentsengine.components.MessageHandler;
 import com.gemserk.componentsengine.entities.Entity;
 import com.gemserk.componentsengine.messages.Message;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 
-public class World {
+public class World implements MessageHandler {
 	Map<String, Entity> entities = new LinkedHashMap<String, Entity>(100);
 
 	List<Entity> queuedAdds = new ArrayList<Entity>();
@@ -53,11 +55,12 @@ public class World {
 		queuedRemoves.clear();
 	}
 
-	public void broadcastMessage(Message message) {
+	public void handleMessage(Message message) {
 		for (Entry<String, Entity> entry : entities.entrySet()) {
 			Entity entity = entry.getValue();
 			entity.handleMessage(message);
 		}
+		processPending();
 	}
 
 	public Collection<Entity> getEntities(Predicate<? super Entity> predicate) {
