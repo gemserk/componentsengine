@@ -11,6 +11,8 @@ import com.gemserk.componentsengine.world.World;
 import com.google.inject.Inject;
 
 public class Scene implements MessageHandler {
+	
+	String id;
 
 	World world;
 	
@@ -23,6 +25,10 @@ public class Scene implements MessageHandler {
 	
 	public World getWorld() {
 		return world;
+	}
+	
+	public Scene(String id) {
+		this.id = id;
 	}
 
 	@Override

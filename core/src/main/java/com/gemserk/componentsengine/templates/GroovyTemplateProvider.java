@@ -49,7 +49,7 @@ public class GroovyTemplateProvider implements TemplateProvider{
 			return new GroovyEntityTemplate(scriptClass,componentManager,imageManager,animationManager,new CachingTemplateProvider(this));
 		}
 		catch (Exception e) {
-			throw new EntityTemplateNotFoundException("Unable to load template",e);
+			throw new TemplateNotFoundException("Unable to load template",e);
 		}
 	}
 	
