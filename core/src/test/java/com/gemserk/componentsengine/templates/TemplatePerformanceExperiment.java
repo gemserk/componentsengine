@@ -16,7 +16,7 @@ public class TemplatePerformanceExperiment {
 	 * @throws IOException 
 	 */
 	public static void main(String[] args) throws IOException {
-		GroovyTemplateProvider provider = new GroovyTemplateProvider(null, null,null);
+		GroovyTemplateProvider provider = new GroovyTemplateProvider();
 		
 		System.in.read();
 		

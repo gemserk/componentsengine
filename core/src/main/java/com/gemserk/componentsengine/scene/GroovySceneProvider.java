@@ -27,6 +27,8 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.Singleton;
+import com.google.inject.name.Named;
+import com.google.inject.name.Names;
 
 public class GroovySceneProvider implements SceneProvider {
 
@@ -65,6 +67,8 @@ public class GroovySceneProvider implements SceneProvider {
 			}
 
 		});
+		
+		
 
 		GroovySceneBuilder groovySceneBuilder = childInjector.getInstance(GroovySceneBuilder.class);
 
