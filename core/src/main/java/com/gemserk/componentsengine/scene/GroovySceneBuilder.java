@@ -124,7 +124,7 @@ public class GroovySceneBuilder {
 		scene.addComponent(component);
 	}
 
-	void components(Class<? extends ResourceLoader> loaderClass) {
+	public void components(Class<? extends ResourceLoader> loaderClass) {
 		try {
 			ResourceLoader resourceLoader = loaderClass.newInstance();
 			injector.injectMembers(resourceLoader);
@@ -134,7 +134,7 @@ public class GroovySceneBuilder {
 		}
 	}
 
-	void component(String idComponent) {
+	public void component(String idComponent) {
 		scene.addComponent(componentManager.getComponent(idComponent));
 	}
 
@@ -143,7 +143,7 @@ public class GroovySceneBuilder {
 		inputController.register();
 	}
 
-	void controller(Class<? extends InputController> loaderClass) {
+	public void controller(Class<? extends InputController> loaderClass) {
 		try {
 			InputController inputcontroller = loaderClass.newInstance();
 			injector.injectMembers(inputcontroller);
