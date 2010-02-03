@@ -90,4 +90,7 @@ public class Entity implements PropertiesHolder, MessageHandler {
 				+ components + ", properties=" + properties + "]";
 	}
 
+	public Map<String, Property<Object>> getProperties() {
+		return properties;
+	}
 }
