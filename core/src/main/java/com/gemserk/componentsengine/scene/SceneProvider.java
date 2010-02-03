@@ -1,10 +1,6 @@
-/**
- * 
- */
 package com.gemserk.componentsengine.scene;
 
 import java.util.Map;
-
 
 public interface SceneProvider {
 

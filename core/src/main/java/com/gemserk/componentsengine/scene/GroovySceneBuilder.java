@@ -20,6 +20,7 @@ import com.gemserk.componentsengine.entities.Entity;
 import com.gemserk.componentsengine.resources.PropertiesImageLoader;
 import com.gemserk.componentsengine.resources.ResourceLoader;
 import com.gemserk.componentsengine.templates.TemplateProvider;
+import com.gemserk.componentsengine.utils.Container;
 import com.gemserk.componentsengine.utils.Interval;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
@@ -106,7 +107,8 @@ public class GroovySceneBuilder {
 			if (value != null)
 				return value;
 			else
-				throw new MissingPropertyException("no encontre la prop");
+				throw new MissingPropertyException("failed to get property "
+						+ name);
 		}
 
 		public void propertyMissing(String name, Object value) {
@@ -186,6 +188,10 @@ public class GroovySceneBuilder {
 
 		public Color color(float r, float g, float b) {
 			return new Color(r, g, b);
+		}
+
+		public Container container(float current, float total) {
+			return new Container(current, total);
 		}
 
 	}
