@@ -1,12 +1,8 @@
-/**
- * 
- */
 package com.gemserk.componentsengine.messages;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import com.gemserk.componentsengine.messages.Message;
 import com.gemserk.componentsengine.properties.PropertiesHolder;
 import com.gemserk.componentsengine.properties.Property;
 
