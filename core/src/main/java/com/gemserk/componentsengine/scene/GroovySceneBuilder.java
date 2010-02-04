@@ -5,7 +5,10 @@ package com.gemserk.componentsengine.scene;
 
 import groovy.lang.Closure;
 import groovy.lang.MissingPropertyException;
+import groovy.lang.Script;
+import groovy.util.GroovyScriptEngine;
 
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,6 +20,7 @@ import com.gemserk.componentsengine.components.Component;
 import com.gemserk.componentsengine.components.ComponentManager;
 import com.gemserk.componentsengine.controllers.InputController;
 import com.gemserk.componentsengine.entities.Entity;
+import com.gemserk.componentsengine.input.GroovyInputMappingBuilder;
 import com.gemserk.componentsengine.resources.PropertiesImageLoader;
 import com.gemserk.componentsengine.resources.ResourceLoader;
 import com.gemserk.componentsengine.templates.TemplateProvider;
@@ -34,6 +38,8 @@ public class GroovySceneBuilder {
 	Scene scene;
 
 	ComponentManager componentManager;
+	
+	GroovyInputMappingBuilder inputMappingBuilder;
 
 	@Inject
 	public void setComponentManager(ComponentManager componentManager) {
@@ -48,6 +54,11 @@ public class GroovySceneBuilder {
 	@Inject
 	public void setInjector(Injector injector) {
 		this.injector = injector;
+	}
+	
+	@Inject
+	public void setInputMappingBuilder(GroovyInputMappingBuilder inputMappingBuilder) {
+		this.inputMappingBuilder = inputMappingBuilder;
 	}
 
 	public Scene scene(String id) {
@@ -161,6 +172,16 @@ public class GroovySceneBuilder {
 		injector.injectMembers(propertiesImageLoader);
 		propertiesImageLoader.load();
 
+	}
+	
+	public void input(String id, Closure closure){
+		Component inputcomponent = inputMappingBuilder.configure(id, closure);
+		component(inputcomponent);
+	}
+	
+	public void input(String id, String mapping){
+		Component inputcomponent = inputMappingBuilder.configure(id, mapping);
+		component(inputcomponent);
 	}
 
 	Utils utils = new Utils();

@@ -1,66 +1,51 @@
 package com.gemserk.componentsengine.input;
 
+import groovy.lang.Binding;
 import groovy.lang.Closure;
+import groovy.lang.GroovyClassLoader;
+import groovy.lang.Script;
+import groovy.util.GroovyScriptEngine;
+import groovy.util.ResourceException;
+import groovy.util.ScriptException;
 
-
-import java.util.ArrayList;
+import java.net.URL;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
-import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.newdawn.slick.Input;
 
-import com.gemserk.componentsengine.components.ReflectionComponent;
+import com.gemserk.componentsengine.components.Component;
 import com.gemserk.componentsengine.game.Game;
 import com.gemserk.componentsengine.input.ButtonMonitor.Status;
-import com.gemserk.componentsengine.messages.Message;
-import com.gemserk.componentsengine.messages.UpdateMessage;
 import com.gemserk.componentsengine.world.World;
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 
-public class DSLInputMapperComponent extends ReflectionComponent {
+public class GroovyInputMappingBuilder {
 
-	List<Action> actions = new ArrayList<Action>();
+	Provider<InputMapping> inputMappingProvider;
 
-	Map<InputKey, ButtonMonitor> buttonMonitors = new HashMap<InputKey, ButtonMonitor>();
-	Map<InputKey, CoordinatesMonitor> coordinatesMonitors = new HashMap<InputKey, CoordinatesMonitor>();
-
-	SlickMonitorFactory monitorFactory;
-	
-	boolean configured = false;
-
-	private final Closure configurer;
-	
-	public DSLInputMapperComponent(String id, Closure configurer) {
-		super(id);
-		this.configurer = configurer;
-
+	@Inject
+	public void setInputMappingProvider(Provider<InputMapping> inputMappingProvider) {
+		this.inputMappingProvider = inputMappingProvider;
 	}
 
-	public void handleMessage(UpdateMessage message) {
+	InputMapping inputMapping = null;
 
-		if(!configured){
-			configured = true;
-			configurer.setDelegate(new RootNode());
-			configurer.call();
-		}
-		
-		for (Entry<InputKey, ButtonMonitor> entry : buttonMonitors.entrySet()) {
-			entry.getValue().update();
-		}
-		for (Entry<InputKey, CoordinatesMonitor> entry : coordinatesMonitors.entrySet()) {
-			entry.getValue().update();
-		}
+	MonitorFactory monitorFactory;
 
-		for (Action action : actions) {
-			Message newMessage = action.run(this);
-			if(newMessage!=null){
-				game.handleMessage(newMessage);
-			}
-		}
+	@Inject
+	public void setMonitorFactory(MonitorFactory monitorFactory) {
+		this.monitorFactory = monitorFactory;
+	}
+
+	public Component configure(String id, Closure closure) {
+		inputMapping = inputMappingProvider.get();
+		closure.setDelegate(new RootNode());
+		closure.call();
+
+		return new MessageHandlerToComponentConverter(id, inputMapping);
 	}
 
 	class RootNode {
@@ -79,10 +64,10 @@ public class DSLInputMapperComponent extends ReflectionComponent {
 
 		public ButtonMonitor getButtonMonitor(String button) {
 			InputKey inputKey = new InputKey("keyboard.", button);
-			ButtonMonitor buttonMonitor = buttonMonitors.get(inputKey);
+			ButtonMonitor buttonMonitor = inputMapping.getButtonMonitor(inputKey);
 			if (buttonMonitor == null) {
 				buttonMonitor = monitorFactory.keyboardButtonMonitor(button);
-				buttonMonitors.put(inputKey, buttonMonitor);
+				inputMapping.addButtonMonitor(inputKey, buttonMonitor);
 			}
 
 			return buttonMonitor;
@@ -103,7 +88,7 @@ public class DSLInputMapperComponent extends ReflectionComponent {
 
 			final ButtonMonitor buttonMonitor = getButtonMonitor(button);
 
-			actions.add(new Action(button, eventId, closure) {
+			inputMapping.addAction(new GroovyInputAction(button, eventId, closure) {
 
 				@Override
 				public boolean shouldRun() {
@@ -134,10 +119,10 @@ public class DSLInputMapperComponent extends ReflectionComponent {
 
 		public ButtonMonitor getButtonMonitor(String button) {
 			InputKey inputKey = new InputKey("mouse.", button);
-			ButtonMonitor buttonMonitor = buttonMonitors.get(inputKey);
+			ButtonMonitor buttonMonitor = inputMapping.getButtonMonitor(inputKey);
 			if (buttonMonitor == null) {
 				buttonMonitor = monitorFactory.mouseButtonMonitor(button);
-				buttonMonitors.put(inputKey, buttonMonitor);
+				inputMapping.addButtonMonitor(inputKey, buttonMonitor);
 			}
 
 			return buttonMonitor;
@@ -145,10 +130,10 @@ public class DSLInputMapperComponent extends ReflectionComponent {
 
 		public CoordinatesMonitor getCoordinatesMonitor() {
 			InputKey inputKey = new InputKey("mouse.move", "");
-			CoordinatesMonitor coordinatesMonitor = coordinatesMonitors.get(inputKey);
+			CoordinatesMonitor coordinatesMonitor = inputMapping.getCoordinatesMonitor(inputKey);
 			if (coordinatesMonitor == null) {
 				coordinatesMonitor = monitorFactory.mouseCoordinatesMonitor();
-				coordinatesMonitors.put(inputKey, coordinatesMonitor);
+				inputMapping.addCoordinatesMonitor(inputKey, coordinatesMonitor);
 			}
 
 			return coordinatesMonitor;
@@ -202,7 +187,7 @@ public class DSLInputMapperComponent extends ReflectionComponent {
 
 			final ButtonMonitor buttonMonitor = getButtonMonitor(button);
 
-			actions.add(new Action(button, eventId, closure) {
+			inputMapping.addAction(new GroovyInputAction(button, eventId, closure) {
 
 				@Override
 				public boolean shouldRun() {
@@ -224,7 +209,7 @@ public class DSLInputMapperComponent extends ReflectionComponent {
 
 			closure.setProperty("position", cordinatesMonitor);
 
-			actions.add(new Action("mouse.move", eventId, closure) {
+			inputMapping.addAction(new GroovyInputAction("mouse.move", eventId, closure) {
 
 				@Override
 				public boolean shouldRun() {
@@ -234,95 +219,27 @@ public class DSLInputMapperComponent extends ReflectionComponent {
 		}
 	}
 
-	static interface MonitorFactory{
-
-		ButtonMonitor keyboardButtonMonitor(String button);
-		ButtonMonitor mouseButtonMonitor(String button);
-		CoordinatesMonitor mouseCoordinatesMonitor();
-	}
-		
-	static class SlickMonitorFactory implements MonitorFactory{
-
-		Input input;
-
-		Map<String, String> mappingMouseKeys = new HashMap<String, String>() {
-			{
-				put("left", "BUTTON0");
-				put("right", "BUTTON1");
-				put("middle", "BUTTON2");
-			}
-		};
-		
-		public int mapMouseButton(String key) {
-			String mappedKey = mappingMouseKeys.get(key);
-
-			if (mappedKey == null)
-				mappedKey = key;
-
-			return Mouse.getButtonIndex(mappedKey);
-		}
-		
-		public int mapKeyboardButton(String button){
-			String buttonName = button.toUpperCase();
-			return Keyboard.getKeyIndex(buttonName);
-		}
-		
-		@Inject
-		public void setInput(Input input) {
-			this.input = input;
-		}
-		
-		public ButtonMonitor keyboardButtonMonitor(String button){
-			final int keyboardButton = mapKeyboardButton(button);
-			return new ButtonMonitor() {
-
-				@Override
-				protected boolean isDown() {
-					return input.isKeyDown(keyboardButton);
-				}
-			};
-		}
-
-		public ButtonMonitor mouseButtonMonitor(String button) {
-
-			final int mouseButton = mapMouseButton(button);
+	public Component configure(String id, String mapping) {
+		try {
+			GroovyClassLoader classloader = new GroovyClassLoader();
+			Class<Script> scriptClass = (Class<Script>) classloader.loadClass(mapping);
+			Script script = scriptClass.newInstance();
 			
-			return new ButtonMonitor(){
-
-				@Override
-				protected boolean isDown() {
-					return input.isMouseButtonDown(mouseButton);
+			inputMapping = inputMappingProvider.get();
+			Binding binding = new Binding();
+			binding.setVariable("builder", new Object() {
+				public void input(Closure closure) {
+					closure.setDelegate(new RootNode());
+					closure.call();
 				}
-			};
-		}
+			});
 
-		public CoordinatesMonitor mouseCoordinatesMonitor() {
-			return new CoordinatesMonitor() {
-
-				@Override
-				protected float readX() {
-					return input.getMouseX();
-				}
-
-				@Override
-				protected float readY() {
-					return input.getMouseY();
-				}
-			};
+			script.setBinding(binding);
+			script.run();
+			return new MessageHandlerToComponentConverter(id, inputMapping);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
 		}
 
 	}
-
-	@Inject
-	World world;
-	// @Inject Scene scene;
-	@Inject
-	Input input;
-	@Inject
-	Game game;
-	
-	@Inject public void setMonitorFactory(SlickMonitorFactory monitorFactory) {
-		this.monitorFactory = monitorFactory;
-	}
-
 }
