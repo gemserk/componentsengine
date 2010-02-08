@@ -4,6 +4,7 @@
 package com.gemserk.componentsengine.scene;
 
 import groovy.lang.Closure;
+import groovy.lang.GroovyObject;
 import groovy.lang.MissingPropertyException;
 import groovy.lang.Script;
 import groovy.util.GroovyScriptEngine;
@@ -12,9 +13,6 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.newdawn.slick.Color;
-import org.newdawn.slick.geom.Rectangle;
-import org.newdawn.slick.geom.Vector2f;
 
 import com.gemserk.componentsengine.components.Component;
 import com.gemserk.componentsengine.components.ComponentManager;
@@ -24,8 +22,6 @@ import com.gemserk.componentsengine.input.GroovyInputMappingBuilder;
 import com.gemserk.componentsengine.resources.PropertiesImageLoader;
 import com.gemserk.componentsengine.resources.ResourceLoader;
 import com.gemserk.componentsengine.templates.TemplateProvider;
-import com.gemserk.componentsengine.utils.Container;
-import com.gemserk.componentsengine.utils.Interval;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 
@@ -120,6 +116,7 @@ public class GroovySceneBuilder {
 			else
 				throw new MissingPropertyException("failed to get property "
 						+ name);
+			
 		}
 
 		public void propertyMissing(String name, Object value) {
@@ -129,7 +126,10 @@ public class GroovySceneBuilder {
 		public Map<String, Object> getParameters() {
 			return parameters;
 		}
-
+		
+		public void properties(Map forcedProperties){
+			parameters.put("properties", forcedProperties);
+		}
 	}
 
 	public void component(Component component) {
@@ -184,36 +184,10 @@ public class GroovySceneBuilder {
 		component(inputcomponent);
 	}
 
-	Utils utils = new Utils();
+	BuilderUtils utils = new BuilderUtils();
 
-	public Utils getUtils() {
-		return utils;
-	}
-
-	class Utils {
-		public Vector2f vector(float x, float y) {
-			return new Vector2f(x, y);
-		}
-
-		public Interval interval(int min, int max) {
-			return new Interval(min, max);
-		}
-
-		public Rectangle rectangle(float x, float y, float width, float height) {
-			return new Rectangle(x, y, width, height);
-		}
-
-		public Color color(float r, float g, float b, float a) {
-			return new Color(r, g, b, a);
-		}
-
-		public Color color(float r, float g, float b) {
-			return new Color(r, g, b);
-		}
-
-		public Container container(float current, float total) {
-			return new Container(current, total);
-		}
-
-	}
+//	public BuilderUtils getUtils() {
+//		return builderUtils;
+//	}
+	
 }

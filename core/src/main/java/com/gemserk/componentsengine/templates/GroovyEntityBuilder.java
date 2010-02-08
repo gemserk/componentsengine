@@ -21,6 +21,7 @@ import com.gemserk.componentsengine.properties.ReferenceProperty;
 import com.gemserk.componentsengine.properties.SimpleProperty;
 import com.gemserk.componentsengine.resources.AnimationManager;
 import com.gemserk.componentsengine.resources.ImageManager;
+import com.gemserk.componentsengine.scene.BuilderUtils;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 
@@ -34,6 +35,8 @@ public class GroovyEntityBuilder{
 	AnimationManager animationManager;	
 	TemplateProvider templateProvider;
 	private Injector injector;
+	
+	BuilderUtils utils;
 	
 	public GroovyEntityBuilder(String defaultEntityName, Map<String,Object> parameters) {
 		this.defaultEntityName = defaultEntityName;
@@ -85,6 +88,18 @@ public class GroovyEntityBuilder{
 	void property(String key, Object value){
 		entity.addProperty(key, new SimpleProperty<Object>(value));
 	}
+	void property(String key, Closure valueClosure){
+		Map<String,Object> forcedProperties  = (Map<String, Object>) parameters.get("properties");
+		if(forcedProperties!=null){
+			Object candidateValue = forcedProperties.get(key);
+			if(candidateValue!=null){
+				property(key, candidateValue);
+				return;
+			}
+		}
+		property(key, valueClosure.call());
+	}
+	
 	
 	void propertyRef(String key, String referencedPropertyName){
 		entity.addProperty(key,new ReferenceProperty<Object>(referencedPropertyName, entity));
@@ -117,13 +132,6 @@ public class GroovyEntityBuilder{
 		return this.animationManager.getAnimation(key);
 	}
 	
-	
-	
-	
-	
-	
-	
-	
 	@Inject public void setAnimationManager(AnimationManager animationManager) {
 		this.animationManager = animationManager;
 	}
@@ -143,11 +151,5 @@ public class GroovyEntityBuilder{
 	@Inject public void setTemplateProvider(TemplateProvider templateProvider) {
 		this.templateProvider = templateProvider;
 	}
-	
-	
-	
-	
-	
-	
 	
 }

@@ -4,21 +4,15 @@ import groovy.lang.Binding;
 import groovy.lang.Closure;
 import groovy.lang.GroovyClassLoader;
 import groovy.lang.Script;
-import groovy.util.GroovyScriptEngine;
-import groovy.util.ResourceException;
-import groovy.util.ScriptException;
 
-import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.lwjgl.input.Mouse;
-import org.newdawn.slick.Input;
 
 import com.gemserk.componentsengine.components.Component;
-import com.gemserk.componentsengine.game.Game;
 import com.gemserk.componentsengine.input.ButtonMonitor.Status;
-import com.gemserk.componentsengine.world.World;
+import com.gemserk.componentsengine.templates.GroovyScriptProvider;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
@@ -26,8 +20,7 @@ public class GroovyInputMappingBuilder {
 
 	Provider<InputMapping> inputMappingProvider;
 
-	@Inject
-	public void setInputMappingProvider(Provider<InputMapping> inputMappingProvider) {
+	@Inject public void setInputMappingProvider(Provider<InputMapping> inputMappingProvider) {
 		this.inputMappingProvider = inputMappingProvider;
 	}
 
@@ -35,9 +28,14 @@ public class GroovyInputMappingBuilder {
 
 	MonitorFactory monitorFactory;
 
-	@Inject
-	public void setMonitorFactory(MonitorFactory monitorFactory) {
+	@Inject	public void setMonitorFactory(MonitorFactory monitorFactory) {
 		this.monitorFactory = monitorFactory;
+	}
+	
+	GroovyScriptProvider scriptProvider;
+	
+	@Inject public void setScriptProvider(GroovyScriptProvider scriptProvider) {
+		this.scriptProvider = scriptProvider;
 	}
 
 	public Component configure(String id, Closure closure) {
@@ -221,8 +219,7 @@ public class GroovyInputMappingBuilder {
 
 	public Component configure(String id, String mapping) {
 		try {
-			GroovyClassLoader classloader = new GroovyClassLoader();
-			Class<Script> scriptClass = (Class<Script>) classloader.loadClass(mapping);
+			Class<Script> scriptClass = scriptProvider.load(mapping);
 			Script script = scriptClass.newInstance();
 			
 			inputMapping = inputMappingProvider.get();
