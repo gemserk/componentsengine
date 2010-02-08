@@ -4,6 +4,6 @@ import com.gemserk.componentsengine.messages.Message;
 
 public interface MessageHandler {
 
-	public abstract void handleMessage(Message message);
+	void handleMessage(Message message);
 
 }
