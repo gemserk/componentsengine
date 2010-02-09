@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.gemserk.componentsengine.templates;
 
 import groovy.lang.Closure;

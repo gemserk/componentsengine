@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.gemserk.componentsengine.scene;
 
 import groovy.lang.Binding;
@@ -50,7 +47,7 @@ public class GroovySceneProvider implements SceneProvider {
 			scriptClass = groovyScriptProvider.load(name);
 			return new GroovySceneTemplate(scriptClass, groovySceneBuilder);
 		} catch (Exception e) {
-			throw new TemplateNotFoundException("Unable to load scene template", e);
+			throw new TemplateNotFoundException("Unable to load scene template " + name, e);
 		}
 	}
 

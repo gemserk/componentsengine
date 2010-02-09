@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.gemserk.componentsengine.scene;
 
 import org.newdawn.slick.Color;
@@ -11,6 +8,7 @@ import com.gemserk.componentsengine.utils.Container;
 import com.gemserk.componentsengine.utils.Interval;
 
 public class BuilderUtils {
+
 	public Vector2f vector(float x, float y) {
 		return new Vector2f(x, y);
 	}
