@@ -40,6 +40,7 @@
 
 	<modules>
 		<module>core</module>
+		<module>commons</module>
 	</modules>
 
 	<build>
@@ -98,6 +99,19 @@
 
 	<dependencyManagement>
 		<dependencies>
+
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>core</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>commons</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+
 			<dependency>
 				<groupId>junit</groupId>
 				<artifactId>junit</artifactId>
