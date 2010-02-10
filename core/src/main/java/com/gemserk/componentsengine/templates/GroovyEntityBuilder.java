@@ -33,7 +33,7 @@ public class GroovyEntityBuilder{
 	TemplateProvider templateProvider;
 	private Injector injector;
 	
-	BuilderUtils utils;
+	BuilderUtils utils = new BuilderUtils();
 	
 	public GroovyEntityBuilder(String defaultEntityName, Map<String,Object> parameters) {
 		this.defaultEntityName = defaultEntityName;
