@@ -14,6 +14,7 @@ import com.gemserk.componentsengine.components.ComponentManager;
 import com.gemserk.componentsengine.entities.Entity;
 import com.gemserk.componentsengine.messages.GenericMessage;
 import com.gemserk.componentsengine.messages.Message;
+import com.gemserk.componentsengine.messages.MessageQueue;
 import com.gemserk.componentsengine.properties.ReferenceProperty;
 import com.gemserk.componentsengine.properties.SimpleProperty;
 import com.gemserk.componentsengine.resources.AnimationManager;
@@ -73,6 +74,8 @@ public class GroovyEntityBuilder{
 			
 			@Inject
 			World world;
+			
+			@Inject MessageQueue messageQueue;
 			
 			@Override
 			public void handleMessage(Message message) {

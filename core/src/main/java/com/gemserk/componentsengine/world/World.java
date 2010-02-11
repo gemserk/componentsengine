@@ -1,25 +1,20 @@
 package com.gemserk.componentsengine.world;
 
-import java.util.ArrayList;
-
 import java.util.Collection;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
 import com.gemserk.componentsengine.components.MessageHandler;
 import com.gemserk.componentsengine.entities.Entity;
+import com.gemserk.componentsengine.messages.AddEntityMessage;
 import com.gemserk.componentsengine.messages.Message;
+import com.gemserk.componentsengine.messages.RemoveEntityMessage;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 
 public class World implements MessageHandler {
 	Map<String, Entity> entities = new LinkedHashMap<String, Entity>(100);
-
-	List<Entity> queuedAdds = new ArrayList<Entity>();
-
-	List<Entity> queuedRemoves = new ArrayList<Entity>();
 
 	public World() {
 	}
@@ -36,31 +31,21 @@ public class World implements MessageHandler {
 		this.entities.remove(entityId);
 	}
 
-	public void queueAddEntity(Entity entity) {
-		this.queuedAdds.add(entity);
-	}
-
-	public void queueRemoveEntity(Entity entity) {
-		this.queuedRemoves.add(entity);
-	}
-
-	public void processPending() {
-		for (Entity entity : queuedAdds) {
-			this.addEntity(entity);
-		}
-		queuedAdds.clear();
-		for (Entity entity : queuedRemoves) {
-			this.removeEntity(entity);
-		}
-		queuedRemoves.clear();
-	}
-
 	public void handleMessage(Message message) {
+		
+		if (message instanceof AddEntityMessage) {
+			AddEntityMessage addMessage = (AddEntityMessage) message;
+			this.addEntity(addMessage.getEntityToAdd());
+		}
+		if (message instanceof RemoveEntityMessage) {
+			RemoveEntityMessage removeMessage = (RemoveEntityMessage) message;
+			this.removeEntity(removeMessage.getEntityToRemove());
+		}
+		
 		for (Entry<String, Entity> entry : entities.entrySet()) {
 			Entity entity = entry.getValue();
 			entity.handleMessage(message);
 		}
-		processPending();
 	}
 
 	public Collection<Entity> getEntities(Predicate<? super Entity> predicate) {
@@ -72,8 +57,6 @@ public class World implements MessageHandler {
 	 */
 	public void clear() {
 		entities.clear();
-		queuedAdds.clear();
-		queuedRemoves.clear();
 	}
 
 	public Entity getEntityById(String id) {
