@@ -64,9 +64,32 @@ public class GroovyEntityBuilder{
 		entity.addComponent(componentManager.getComponent(idComponent));
 	}
 	
+	void component(final String idComponent,Closure closure){
+		component(idComponent);
+		closure.setDelegate(new Object(){
+						
+			public void property(String key, Object value){
+				GroovyEntityBuilder.this.property(idComponent + "." +  key, value);
+			}
+			
+			public void propertyRef(String key, String referencedPropertyName){
+				GroovyEntityBuilder.this.propertyRef(idComponent + "." +  key, referencedPropertyName);
+			}
+			
+		});
+		closure.setResolveStrategy(Closure.DELEGATE_FIRST);
+		closure.call();
+	}
+	
+	
 	void component(Component component){
 		injector.injectMembers(component);
 		entity.addComponent(component);
+	}
+	
+	void component(Component component, Closure closure){
+		component(component);
+		component(component.getId(), closure);
 	}
 	
 	void genericComponent(final Map<String,Object> parameters, final Closure closure){
@@ -94,6 +117,12 @@ public class GroovyEntityBuilder{
 	void property(String key, Object value){
 		entity.addProperty(key, new SimpleProperty<Object>(value));
 	}
+	
+	/**
+	 * If there is an override value for a property the closure is not evaluated.
+	 * @param key
+	 * @param valueClosure
+	 */
 	void property(String key, Closure valueClosure){
 		Map<String,Object> forcedProperties  = (Map<String, Object>) parameters.get("properties");
 		if(forcedProperties!=null){

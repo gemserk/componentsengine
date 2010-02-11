@@ -11,18 +11,25 @@ import com.gemserk.componentsengine.properties.PropertyLocator;
 
 public class SuperMovementComponent extends Component {
 
-	PropertyLocator<Vector2f> positionProperty = Properties.property("movement.position");
 
-	PropertyLocator<Vector2f> velocityProperty = Properties.property("movement.velocity");
 
-	PropertyLocator<Float> maxVelocityProperty = Properties.property("movement.maxVelocity");
-
-	PropertyLocator<Vector2f> forceProperty = Properties.property("movement.force");
-
-	PropertyLocator<Float> frictionFactorProperty = Properties.property("movement.frictionFactor");
+	private PropertyLocator<Vector2f> positionProperty;
+	private PropertyLocator<Vector2f> velocityProperty;
+	private PropertyLocator<Float> maxVelocityProperty;
+	private PropertyLocator<Vector2f> forceProperty;
+	private PropertyLocator<Float> frictionFactorProperty;
 
 	public SuperMovementComponent(String id) {
 		super(id);
+		positionProperty = Properties.property(id, "position");
+
+		velocityProperty = Properties.property(id, "velocity");
+
+		maxVelocityProperty = Properties.property(id, "maxVelocity");
+
+		forceProperty = Properties.property(id, "force");
+
+		frictionFactorProperty = Properties.property(id, "frictionFactor");
 	}
 
 	private void update(final Entity entity, int delta) {

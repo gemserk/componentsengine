@@ -12,16 +12,19 @@ import com.gemserk.componentsengine.properties.PropertyLocator;
 
 public class CircleRenderableComponent extends ReflectionComponent {
 
-	PropertyLocator<Vector2f> positionProperty = Properties.property("circle.position");
 
-	PropertyLocator<Float> radiusProperty = Properties.property("circle.radius");
 
-	PropertyLocator<Color> lineColorProperty = Properties.property("circle.lineColor");
-
-	PropertyLocator<Color> fillColorProperty = Properties.property("circle.fillColor");
+	private PropertyLocator<Vector2f> positionProperty;
+	private PropertyLocator<Float> radiusProperty;
+	private PropertyLocator<Color> fillColorProperty;
+	private PropertyLocator<Color> lineColorProperty;
 
 	public CircleRenderableComponent(String id) {
 		super(id);
+		positionProperty = Properties.property(id, "position");
+		radiusProperty = Properties.property(id, "radius");
+		lineColorProperty = Properties.property(id, "lineColor");
+		fillColorProperty = Properties.property(id, "fillColor");
 	}
 
 	private void render(Entity entity, Graphics g) {
