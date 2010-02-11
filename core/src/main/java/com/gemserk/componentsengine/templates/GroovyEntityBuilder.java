@@ -19,6 +19,7 @@ import com.gemserk.componentsengine.properties.SimpleProperty;
 import com.gemserk.componentsengine.resources.AnimationManager;
 import com.gemserk.componentsengine.resources.ImageManager;
 import com.gemserk.componentsengine.scene.BuilderUtils;
+import com.gemserk.componentsengine.world.World;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 
@@ -68,7 +69,11 @@ public class GroovyEntityBuilder{
 	}
 	
 	void genericComponent(final Map<String,Object> parameters, final Closure closure){
-		entity.addComponent(new Component((String)parameters.get("id")) {
+		component(new Component((String)parameters.get("id")) {
+			
+			@Inject
+			World world;
+			
 			@Override
 			public void handleMessage(Message message) {
 				if (message instanceof GenericMessage) {
@@ -76,6 +81,7 @@ public class GroovyEntityBuilder{
 					if(!parameters.get("messageId").equals(genericMessage.getId()))
 						return;
 					
+					closure.setDelegate(this);
 					closure.call(genericMessage);
 				}
 			}
