@@ -4,12 +4,17 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.gemserk.componentsengine.components.Component;
 import com.gemserk.componentsengine.messages.Message;
 
 @SuppressWarnings("unchecked")
 public abstract class ReflectionComponent extends Component{
 
+	
+	protected static final Logger logger = LoggerFactory.getLogger(ReflectionComponent.class);
 	static final Map<Class,Map<Class,Method>> cache = new HashMap<Class,Map<Class,Method>>();
 	
 	public ReflectionComponent(String id) {
@@ -44,7 +49,7 @@ public abstract class ReflectionComponent extends Component{
 			try {
 				method = this.getClass().getMethod("handleMessage", message.getClass());
 			} catch (Exception e) {
-				e.printStackTrace();
+				logger.trace("caching method not found for reflectioncomponent",e);
 			}
 			methods.put(message.getClass(), method);
 			return method;
