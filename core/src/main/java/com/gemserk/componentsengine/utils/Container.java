@@ -51,5 +51,10 @@ public class Container {
 		if (current > total)
 			current = total;
 	}
+	
+	@Override
+	public String toString() {
+		return "[" + getCurrent() + "/" + getTotal() + "]";
+	}
 
 }

@@ -1,18 +1,10 @@
-/**
- * 
- */
 package com.gemserk.componentsengine.scene;
 
 import groovy.lang.Closure;
-import groovy.lang.GroovyObject;
 import groovy.lang.MissingPropertyException;
-import groovy.lang.Script;
-import groovy.util.GroovyScriptEngine;
 
-import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
-
 
 import com.gemserk.componentsengine.components.Component;
 import com.gemserk.componentsengine.components.ComponentManager;
@@ -34,8 +26,10 @@ public class GroovySceneBuilder {
 	Scene scene;
 
 	ComponentManager componentManager;
-	
+
 	GroovyInputMappingBuilder inputMappingBuilder;
+
+	BuilderUtils utils;
 
 	@Inject
 	public void setComponentManager(ComponentManager componentManager) {
@@ -51,10 +45,15 @@ public class GroovySceneBuilder {
 	public void setInjector(Injector injector) {
 		this.injector = injector;
 	}
-	
+
 	@Inject
 	public void setInputMappingBuilder(GroovyInputMappingBuilder inputMappingBuilder) {
 		this.inputMappingBuilder = inputMappingBuilder;
+	}
+
+	@Inject
+	public void setUtils(BuilderUtils utils) {
+		this.utils = utils;
 	}
 
 	public Scene scene(String id) {
@@ -77,18 +76,15 @@ public class GroovySceneBuilder {
 		return scene;
 	}
 
-	public void entity(String templateName, String entityName,
-			Map<String, Object> parameters) {
-		Entity entity = templateProvider.getTemplate(templateName).instantiate(
-				entityName, parameters);
+	public void entity(String templateName, String entityName, Map<String, Object> parameters) {
+		Entity entity = templateProvider.getTemplate(templateName).instantiate(entityName, parameters);
 		scene.getWorld().addEntity(entity);
 	}
 
 	public void entity(Map<String, Object> dslParameters) {
 		String entityName = (String) dslParameters.get("id");
 		String templateName = (String) dslParameters.get("template");
-		Map<String, Object> parameters = (Map<String, Object>) dslParameters
-				.get("parameters");
+		Map<String, Object> parameters = (Map<String, Object>) dslParameters.get("parameters");
 		entity(templateName, entityName, parameters);
 	}
 
@@ -114,9 +110,8 @@ public class GroovySceneBuilder {
 			if (value != null)
 				return value;
 			else
-				throw new MissingPropertyException("failed to get property "
-						+ name);
-			
+				throw new MissingPropertyException("failed to get property " + name);
+
 		}
 
 		public void propertyMissing(String name, Object value) {
@@ -126,8 +121,8 @@ public class GroovySceneBuilder {
 		public Map<String, Object> getParameters() {
 			return parameters;
 		}
-		
-		public void properties(Map forcedProperties){
+
+		public void properties(Map forcedProperties) {
 			parameters.put("properties", forcedProperties);
 		}
 	}
@@ -167,27 +162,20 @@ public class GroovySceneBuilder {
 	}
 
 	public void images(String imagePropertiesFile) {
-		PropertiesImageLoader propertiesImageLoader = new PropertiesImageLoader(
-				imagePropertiesFile);
+		PropertiesImageLoader propertiesImageLoader = new PropertiesImageLoader(imagePropertiesFile);
 		injector.injectMembers(propertiesImageLoader);
 		propertiesImageLoader.load();
 
 	}
-	
-	public void input(String id, Closure closure){
+
+	public void input(String id, Closure closure) {
 		Component inputcomponent = inputMappingBuilder.configure(id, closure);
 		component(inputcomponent);
 	}
-	
-	public void input(String id, String mapping){
+
+	public void input(String id, String mapping) {
 		Component inputcomponent = inputMappingBuilder.configure(id, mapping);
 		component(inputcomponent);
 	}
 
-	BuilderUtils utils = new BuilderUtils();
-
-//	public BuilderUtils getUtils() {
-//		return builderUtils;
-//	}
-	
 }

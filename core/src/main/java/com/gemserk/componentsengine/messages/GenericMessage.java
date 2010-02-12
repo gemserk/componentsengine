@@ -34,5 +34,9 @@ public class GenericMessage extends Message implements PropertiesHolder {
 	public Property<Object> getProperty(String key) {
 		return properties.get(key);
 	}
+	
+	public Map<String, Property<Object>> getProperties() {
+		return properties;
+	}
 
 }

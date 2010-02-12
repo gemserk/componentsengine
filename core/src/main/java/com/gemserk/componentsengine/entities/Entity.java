@@ -25,7 +25,6 @@ public class Entity implements PropertiesHolder, MessageHandler {
 
 	public Entity(String id) {
 		this.id = id;
-
 	}
 
 	public String getId() {
@@ -86,8 +85,7 @@ public class Entity implements PropertiesHolder, MessageHandler {
 
 	@Override
 	public String toString() {
-		return "Entity [id=" + id + ", tags=" + tags + ", components="
-				+ components + ", properties=" + properties + "]";
+		return "Entity [id=" + id + ", tags=" + tags + ", components=" + components + ", properties=" + properties + "]";
 	}
 
 	public Map<String, Property<Object>> getProperties() {

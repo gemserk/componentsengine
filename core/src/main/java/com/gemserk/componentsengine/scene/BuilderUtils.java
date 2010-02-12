@@ -1,5 +1,8 @@
 package com.gemserk.componentsengine.scene;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.newdawn.slick.Color;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Vector2f;
@@ -8,6 +11,13 @@ import com.gemserk.componentsengine.utils.Container;
 import com.gemserk.componentsengine.utils.Interval;
 
 public class BuilderUtils {
+	
+	Map<String, Object> custom = new HashMap<String, Object>();
+	
+	public void addCustomUtil(String key, Object value)
+	{
+		custom.put(key, value);
+	}
 
 	public Vector2f vector(float x, float y) {
 		return new Vector2f(x, y);
