@@ -26,6 +26,8 @@ public class GroovySceneProvider implements SceneProvider {
 	GroovyScriptProvider groovyScriptProvider;
 
 	Injector injector;
+	
+	@Inject BuilderUtils builderUtils;
 
 	@Inject
 	public void setInjector(Injector injector) {
@@ -75,6 +77,10 @@ public class GroovySceneProvider implements SceneProvider {
 
 		GroovySceneTemplate sceneTemplate = innerGetTemplate(sceneName, groovySceneBuilder);
 
+		
+		builderUtils.addCustomUtil("templateProvider", childInjector.getInstance(TemplateProvider.class));
+		
+		
 		return sceneTemplate.instantiate(sceneName, parameters);
 	}
 
