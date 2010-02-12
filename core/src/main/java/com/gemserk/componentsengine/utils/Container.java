@@ -22,6 +22,10 @@ public class Container {
 		return total;
 	}
 
+	public float getPercentage() {
+		return current / total;
+	}
+
 	public Container() {
 		current = total = 0;
 	}
@@ -51,7 +55,7 @@ public class Container {
 		if (current > total)
 			current = total;
 	}
-	
+
 	@Override
 	public String toString() {
 		return "[" + getCurrent() + "/" + getTotal() + "]";
