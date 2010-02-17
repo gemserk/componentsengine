@@ -2,6 +2,7 @@ package com.gemserk.componentsengine.predicates;
 
 import java.util.Set;
 
+import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Vector2f;
 
 import com.gemserk.componentsengine.entities.Entity;
@@ -45,8 +46,6 @@ public class EntityPredicates {
 	public static Predicate<Entity> isNear(final Vector2f position, final float distance){
 		return new Predicate<Entity>(){
 
-			
-
 			@Override
 			public boolean apply(Entity target) {
 				
@@ -54,6 +53,18 @@ public class EntityPredicates {
 				return position.distance(targetPos) < distance;
 				
 			}
+		};
+	}
+	
+	public static Predicate<Entity> isIn(final Rectangle rectangle){
+		return new Predicate<Entity>(){
+
+			@Override
+			public boolean apply(Entity target) {				
+				Vector2f position = positionProperty.getValue(target);
+				return rectangle.contains(position.x, position.y);				
+			}
+			
 		};
 	}
 }

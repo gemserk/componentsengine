@@ -6,8 +6,8 @@ public class RemoveEntityMessage extends Message {
 	
 	private final Entity entityToRemove;
 
-	public RemoveEntityMessage(Entity entitytoremove) {
-		this.entityToRemove = entitytoremove;
+	public RemoveEntityMessage(Entity entityToRemove) {
+		this.entityToRemove = entityToRemove;
 	}
 	
 	public Entity getEntityToRemove() {
