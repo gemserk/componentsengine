@@ -14,11 +14,8 @@ import com.gemserk.componentsengine.input.GroovyInputMappingBuilder;
 import com.gemserk.componentsengine.messages.GenericMessage;
 import com.gemserk.componentsengine.messages.Message;
 import com.gemserk.componentsengine.messages.MessageQueue;
-import com.gemserk.componentsengine.properties.ReferenceProperty;
-import com.gemserk.componentsengine.properties.SimpleProperty;
 import com.gemserk.componentsengine.resources.PropertiesImageLoader;
 import com.gemserk.componentsengine.resources.ResourceLoader;
-import com.gemserk.componentsengine.templates.GroovyEntityBuilder;
 import com.gemserk.componentsengine.templates.TemplateProvider;
 import com.gemserk.componentsengine.world.World;
 import com.google.inject.Inject;
@@ -37,6 +34,10 @@ public class GroovySceneBuilder {
 	GroovyInputMappingBuilder inputMappingBuilder;
 
 	BuilderUtils utils;
+
+	private PropertiesHolderBuilder propertiesHolderBuilder;
+
+	private ComponentsHolderBuilder componentHolderBuilder;
 
 	@Inject
 	public void setComponentManager(ComponentManager componentManager) {
@@ -67,16 +68,16 @@ public class GroovySceneBuilder {
 		if (scene == null)
 			scene = new Scene(id);
 
+		propertiesHolderBuilder = new PropertiesHolderBuilder(scene);
+		componentHolderBuilder = new ComponentsHolderBuilder(scene, propertiesHolderBuilder, componentManager, injector);
+
 		injector.injectMembers(scene);
 
 		return scene;
 	}
 
 	public Scene scene(String id, Closure closure) {
-		if (scene == null)
-			scene = new Scene(id);
-
-		injector.injectMembers(scene);
+		scene = scene(id);
 
 		closure.setDelegate(this);
 		closure.call();
@@ -134,11 +135,6 @@ public class GroovySceneBuilder {
 		}
 	}
 
-	public void component(Component component) {
-		injector.injectMembers(component);
-		scene.addComponent(component);
-	}
-
 	public void components(Class<? extends ResourceLoader> loaderClass) {
 		try {
 			ResourceLoader resourceLoader = loaderClass.newInstance();
@@ -149,12 +145,8 @@ public class GroovySceneBuilder {
 		}
 	}
 
-	public void component(String idComponent) {
-		scene.addComponent(componentManager.getComponent(idComponent));
-	}
-
 	void genericComponent(final Map<String, Object> parameters, final Closure closure) {
-		component(new Component((String) parameters.get("id")) {
+		componentHolderBuilder.component(new Component((String) parameters.get("id")) {
 
 			@Inject
 			World world;
@@ -179,28 +171,12 @@ public class GroovySceneBuilder {
 		});
 	}
 
-	void component(final String idComponent, Closure closure) {
-		Component component = componentManager.getComponent(idComponent);
-		component(component, closure);
-
+	void property(String key, Object value) {
+		propertiesHolderBuilder.property(key, value);
 	}
 
-	void component(final Component component, Closure closure) {
-		component(component);
-
-		closure.setDelegate(new Object() {
-
-			public void property(String key, Object value) {
-				GroovySceneBuilder.this.property(component.getId() + "." + key, value);
-			}
-
-			public void propertyRef(String key, String referencedPropertyName) {
-				GroovySceneBuilder.this.propertyRef(component.getId() + "." + key, referencedPropertyName);
-			}
-
-		});
-		closure.setResolveStrategy(Closure.DELEGATE_FIRST);
-		closure.call();
+	void propertyRef(String key, String referencedPropertyName) {
+		propertiesHolderBuilder.propertyRef(key, referencedPropertyName);
 	}
 
 	public void controller(InputController inputController) {
@@ -235,12 +211,20 @@ public class GroovySceneBuilder {
 		component(inputcomponent);
 	}
 
-	void property(String key, Object value) {
-		scene.addProperty(key, new SimpleProperty<Object>(value));
+	public void component(Component component, Closure closure) {
+		componentHolderBuilder.component(component, closure);
 	}
 
-	void propertyRef(String key, String referencedPropertyName) {
-		scene.addProperty(key, new ReferenceProperty<Object>(referencedPropertyName, scene));
+	public void component(Component component) {
+		componentHolderBuilder.component(component);
+	}
+
+	public void component(String idComponent, Closure closure) {
+		componentHolderBuilder.component(idComponent, closure);
+	}
+
+	public void component(String idComponent) {
+		componentHolderBuilder.component(idComponent);
 	}
 
 }

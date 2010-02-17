@@ -1,25 +1,26 @@
 package com.gemserk.componentsengine.entities;
 
 import java.util.HashSet;
-import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
 
 import com.gemserk.componentsengine.components.Component;
+import com.gemserk.componentsengine.components.ComponentsHolder;
+import com.gemserk.componentsengine.components.ComponentsHolderImpl;
 import com.gemserk.componentsengine.components.MessageHandler;
 import com.gemserk.componentsengine.messages.Message;
 import com.gemserk.componentsengine.properties.PropertiesHolder;
 import com.gemserk.componentsengine.properties.PropertiesHolderImpl;
 import com.gemserk.componentsengine.properties.Property;
 
-public class Entity implements PropertiesHolder, MessageHandler {
+public class Entity implements PropertiesHolder, MessageHandler, ComponentsHolder {
 
 	private final String id;
 
-	Map<String, Component> components = new LinkedHashMap<String, Component>();
-
 	PropertiesHolder propertiesHolder = new PropertiesHolderImpl();
+
+	ComponentsHolderImpl componentsHolder = new ComponentsHolderImpl();
 
 	Set<String> tags = new HashSet<String>();
 
@@ -32,7 +33,7 @@ public class Entity implements PropertiesHolder, MessageHandler {
 	}
 
 	public void addComponent(Component component) {
-		components.put(component.getId(), component);
+		componentsHolder.addComponent(component);
 		component.onAdd(this);
 	}
 
@@ -42,11 +43,10 @@ public class Entity implements PropertiesHolder, MessageHandler {
 		}
 	}
 
-
 	public Component findComponentByName(String name) {
-		return components.get(name);
+		return componentsHolder.getComponents().get(name);
 	}
-	
+
 	public void addProperty(String key, Property<Object> value) {
 		propertiesHolder.addProperty(key, value);
 	}
@@ -57,7 +57,7 @@ public class Entity implements PropertiesHolder, MessageHandler {
 
 	public void handleMessage(Message message) {
 		message.setEntity(this);
-		for (Entry<String, Component> entry : components.entrySet()) {
+		for (Entry<String, Component> entry : componentsHolder.getComponents().entrySet()) {
 			MessageHandler component = entry.getValue();
 			component.handleMessage(message);
 		}
@@ -86,7 +86,7 @@ public class Entity implements PropertiesHolder, MessageHandler {
 
 	@Override
 	public String toString() {
-		return "Entity [id=" + id + ", tags=" + tags + ", components=" + components + ", properties=" + propertiesHolder.getProperties() + "]";
+		return "Entity [id=" + id + ", tags=" + tags + ", components=" + componentsHolder.getComponents() + ", properties=" + propertiesHolder.getProperties() + "]";
 	}
 
 	public Map<String, Property<Object>> getProperties() {

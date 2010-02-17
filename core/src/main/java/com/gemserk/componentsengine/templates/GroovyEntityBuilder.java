@@ -15,12 +15,11 @@ import com.gemserk.componentsengine.entities.Entity;
 import com.gemserk.componentsengine.messages.GenericMessage;
 import com.gemserk.componentsengine.messages.Message;
 import com.gemserk.componentsengine.messages.MessageQueue;
-import com.gemserk.componentsengine.properties.ReferenceProperty;
-import com.gemserk.componentsengine.properties.SimpleProperty;
 import com.gemserk.componentsengine.resources.AnimationManager;
 import com.gemserk.componentsengine.resources.ImageManager;
 import com.gemserk.componentsengine.scene.BuilderUtils;
-import com.gemserk.componentsengine.scene.GroovySceneBuilder;
+import com.gemserk.componentsengine.scene.ComponentsHolderBuilder;
+import com.gemserk.componentsengine.scene.PropertiesHolderBuilder;
 import com.gemserk.componentsengine.world.World;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
@@ -37,6 +36,10 @@ public class GroovyEntityBuilder {
 	private Injector injector;
 
 	BuilderUtils utils;
+
+	PropertiesHolderBuilder propertiesHolderBuilder;
+
+	ComponentsHolderBuilder componentHolderBuilder;
 
 	@Inject
 	public void setUtils(BuilderUtils utils) {
@@ -61,42 +64,21 @@ public class GroovyEntityBuilder {
 	Entity entity(String id, Closure closure) {
 		if (entity == null)
 			entity = new Entity(id);
+
+		propertiesHolderBuilder = new PropertiesHolderBuilder(entity);
+		componentHolderBuilder = new ComponentsHolderBuilder(entity, propertiesHolderBuilder, componentManager, injector);
+
 		closure.setDelegate(this);
 		closure.call();
 		return entity;
 	}
 
-	void component(String idComponent) {
-		entity.addComponent(componentManager.getComponent(idComponent));
+	void property(String key, Object value) {
+		propertiesHolderBuilder.property(key, value);
 	}
 
-	void component(Component component) {
-		injector.injectMembers(component);
-		entity.addComponent(component);
-	}
-
-	void component(final String idComponent, Closure closure) {
-		Component component = componentManager.getComponent(idComponent);
-		component(component, closure);
-
-	}
-
-	void component(final Component component, Closure closure) {
-		component(component);
-
-		closure.setDelegate(new Object() {
-
-			public void property(String key, Object value) {
-				GroovyEntityBuilder.this.property(component.getId() + "." + key, value);
-			}
-
-			public void propertyRef(String key, String referencedPropertyName) {
-				GroovyEntityBuilder.this.propertyRef(component.getId() + "." + key, referencedPropertyName);
-			}
-
-		});
-		closure.setResolveStrategy(Closure.DELEGATE_FIRST);
-		closure.call();
+	void propertyRef(String key, String referencedPropertyName) {
+		propertiesHolderBuilder.propertyRef(key, referencedPropertyName);
 	}
 
 	void genericComponent(final Map<String, Object> parameters, final Closure closure) {
@@ -122,30 +104,20 @@ public class GroovyEntityBuilder {
 		});
 	}
 
-	void property(String key, Object value) {
-		entity.addProperty(key, new SimpleProperty<Object>(value));
+	public void component(Component component, Closure closure) {
+		componentHolderBuilder.component(component, closure);
 	}
 
-	/**
-	 * If there is an override value for a property the closure is not evaluated.
-	 * 
-	 * @param key
-	 * @param valueClosure
-	 */
-	void property(String key, Closure valueClosure) {
-		Map<String, Object> forcedProperties = (Map<String, Object>) parameters.get("properties");
-		if (forcedProperties != null) {
-			Object candidateValue = forcedProperties.get(key);
-			if (candidateValue != null) {
-				property(key, candidateValue);
-				return;
-			}
-		}
-		property(key, valueClosure.call());
+	public void component(Component component) {
+		componentHolderBuilder.component(component);
 	}
 
-	void propertyRef(String key, String referencedPropertyName) {
-		entity.addProperty(key, new ReferenceProperty<Object>(referencedPropertyName, entity));
+	public void component(String idComponent, Closure closure) {
+		componentHolderBuilder.component(idComponent, closure);
+	}
+
+	public void component(String idComponent) {
+		componentHolderBuilder.component(idComponent);
 	}
 
 	void parent(String parent) {
