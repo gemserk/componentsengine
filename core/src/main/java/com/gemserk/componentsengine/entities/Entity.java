@@ -1,6 +1,5 @@
 package com.gemserk.componentsengine.entities;
 
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -11,6 +10,7 @@ import com.gemserk.componentsengine.components.Component;
 import com.gemserk.componentsengine.components.MessageHandler;
 import com.gemserk.componentsengine.messages.Message;
 import com.gemserk.componentsengine.properties.PropertiesHolder;
+import com.gemserk.componentsengine.properties.PropertiesHolderImpl;
 import com.gemserk.componentsengine.properties.Property;
 
 public class Entity implements PropertiesHolder, MessageHandler {
@@ -19,7 +19,7 @@ public class Entity implements PropertiesHolder, MessageHandler {
 
 	Map<String, Component> components = new LinkedHashMap<String, Component>();
 
-	Map<String, Property<Object>> properties = new HashMap<String, Property<Object>>();
+	PropertiesHolder propertiesHolder = new PropertiesHolderImpl();
 
 	Set<String> tags = new HashSet<String>();
 
@@ -42,8 +42,17 @@ public class Entity implements PropertiesHolder, MessageHandler {
 		}
 	}
 
+
 	public Component findComponentByName(String name) {
 		return components.get(name);
+	}
+	
+	public void addProperty(String key, Property<Object> value) {
+		propertiesHolder.addProperty(key, value);
+	}
+
+	public Property<Object> getProperty(String key) {
+		return propertiesHolder.getProperty(key);
 	}
 
 	public void handleMessage(Message message) {
@@ -52,14 +61,6 @@ public class Entity implements PropertiesHolder, MessageHandler {
 			MessageHandler component = entry.getValue();
 			component.handleMessage(message);
 		}
-	}
-
-	public void addProperty(String key, Property<Object> value) {
-		this.properties.put(key, value);
-	}
-
-	public Property<Object> getProperty(String key) {
-		return this.properties.get(key);
 	}
 
 	public boolean hasTag(String tag) {
@@ -85,10 +86,10 @@ public class Entity implements PropertiesHolder, MessageHandler {
 
 	@Override
 	public String toString() {
-		return "Entity [id=" + id + ", tags=" + tags + ", components=" + components + ", properties=" + properties + "]";
+		return "Entity [id=" + id + ", tags=" + tags + ", components=" + components + ", properties=" + propertiesHolder.getProperties() + "]";
 	}
 
 	public Map<String, Property<Object>> getProperties() {
-		return properties;
+		return propertiesHolder.getProperties();
 	}
 }

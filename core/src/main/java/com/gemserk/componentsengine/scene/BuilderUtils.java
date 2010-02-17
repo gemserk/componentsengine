@@ -1,5 +1,7 @@
 package com.gemserk.componentsengine.scene;
 
+import groovy.lang.Closure;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -7,6 +9,7 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Vector2f;
 
+import com.gemserk.componentsengine.messages.GenericMessage;
 import com.gemserk.componentsengine.utils.Container;
 import com.gemserk.componentsengine.utils.Interval;
 
@@ -41,6 +44,12 @@ public class BuilderUtils {
 
 	public Container container(float current, float total) {
 		return new Container(current, total);
+	}
+	
+	public GenericMessage genericMessage(String id, Closure closure){
+		GenericMessage genericMessage = new GenericMessage(id);
+		closure.call(genericMessage);
+		return genericMessage;
 	}
 
 }

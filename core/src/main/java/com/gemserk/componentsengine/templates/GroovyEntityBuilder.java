@@ -20,6 +20,7 @@ import com.gemserk.componentsengine.properties.SimpleProperty;
 import com.gemserk.componentsengine.resources.AnimationManager;
 import com.gemserk.componentsengine.resources.ImageManager;
 import com.gemserk.componentsengine.scene.BuilderUtils;
+import com.gemserk.componentsengine.scene.GroovySceneBuilder;
 import com.gemserk.componentsengine.world.World;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
@@ -69,31 +70,33 @@ public class GroovyEntityBuilder {
 		entity.addComponent(componentManager.getComponent(idComponent));
 	}
 
-	void component(final String idComponent, Closure closure) {
-		component(idComponent);
-		closure.setDelegate(new Object() {
-
-			public void property(String key, Object value) {
-				GroovyEntityBuilder.this.property(idComponent + "." + key, value);
-			}
-
-			public void propertyRef(String key, String referencedPropertyName) {
-				GroovyEntityBuilder.this.propertyRef(idComponent + "." + key, referencedPropertyName);
-			}
-
-		});
-		closure.setResolveStrategy(Closure.DELEGATE_FIRST);
-		closure.call();
-	}
-
 	void component(Component component) {
 		injector.injectMembers(component);
 		entity.addComponent(component);
 	}
 
-	void component(Component component, Closure closure) {
+	void component(final String idComponent, Closure closure) {
+		Component component = componentManager.getComponent(idComponent);
+		component(component, closure);
+
+	}
+
+	void component(final Component component, Closure closure) {
 		component(component);
-		component(component.getId(), closure);
+
+		closure.setDelegate(new Object() {
+
+			public void property(String key, Object value) {
+				GroovyEntityBuilder.this.property(component.getId() + "." + key, value);
+			}
+
+			public void propertyRef(String key, String referencedPropertyName) {
+				GroovyEntityBuilder.this.propertyRef(component.getId() + "." + key, referencedPropertyName);
+			}
+
+		});
+		closure.setResolveStrategy(Closure.DELEGATE_FIRST);
+		closure.call();
 	}
 
 	void genericComponent(final Map<String, Object> parameters, final Closure closure) {

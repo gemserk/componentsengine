@@ -11,9 +11,16 @@ import com.gemserk.componentsengine.components.ComponentManager;
 import com.gemserk.componentsengine.controllers.InputController;
 import com.gemserk.componentsengine.entities.Entity;
 import com.gemserk.componentsengine.input.GroovyInputMappingBuilder;
+import com.gemserk.componentsengine.messages.GenericMessage;
+import com.gemserk.componentsengine.messages.Message;
+import com.gemserk.componentsengine.messages.MessageQueue;
+import com.gemserk.componentsengine.properties.ReferenceProperty;
+import com.gemserk.componentsengine.properties.SimpleProperty;
 import com.gemserk.componentsengine.resources.PropertiesImageLoader;
 import com.gemserk.componentsengine.resources.ResourceLoader;
+import com.gemserk.componentsengine.templates.GroovyEntityBuilder;
 import com.gemserk.componentsengine.templates.TemplateProvider;
+import com.gemserk.componentsengine.world.World;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 
@@ -146,6 +153,56 @@ public class GroovySceneBuilder {
 		scene.addComponent(componentManager.getComponent(idComponent));
 	}
 
+	void genericComponent(final Map<String, Object> parameters, final Closure closure) {
+		component(new Component((String) parameters.get("id")) {
+
+			@Inject
+			World world;
+
+			@Inject
+			MessageQueue messageQueue;
+
+			Scene scene = GroovySceneBuilder.this.scene;
+
+			@Override
+			public void handleMessage(Message message) {
+				if (message instanceof GenericMessage) {
+					GenericMessage genericMessage = (GenericMessage) message;
+					if (!parameters.get("messageId").equals(genericMessage.getId()))
+						return;
+
+					closure.setDelegate(this);
+					closure.call(genericMessage);
+				}
+			}
+
+		});
+	}
+
+	void component(final String idComponent, Closure closure) {
+		Component component = componentManager.getComponent(idComponent);
+		component(component, closure);
+
+	}
+
+	void component(final Component component, Closure closure) {
+		component(component);
+
+		closure.setDelegate(new Object() {
+
+			public void property(String key, Object value) {
+				GroovySceneBuilder.this.property(component.getId() + "." + key, value);
+			}
+
+			public void propertyRef(String key, String referencedPropertyName) {
+				GroovySceneBuilder.this.propertyRef(component.getId() + "." + key, referencedPropertyName);
+			}
+
+		});
+		closure.setResolveStrategy(Closure.DELEGATE_FIRST);
+		closure.call();
+	}
+
 	public void controller(InputController inputController) {
 		injector.injectMembers(inputController);
 		inputController.register();
@@ -176,6 +233,14 @@ public class GroovySceneBuilder {
 	public void input(String id, String mapping) {
 		Component inputcomponent = inputMappingBuilder.configure(id, mapping);
 		component(inputcomponent);
+	}
+
+	void property(String key, Object value) {
+		scene.addProperty(key, new SimpleProperty<Object>(value));
+	}
+
+	void propertyRef(String key, String referencedPropertyName) {
+		scene.addProperty(key, new ReferenceProperty<Object>(referencedPropertyName, scene));
 	}
 
 }

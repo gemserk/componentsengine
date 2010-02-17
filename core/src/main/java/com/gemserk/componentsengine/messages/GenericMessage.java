@@ -4,13 +4,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.gemserk.componentsengine.properties.PropertiesHolder;
+import com.gemserk.componentsengine.properties.PropertiesHolderImpl;
 import com.gemserk.componentsengine.properties.Property;
 
 public class GenericMessage extends Message implements PropertiesHolder {
 
 	String id;
 
-	Map<String, Property<Object>> properties;
+	PropertiesHolder propertiesHolder = new PropertiesHolderImpl();
 
 	public String getId() {
 		return id;
@@ -22,21 +23,20 @@ public class GenericMessage extends Message implements PropertiesHolder {
 
 	public GenericMessage(String id, Map<String, Property<Object>> properties) {
 		this.id = id;
-		this.properties = properties;
+		this.propertiesHolder = new PropertiesHolderImpl(properties);
 	}
 
-	@Override
 	public void addProperty(String key, Property<Object> value) {
-		properties.put(key, value);
+		propertiesHolder.addProperty(key, value);
 	}
 
-	@Override
-	public Property<Object> getProperty(String key) {
-		return properties.get(key);
-	}
-	
 	public Map<String, Property<Object>> getProperties() {
-		return properties;
+		return propertiesHolder.getProperties();
 	}
+
+	public Property<Object> getProperty(String key) {
+		return propertiesHolder.getProperty(key);
+	}
+
 
 }
