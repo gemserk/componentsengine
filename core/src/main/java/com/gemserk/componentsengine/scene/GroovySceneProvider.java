@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.gemserk.componentsengine.components.ComponentManager;
+import com.gemserk.componentsengine.game.Game;
 import com.gemserk.componentsengine.resources.AnimationManager;
 import com.gemserk.componentsengine.resources.AnimationManagerImpl;
 import com.gemserk.componentsengine.resources.ImageManager;
@@ -79,7 +80,7 @@ public class GroovySceneProvider implements SceneProvider {
 
 		
 		builderUtils.addCustomUtil("templateProvider", childInjector.getInstance(TemplateProvider.class));
-		
+		builderUtils.addCustomUtil("game", childInjector.getInstance(Game.class));		
 		
 		return sceneTemplate.instantiate(sceneName, parameters);
 	}
