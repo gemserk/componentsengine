@@ -6,45 +6,31 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import org.newdawn.slick.Animation;
-import org.newdawn.slick.Image;
-
 import com.gemserk.componentsengine.components.Component;
-import com.gemserk.componentsengine.components.ComponentManager;
 import com.gemserk.componentsengine.entities.Entity;
+import com.gemserk.componentsengine.entities.Root;
+import com.gemserk.componentsengine.input.GroovyInputMappingBuilder;
 import com.gemserk.componentsengine.messages.GenericMessage;
 import com.gemserk.componentsengine.messages.Message;
 import com.gemserk.componentsengine.messages.MessageQueue;
-import com.gemserk.componentsengine.resources.AnimationManager;
-import com.gemserk.componentsengine.resources.ImageManager;
 import com.gemserk.componentsengine.scene.BuilderUtils;
 import com.gemserk.componentsengine.scene.ComponentsHolderBuilder;
+import com.gemserk.componentsengine.scene.MapBuilder;
 import com.gemserk.componentsengine.scene.PropertiesHolderBuilder;
-import com.gemserk.componentsengine.world.World;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 
 public class GroovyEntityBuilder {
 
-	Entity entity;
-	ComponentManager componentManager;
-	String defaultEntityName;
-	Map<String, Object> parameters;
-	ImageManager imageManager;
-	AnimationManager animationManager;
-	TemplateProvider templateProvider;
-	private Injector injector;
-
+	protected TemplateProvider templateProvider;
+	protected Entity entity;
+	protected Injector injector;
 	BuilderUtils utils;
-
-	PropertiesHolderBuilder propertiesHolderBuilder;
-
-	ComponentsHolderBuilder componentHolderBuilder;
-
-	@Inject
-	public void setUtils(BuilderUtils utils) {
-		this.utils = utils;
-	}
+	protected PropertiesHolderBuilder propertiesHolderBuilder;
+	protected ComponentsHolderBuilder componentHolderBuilder;
+	protected String defaultEntityName;
+	protected Map<String, Object> parameters;
+	GroovyInputMappingBuilder inputMappingBuilder;
 
 	public GroovyEntityBuilder(String defaultEntityName, Map<String, Object> parameters) {
 		this.defaultEntityName = defaultEntityName;
@@ -57,35 +43,17 @@ public class GroovyEntityBuilder {
 		this.defaultEntityName = entity.getId();
 	}
 
-	Entity entity(Closure closure) {
-		return this.entity(defaultEntityName, closure);
+	@Inject
+	public void setUtils(BuilderUtils utils) {
+		this.utils = utils;
 	}
 
-	Entity entity(String id, Closure closure) {
-		if (entity == null)
-			entity = new Entity(id);
-
-		propertiesHolderBuilder = new PropertiesHolderBuilder(entity);
-		componentHolderBuilder = new ComponentsHolderBuilder(entity, propertiesHolderBuilder, componentManager, injector);
-
-		closure.setDelegate(this);
-		closure.call();
-		return entity;
-	}
-
-	void property(String key, Object value) {
-		propertiesHolderBuilder.property(key, value);
-	}
-
-	void propertyRef(String key, String referencedPropertyName) {
-		propertiesHolderBuilder.propertyRef(key, referencedPropertyName);
-	}
-
-	void genericComponent(final Map<String, Object> parameters, final Closure closure) {
+	public void genericComponent(final Map<String, Object> parameters, final Closure closure) {
 		component(new Component((String) parameters.get("id")) {
 
 			@Inject
-			World world;
+			@Root
+			Entity rootEntity;
 
 			@Inject
 			MessageQueue messageQueue;
@@ -104,25 +72,20 @@ public class GroovyEntityBuilder {
 		});
 	}
 
+	public void property(String key, Object value) {
+		propertiesHolderBuilder.property(key, value);
+	}
+
+	public void propertyRef(String key, String referencedPropertyName) {
+		propertiesHolderBuilder.propertyRef(key, referencedPropertyName);
+	}
+
 	public void component(Component component, Closure closure) {
 		componentHolderBuilder.component(component, closure);
 	}
 
 	public void component(Component component) {
 		componentHolderBuilder.component(component);
-	}
-
-	public void component(String idComponent, Closure closure) {
-		componentHolderBuilder.component(idComponent, closure);
-	}
-
-	public void component(String idComponent) {
-		componentHolderBuilder.component(idComponent);
-	}
-
-	void parent(String parent) {
-		EntityTemplate parentTemplate = this.templateProvider.getTemplate(parent);
-		parentTemplate.apply(entity, parameters);
 	}
 
 	public Entity getEntity() {
@@ -137,29 +100,6 @@ public class GroovyEntityBuilder {
 		entity.getTags().addAll(tags);
 	}
 
-	public Image image(String key) {
-		return this.imageManager.getImage(key);
-	}
-
-	public Animation animation(String key) {
-		return this.animationManager.getAnimation(key);
-	}
-
-	@Inject
-	public void setAnimationManager(AnimationManager animationManager) {
-		this.animationManager = animationManager;
-	}
-
-	@Inject
-	public void setComponentManager(ComponentManager componentManager) {
-		this.componentManager = componentManager;
-	}
-
-	@Inject
-	public void setImageManager(ImageManager imageManager) {
-		this.imageManager = imageManager;
-	}
-
 	@Inject
 	public void setInjector(Injector injector) {
 		this.injector = injector;
@@ -168,6 +108,72 @@ public class GroovyEntityBuilder {
 	@Inject
 	public void setTemplateProvider(TemplateProvider templateProvider) {
 		this.templateProvider = templateProvider;
+	}
+
+	public BuilderUtils getUtils() {
+		return utils;
+	}
+
+	public void child(String templateName, String entityName, Map<String, Object> parameters) {
+		Entity child = templateProvider.getTemplate(templateName).instantiate(entityName, parameters);
+		entity.addEntity(child);
+	}
+
+	public void child(Map<String, Object> dslParameters) {
+		String entityName = (String) dslParameters.get("id");
+		String templateName = (String) dslParameters.get("template");
+		Map<String, Object> parameters = (Map<String, Object>) dslParameters.get("parameters");
+		child(templateName, entityName, parameters);
+	}
+
+	public void child(Map<String, Object> dslParameters, Closure closure) {
+		String entityName = (String) dslParameters.get("id");
+		String templateName = (String) dslParameters.get("template");
+
+		MapBuilder mapBuilder = new MapBuilder();
+
+		closure.setResolveStrategy(Closure.DELEGATE_FIRST);
+		closure.setDelegate(mapBuilder);
+
+		closure.call();
+
+		child(templateName, entityName, mapBuilder.getParameters());
+	}
+
+	public Entity entity(Closure closure) {
+		return this.entity(defaultEntityName, closure);
+	}
+
+	public Entity entity(String id, Closure closure) {
+		if (entity == null)
+			entity = new Entity(id);
+
+		propertiesHolderBuilder = new PropertiesHolderBuilder(entity);
+		componentHolderBuilder = new ComponentsHolderBuilder(entity, propertiesHolderBuilder, injector);
+
+		closure.setDelegate(this);
+		closure.call();
+		return entity;
+	}
+
+	public void parent(String parent) {
+		EntityTemplate parentTemplate = this.templateProvider.getTemplate(parent);
+		parentTemplate.apply(entity, parameters);
+	}
+
+	@Inject
+	public void setInputMappingBuilder(GroovyInputMappingBuilder inputMappingBuilder) {
+		this.inputMappingBuilder = inputMappingBuilder;
+	}
+
+	public void input(String id, Closure closure) {
+		Component inputcomponent = inputMappingBuilder.configure(id, closure);
+		component(inputcomponent);
+	}
+
+	public void input(String id, String mapping) {
+		Component inputcomponent = inputMappingBuilder.configure(id, mapping);
+		component(inputcomponent);
 	}
 
 }

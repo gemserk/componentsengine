@@ -5,17 +5,26 @@ import groovy.lang.Closure;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.newdawn.slick.Animation;
 import org.newdawn.slick.Color;
+import org.newdawn.slick.Image;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Vector2f;
 
 import com.gemserk.componentsengine.messages.GenericMessage;
+import com.gemserk.componentsengine.resources.AnimationManager;
+import com.gemserk.componentsengine.resources.ImageManager;
 import com.gemserk.componentsengine.utils.Container;
 import com.gemserk.componentsengine.utils.Interval;
+import com.google.inject.Inject;
 
 public class BuilderUtils {
 	
 	Map<String, Object> custom = new HashMap<String, Object>();
+	
+	@Inject ImageManager imageManager;
+	@Inject AnimationManager animationManager;
+	
 	
 	public void addCustomUtil(String key, Object value)
 	{
@@ -51,5 +60,20 @@ public class BuilderUtils {
 		closure.call(genericMessage);
 		return genericMessage;
 	}
+	
+	public ResourceUtils getResources(){
+		return new ResourceUtils();
+	}
+	
+	public class ResourceUtils {
+		public Image image(String key) {
+			return imageManager.getImage(key);
+		}
+
+		public Animation animation(String key) {
+			return animationManager.getAnimation(key);
+		}
+	}
+	
 
 }

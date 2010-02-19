@@ -3,7 +3,6 @@ package com.gemserk.componentsengine.scene;
 import groovy.lang.Closure;
 
 import com.gemserk.componentsengine.components.Component;
-import com.gemserk.componentsengine.components.ComponentManager;
 import com.gemserk.componentsengine.components.ComponentsHolder;
 import com.google.inject.Injector;
 
@@ -13,31 +12,22 @@ public class ComponentsHolderBuilder {
 
 	private PropertiesHolderBuilder propertiesHolderBuilder;
 
-	private ComponentManager componentManager;
 
 	private Injector injector;
 
-	public ComponentsHolderBuilder(ComponentsHolder componentHolder, PropertiesHolderBuilder propertiesHolderBuilder, ComponentManager componentManager, Injector injector) {
+	public ComponentsHolderBuilder(ComponentsHolder componentHolder, PropertiesHolderBuilder propertiesHolderBuilder, Injector injector) {
 		super();
 		this.componentsHolder = componentHolder;
 		this.propertiesHolderBuilder = propertiesHolderBuilder;
-		this.componentManager = componentManager;
 		this.injector = injector;
 	}
 
-	public void component(String idComponent) {
-		componentsHolder.addComponent(componentManager.getComponent(idComponent));
-	}
 
 	public void component(Component component) {
 		injector.injectMembers(component);
 		componentsHolder.addComponent(component);
 	}
 
-	public void component(final String idComponent, Closure closure) {
-		Component component = componentManager.getComponent(idComponent);
-		component(component, closure);
-	}
 
 	public void component(final Component component, Closure closure) {
 		component(component);

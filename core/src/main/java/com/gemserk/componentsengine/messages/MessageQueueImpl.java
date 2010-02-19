@@ -10,7 +10,9 @@ import com.gemserk.componentsengine.components.MessageHandler;
 import com.google.inject.Inject;
 
 public class MessageQueueImpl implements MessageQueue {
+	
 	Queue<Message> messages = new LinkedList<Message>();
+	
 	MessageHandler messageHandler;
 	
 	@Inject 
