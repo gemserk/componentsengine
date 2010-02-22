@@ -1,4 +1,4 @@
-package com.gemserk.componentsengine.templates;
+package com.gemserk.componentsengine.builders;
 
 import groovy.lang.Closure;
 
@@ -13,10 +13,8 @@ import com.gemserk.componentsengine.input.GroovyInputMappingBuilder;
 import com.gemserk.componentsengine.messages.GenericMessage;
 import com.gemserk.componentsengine.messages.Message;
 import com.gemserk.componentsengine.messages.MessageQueue;
-import com.gemserk.componentsengine.scene.BuilderUtils;
-import com.gemserk.componentsengine.scene.ComponentsHolderBuilder;
-import com.gemserk.componentsengine.scene.MapBuilder;
-import com.gemserk.componentsengine.scene.PropertiesHolderBuilder;
+import com.gemserk.componentsengine.templates.EntityTemplate;
+import com.gemserk.componentsengine.templates.TemplateProvider;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 
@@ -78,6 +76,10 @@ public class GroovyEntityBuilder {
 
 	public void propertyRef(String key, String referencedPropertyName) {
 		propertiesHolderBuilder.propertyRef(key, referencedPropertyName);
+	}
+	
+	public void property(String key, Closure value) {
+		propertiesHolderBuilder.property(key, value);
 	}
 
 	public void component(Component component, Closure closure) {

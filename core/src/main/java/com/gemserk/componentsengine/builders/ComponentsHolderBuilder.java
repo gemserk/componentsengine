@@ -1,4 +1,4 @@
-package com.gemserk.componentsengine.scene;
+package com.gemserk.componentsengine.builders;
 
 import groovy.lang.Closure;
 
@@ -43,6 +43,12 @@ public class ComponentsHolderBuilder {
 			public void propertyRef(String key, String referencedPropertyName) {
 				propertiesHolderBuilder.propertyRef(component.getId() + "." + key, referencedPropertyName);
 			}
+			
+			@SuppressWarnings("unused")
+			public void property(String key, Closure closure) {
+				propertiesHolderBuilder.property(component.getId() + "." + key, closure);
+			}
+
 
 		});
 		closure.setResolveStrategy(Closure.DELEGATE_FIRST);

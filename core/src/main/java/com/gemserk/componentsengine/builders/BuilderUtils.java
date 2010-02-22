@@ -1,4 +1,4 @@
-package com.gemserk.componentsengine.scene;
+package com.gemserk.componentsengine.builders;
 
 import groovy.lang.Closure;
 

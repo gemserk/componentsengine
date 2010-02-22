@@ -1,5 +1,8 @@
-package com.gemserk.componentsengine.scene;
+package com.gemserk.componentsengine.builders;
 
+import groovy.lang.Closure;
+
+import com.gemserk.componentsengine.properties.ClosureProperty;
 import com.gemserk.componentsengine.properties.PropertiesHolder;
 import com.gemserk.componentsengine.properties.ReferenceProperty;
 import com.gemserk.componentsengine.properties.SimpleProperty;
@@ -18,6 +21,10 @@ public class PropertiesHolderBuilder {
 
 	public void propertyRef(String key, String referencedPropertyName) {
 		propertiesHolder.addProperty(key, new ReferenceProperty<Object>(referencedPropertyName, propertiesHolder));
+	}
+	
+	public void property(String key, Closure closure){
+		propertiesHolder.addProperty(key,new ClosureProperty(propertiesHolder,closure));
 	}
 
 }

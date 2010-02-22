@@ -6,6 +6,7 @@ import groovy.lang.Script;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.gemserk.componentsengine.builders.GroovyEntityBuilder;
 import com.gemserk.componentsengine.entities.Entity;
 import com.google.inject.Injector;
 
