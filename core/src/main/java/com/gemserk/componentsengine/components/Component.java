@@ -5,6 +5,7 @@ import com.gemserk.componentsengine.messages.Message;
 
 public abstract class Component implements MessageHandler {
 	protected String id;
+	protected Entity entity;
 
 	public Component(String id) {
 		this.id = id;
@@ -15,6 +16,7 @@ public abstract class Component implements MessageHandler {
 	}
 
 	public void onAdd(Entity entity){
+		this.entity = entity;
 	}
 	
 	public void handleMessage(Message message) {

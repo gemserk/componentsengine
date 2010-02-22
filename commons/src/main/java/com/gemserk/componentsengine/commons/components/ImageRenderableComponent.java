@@ -6,7 +6,6 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.geom.Vector2f;
 
 import com.gemserk.componentsengine.components.ReflectionComponent;
-import com.gemserk.componentsengine.entities.Entity;
 import com.gemserk.componentsengine.messages.SlickRenderMessage;
 import com.gemserk.componentsengine.properties.Properties;
 import com.gemserk.componentsengine.properties.PropertyLocator;
@@ -28,7 +27,6 @@ public class ImageRenderableComponent extends ReflectionComponent {
 
 	public void handleMessage(SlickRenderMessage message) {
 		Graphics g = message.getGraphics();
-		Entity entity = message.getEntity();
 
 		Vector2f posEntity = positionProperty.getValue(entity);
 		Color renderColor = renderColorProperty.getValue(entity, Color.white);

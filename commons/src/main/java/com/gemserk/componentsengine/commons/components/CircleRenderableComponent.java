@@ -27,7 +27,8 @@ public class CircleRenderableComponent extends ReflectionComponent {
 		fillColorProperty = Properties.property(id, "fillColor");
 	}
 
-	private void render(Entity entity, Graphics g) {
+	public void handleMessage(SlickRenderMessage message) {
+		Graphics g = message.getGraphics();
 		Vector2f position = positionProperty.getValue(entity);
 		float radius = radiusProperty.getValue(entity);
 
@@ -52,10 +53,6 @@ public class CircleRenderableComponent extends ReflectionComponent {
 			}
 		}
 		g.popTransform();
-	}
-
-	public void handleMessage(SlickRenderMessage message) {
-		this.render(message.getEntity(), message.getGraphics());
 	}
 
 }

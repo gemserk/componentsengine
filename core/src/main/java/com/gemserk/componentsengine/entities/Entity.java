@@ -68,7 +68,6 @@ public class Entity implements PropertiesHolder, MessageHandler, ComponentsHolde
 	}
 
 	public void handleMessage(Message message) {
-		message.setEntity(this);
 
 		if (handleChildrenModificationMessage(message))
 			return;

@@ -2,14 +2,13 @@ package com.gemserk.componentsengine.commons.components;
 
 import org.newdawn.slick.geom.Vector2f;
 
-import com.gemserk.componentsengine.components.Component;
+import com.gemserk.componentsengine.components.ReflectionComponent;
 import com.gemserk.componentsengine.entities.Entity;
-import com.gemserk.componentsengine.messages.Message;
 import com.gemserk.componentsengine.messages.UpdateMessage;
 import com.gemserk.componentsengine.properties.Properties;
 import com.gemserk.componentsengine.properties.PropertyLocator;
 
-public class SuperMovementComponent extends Component {
+public class SuperMovementComponent extends ReflectionComponent {
 
 
 
@@ -32,7 +31,8 @@ public class SuperMovementComponent extends Component {
 		frictionFactorProperty = Properties.property(id, "frictionFactor");
 	}
 
-	private void update(final Entity entity, int delta) {
+	public void handleMessage(UpdateMessage message) {
+		int delta = message.getDelta();
 		Vector2f position = this.positionProperty.getValue(entity);
 		Vector2f velocity = this.velocityProperty.getValue(entity);
 		Vector2f force = this.forceProperty.getValue(entity);
@@ -66,17 +66,11 @@ public class SuperMovementComponent extends Component {
 		return newVelocity.copy();
 	}
 
-	@Override
-	public void handleMessage(Message message) {
-		if (message instanceof UpdateMessage) {
-			UpdateMessage update = (UpdateMessage) message;
-			this.update(message.getEntity(), update.getDelta());
-		}
-	}
-
+	
 	@Override
 	public void onAdd(Entity entity) {
-		velocityProperty.setValue(entity, new Vector2f());
+		super.onAdd(entity);
+		velocityProperty.setValue(entity,velocityProperty.getValue(entity,new Vector2f()));
 		forceProperty.setValue(entity, new Vector2f());
 	}
 

@@ -93,7 +93,6 @@ public class EntityTest {
 
 		context.checking(new Expectations() {
 			{
-				oneOf(message).setEntity(entity);
 				oneOf(component1).handleMessage(message);
 				oneOf(component2).handleMessage(message);
 			}
