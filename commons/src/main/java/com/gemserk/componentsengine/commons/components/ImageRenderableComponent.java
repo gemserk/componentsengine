@@ -12,17 +12,17 @@ import com.gemserk.componentsengine.properties.PropertyLocator;
 
 public class ImageRenderableComponent extends ReflectionComponent {
 
-	PropertyLocator<Image> imageLocator = Properties.property("image");;
-
-	PropertyLocator<Vector2f> positionProperty = Properties.property("position");
-
-	PropertyLocator<Vector2f> directionProperty = Properties.property("direction");
-
-	PropertyLocator<Color> renderColorProperty = Properties.property("color");
+	private PropertyLocator<Image> imageLocator;
+	private PropertyLocator<Vector2f> positionProperty;
+	private PropertyLocator<Vector2f> directionProperty;
+	private PropertyLocator<Color> renderColorProperty;
 
 	public ImageRenderableComponent(String id) {
 		super(id);
-
+		imageLocator = Properties.property(id, "image");;
+		positionProperty = Properties.property(id, "position");
+		directionProperty = Properties.property(id, "direction");
+		renderColorProperty = Properties.property(id, "color");
 	}
 
 	public void handleMessage(SlickRenderMessage message) {
