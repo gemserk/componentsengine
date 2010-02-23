@@ -34,6 +34,8 @@ public class Entity implements PropertiesHolder, MessageHandler, ComponentsHolde
 
 	Set<String> tags = new HashSet<String>();
 
+	protected Entity parent = null;
+	
 	protected Map<String, Entity> children = new LinkedHashMap<String, Entity>(100);
 
 	public Entity(String id) {
@@ -137,10 +139,12 @@ public class Entity implements PropertiesHolder, MessageHandler, ComponentsHolde
 
 	public void addEntity(Entity entity) {
 		this.children.put(entity.getId(), entity);
+		entity.parent = this;
 	}
 
 	public void removeEntity(Entity entity) {
 		this.children.remove(entity.getId());
+		entity.parent = null;
 	}
 
 	public Collection<Entity> getEntities(Predicate<? super Entity> predicate) {

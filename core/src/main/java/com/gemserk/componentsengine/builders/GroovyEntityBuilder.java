@@ -30,6 +30,27 @@ public class GroovyEntityBuilder {
 	protected Map<String, Object> parameters;
 	GroovyInputMappingBuilder inputMappingBuilder;
 
+	@Inject
+	public void setUtils(BuilderUtils utils) {
+		this.utils = utils;
+	}
+	
+	@Inject
+	public void setInjector(Injector injector) {
+		this.injector = injector;
+	}
+
+	@Inject
+	public void setTemplateProvider(TemplateProvider templateProvider) {
+		this.templateProvider = templateProvider;
+	}
+	@Inject
+	public void setInputMappingBuilder(GroovyInputMappingBuilder inputMappingBuilder) {
+		this.inputMappingBuilder = inputMappingBuilder;
+	}
+
+	
+	
 	public GroovyEntityBuilder(String defaultEntityName, Map<String, Object> parameters) {
 		this.defaultEntityName = defaultEntityName;
 		this.parameters = parameters;
@@ -41,10 +62,6 @@ public class GroovyEntityBuilder {
 		this.defaultEntityName = entity.getId();
 	}
 
-	@Inject
-	public void setUtils(BuilderUtils utils) {
-		this.utils = utils;
-	}
 
 	public void genericComponent(final Map<String, Object> parameters, final Closure closure) {
 		component(new Component((String) parameters.get("id")) {
@@ -102,15 +119,7 @@ public class GroovyEntityBuilder {
 		entity.getTags().addAll(tags);
 	}
 
-	@Inject
-	public void setInjector(Injector injector) {
-		this.injector = injector;
-	}
 
-	@Inject
-	public void setTemplateProvider(TemplateProvider templateProvider) {
-		this.templateProvider = templateProvider;
-	}
 
 	public BuilderUtils getUtils() {
 		return utils;
@@ -163,11 +172,6 @@ public class GroovyEntityBuilder {
 		parentTemplate.apply(entity, parameters);
 	}
 
-	@Inject
-	public void setInputMappingBuilder(GroovyInputMappingBuilder inputMappingBuilder) {
-		this.inputMappingBuilder = inputMappingBuilder;
-	}
-
 	public void input(String id, Closure closure) {
 		Component inputcomponent = inputMappingBuilder.configure(id, closure);
 		component(inputcomponent);
@@ -177,5 +181,7 @@ public class GroovyEntityBuilder {
 		Component inputcomponent = inputMappingBuilder.configure(id, mapping);
 		component(inputcomponent);
 	}
+	
+	
 
 }
