@@ -12,7 +12,7 @@ public class Properties {
 
 	@SuppressWarnings("unchecked")
 	public static <T> T getValue(PropertiesHolder propertiesHolder, String key) {
-		return (T) Properties.<T>property(key).getValue(propertiesHolder);
+		return (T) Properties.<Object>property(key).getValue(propertiesHolder);//HACK TO FIX BUG: http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6302954
 	}
 
 	public static void setValue(PropertiesHolder propertiesHolder, String key, Object value) {
