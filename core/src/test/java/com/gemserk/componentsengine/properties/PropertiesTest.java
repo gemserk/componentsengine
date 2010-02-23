@@ -17,7 +17,7 @@ public class PropertiesTest {
 		float value = 123f;
 		String key = "test";
 		entity.addProperty(key, new SimpleProperty<Object>(value));
-		Float valueTest = Properties.getValue(entity, key);
+		float valueTest = Properties.getValue(entity, key);
 		assertThat(value, equalTo(valueTest));
 		
 	}
