@@ -3,10 +3,10 @@
  */
 package com.gemserk.componentsengine.builders;
 
-import groovy.lang.MissingPropertyException;
-
 import java.util.HashMap;
 import java.util.Map;
+
+import org.codehaus.groovy.runtime.metaclass.MissingPropertyExceptionNoStack;
 
 public class MapBuilder {
 	Map<String, Object> parameters = new HashMap<String, Object>();
@@ -16,7 +16,7 @@ public class MapBuilder {
 		if (value != null)
 			return value;
 		else
-			throw new MissingPropertyException("failed to get property " + name);
+			throw new MissingPropertyExceptionNoStack(name,this.getClass());
 
 	}
 
