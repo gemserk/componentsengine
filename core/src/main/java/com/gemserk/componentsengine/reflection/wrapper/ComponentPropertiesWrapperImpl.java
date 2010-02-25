@@ -53,6 +53,9 @@ public class ComponentPropertiesWrapperImpl implements ComponentPropertiesWrappe
 		FastClass componentFastClass = FastClass.create(componentClass);
 
 		try {
+			
+			// TODO: separate read access from write access, maybe we can have a setter but not a getter and vice versa.
+			
 			FastMethod setterFastMethod = componentFastClass.getMethod(getSetterName(fieldName), new Class[] { field.getType() });
 			FastMethod getterFastMethod = componentFastClass.getMethod(getGetterName(fieldName), new Class[] {});
 
