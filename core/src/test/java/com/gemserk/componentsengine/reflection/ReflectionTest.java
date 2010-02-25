@@ -64,47 +64,47 @@ public class ReflectionTest {
 		Entity entity = new Entity("entity");
 		entity.addProperty("another.intValue", new SimpleProperty<Object>(100));
 
-		ComponentPropertiesWrapper componentPropertyWrapperImpl = new ComponentPropertiesWrapperImpl(component);
-		componentPropertyWrapperImpl.importFrom(entity);
+		ComponentPropertiesWrapper componentPropertyWrapperImpl = new ComponentPropertiesWrapperImpl(AnotherComponent.class);
+		componentPropertyWrapperImpl.importFrom(component, entity);
 		assertEquals(Integer.valueOf(100), component.intValue);
 
 		component.intValue = 200;
-		componentPropertyWrapperImpl.exportTo(entity);
+		componentPropertyWrapperImpl.exportTo(component, entity);
 		assertEquals(200, entity.getProperty("another.intValue").get());
 	}
 
 	@Test(expected = RequiredPropertyNotFoundException.class)
 	public void shouldFailIfRequiredPropertyNotFound() {
-		MyComponent myComponent = new MyComponent("myComp");
+		MyComponent component = new MyComponent("myComp");
 
 		Entity entity = new Entity("entity");
 		entity.addProperty("name", new SimpleProperty<Object>("myName"));
 		entity.addProperty("myComp.name", new ReferenceProperty<Object>("name", entity));
 
-		ComponentPropertiesWrapper componentPropertyWrapperImpl = new ComponentPropertiesWrapperImpl(myComponent);
-		componentPropertyWrapperImpl.importFrom(entity);
+		ComponentPropertiesWrapper componentPropertyWrapperImpl = new ComponentPropertiesWrapperImpl(MyComponent.class);
+		componentPropertyWrapperImpl.importFrom(component, entity);
 
-		assertEquals("myName", myComponent.name);
+		assertEquals("myName", component.name);
 	}
 
 	@Test(expected = RuntimeException.class)
 	public void shouldFailIfPropertyTypeNotMatch() {
-		MyComponent myComponent = new MyComponent("myComp");
+		MyComponent component = new MyComponent("myComp");
 
 		Entity entity = new Entity("entity");
 		entity.addProperty("name", new SimpleProperty<Object>("myName"));
 		entity.addProperty("myComp.name", new ReferenceProperty<Object>("name", entity));
 		entity.addProperty("myComp.delta", new ReferenceProperty<Object>("name", entity));
 
-		ComponentPropertiesWrapper componentPropertyWrapperImpl = new ComponentPropertiesWrapperImpl(myComponent);
-		componentPropertyWrapperImpl.importFrom(entity);
+		ComponentPropertiesWrapper componentPropertyWrapperImpl = new ComponentPropertiesWrapperImpl(MyComponent.class);
+		componentPropertyWrapperImpl.importFrom(component, entity);
 
-		assertEquals("myName", myComponent.name);
+		assertEquals("myName", component.name);
 	}
 
 	@Test
 	public void shouldSetComponentFieldsFromEntityProperties() {
-		MyComponent myComponent = new MyComponent("myComp");
+		MyComponent component = new MyComponent("myComp");
 
 		Entity entity = new Entity("entity");
 		entity.addProperty("name", new SimpleProperty<Object>("myName"));
@@ -112,17 +112,17 @@ public class ReflectionTest {
 		entity.addProperty("myComp.name", new ReferenceProperty<Object>("name", entity));
 		entity.addProperty("myComp.delta", new ReferenceProperty<Object>("delta", entity));
 
-		ComponentPropertiesWrapper componentPropertyWrapperImpl = new ComponentPropertiesWrapperImpl(myComponent);
-		componentPropertyWrapperImpl.importFrom(entity);
+		ComponentPropertiesWrapper componentPropertyWrapperImpl = new ComponentPropertiesWrapperImpl(MyComponent.class);
+		componentPropertyWrapperImpl.importFrom(component, entity);
 
-		assertEquals("myName", myComponent.name);
-		assertEquals(100.0f, myComponent.delta, 0.01f);
+		assertEquals("myName", component.name);
+		assertEquals(100.0f, component.delta, 0.01f);
 	}
 
 	@Test
 	public void shouldNotSetNotAnnotatedComponentField() {
-		MyComponent myComponent = new MyComponent("myComp");
-		myComponent.internalProperty = "hola";
+		MyComponent component = new MyComponent("myComp");
+		component.internalProperty = "hola";
 
 		Entity entity = new Entity("entity");
 		entity.addProperty("name", new SimpleProperty<Object>("myName"));
@@ -131,10 +131,10 @@ public class ReflectionTest {
 		entity.addProperty("myComp.delta", new ReferenceProperty<Object>("delta", entity));
 		entity.addProperty("myComp.internalProperty", new SimpleProperty<Object>("chau"));
 
-		ComponentPropertiesWrapper componentPropertyWrapperImpl = new ComponentPropertiesWrapperImpl(myComponent);
-		componentPropertyWrapperImpl.importFrom(entity);
+		ComponentPropertiesWrapper componentPropertyWrapperImpl = new ComponentPropertiesWrapperImpl(MyComponent.class);
+		componentPropertyWrapperImpl.importFrom(component, entity);
 
-		assertEquals("hola", myComponent.internalProperty);
+		assertEquals("hola", component.internalProperty);
 	}
 	
 	public class ReadOnlyComponent extends Component {
@@ -164,8 +164,8 @@ public class ReflectionTest {
 		Entity entity = new Entity("entity");
 		entity.addProperty("readOnlyComponent.intValue", new SimpleProperty<Object>(200));
 
-		ComponentPropertiesWrapper componentPropertyWrapperImpl = new ComponentPropertiesWrapperImpl(component);
-		componentPropertyWrapperImpl.exportTo(entity);
+		ComponentPropertiesWrapper componentPropertyWrapperImpl = new ComponentPropertiesWrapperImpl(ReadOnlyComponent.class);
+		componentPropertyWrapperImpl.exportTo(component, entity);
 
 		assertEquals(Integer.valueOf(200), entity.getProperty("readOnlyComponent.intValue").get());
 	}

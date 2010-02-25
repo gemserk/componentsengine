@@ -24,16 +24,16 @@ public class ComponentPropertiesWrapperImpl implements ComponentPropertiesWrappe
 
 	protected static final Logger logger = LoggerFactory.getLogger(ComponentPropertiesWrapperImpl.class);
 
-	protected final Component component;
+	protected final Class<? extends Component> componentClass;
 
 	protected Collection<InternalField> internalFields = new LinkedList<InternalField>();
 
-	public ComponentPropertiesWrapperImpl(Component component) {
-		this.component = component;
+	public ComponentPropertiesWrapperImpl(Class<? extends Component> componentClass) {
+		this.componentClass = componentClass;
 
 		List<Field> listFields = new ArrayList<Field>();
 
-		Field[] fields = component.getClass().getDeclaredFields();
+		Field[] fields = componentClass.getDeclaredFields();
 
 		for (Field field : fields) {
 
@@ -50,7 +50,7 @@ public class ComponentPropertiesWrapperImpl implements ComponentPropertiesWrappe
 	protected InternalField generateInternalField(Field field) {
 		String fieldName = field.getName();
 
-		FastClass componentFastClass = FastClass.create(component.getClass());
+		FastClass componentFastClass = FastClass.create(componentClass);
 
 		try {
 			FastMethod setterFastMethod = componentFastClass.getMethod(getSetterName(fieldName), new Class[] { field.getType() });
@@ -67,7 +67,7 @@ public class ComponentPropertiesWrapperImpl implements ComponentPropertiesWrappe
 
 	}
 
-	public void importFrom(Entity entity) {
+	public void importFrom(Component component, Entity entity) {
 
 		String componentId = component.getId();
 
@@ -92,7 +92,7 @@ public class ComponentPropertiesWrapperImpl implements ComponentPropertiesWrappe
 
 	}
 
-	public void exportTo(Entity entity) {
+	public void exportTo(Component component, Entity entity) {
 
 		String componentId = component.getId();
 
