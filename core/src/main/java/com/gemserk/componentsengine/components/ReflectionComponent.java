@@ -7,7 +7,6 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.gemserk.componentsengine.components.Component;
 import com.gemserk.componentsengine.messages.Message;
 
 @SuppressWarnings("unchecked")
@@ -26,13 +25,25 @@ public abstract class ReflectionComponent extends Component{
 		try {
 			Method method = getMethod(message);
 			if(method!=null)
+			{
+				preHandleMessage(message);
 				method.invoke(this, message);
+				postHandleMessage(message);
+			}
 		} catch (Exception e) {
 			throw new RuntimeException("error while invoking handleMessage for message of type: " + message.getClass(), e);
 		}
 		
 	}
 	
+	protected void postHandleMessage(Message message) {
+		
+	}
+
+	protected void preHandleMessage(Message message) {
+		
+	}
+
 	Method getMethod(Message message){
 		Map<Class,Method> methods = cache.get(this.getClass());
 		if(methods==null){

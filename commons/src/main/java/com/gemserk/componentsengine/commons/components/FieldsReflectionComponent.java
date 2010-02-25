@@ -26,12 +26,14 @@ public class FieldsReflectionComponent extends ReflectionComponent {
 		super(id);
 		propertiesWrapper = getWrapper(getClass());
 	}
-
-	@Override
-	public void handleMessage(Message message) {
+	
+	protected void preHandleMessage(Message message) {
 		propertiesWrapper.importFrom(this, entity);
-		super.handleMessage(message);
-		propertiesWrapper.exportTo(this, entity);
 	}
+
+	protected void postHandleMessage(Message message) {
+		propertiesWrapper.exportTo(this, entity);		
+	}
+
 
 }
