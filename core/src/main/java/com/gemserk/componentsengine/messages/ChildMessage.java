@@ -20,8 +20,8 @@ public class ChildMessage extends Message {
 	public static ChildMessage addEntity(Entity entitytoadd, String whereEntityId){
 		return new ChildMessage(entitytoadd,whereEntityId,Operation.ADD);
 	}
-	public static ChildMessage removeEntity(Entity entitytoadd, String whereEntityId){
-		return new ChildMessage(entitytoadd,whereEntityId,Operation.REMOVE);
+	public static ChildMessage removeEntity(Entity entityToRemove, String whereEntityId){
+		return new ChildMessage(entityToRemove,whereEntityId,Operation.REMOVE);
 	}
 	
 	

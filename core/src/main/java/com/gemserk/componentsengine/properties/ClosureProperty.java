@@ -1,12 +1,9 @@
-/**
- * 
- */
 package com.gemserk.componentsengine.properties;
 
 import groovy.lang.Closure;
 
-
 public class ClosureProperty implements Property<Object> {
+
 	private final Closure closure;
 
 	public ClosureProperty(PropertiesHolder propertiesHolder, Closure closure) {
