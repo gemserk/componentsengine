@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -20,9 +19,10 @@ import com.gemserk.componentsengine.properties.PropertiesHolder;
 import com.gemserk.componentsengine.properties.PropertiesHolderImpl;
 import com.gemserk.componentsengine.properties.Property;
 import com.google.common.base.Predicate;
-import com.google.common.collect.Collections2;
+import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Multiset;
 
 public class Entity implements PropertiesHolder, MessageHandler, ComponentsHolder {
 
@@ -37,6 +37,8 @@ public class Entity implements PropertiesHolder, MessageHandler, ComponentsHolde
 	protected Entity parent = null;
 	
 	protected Map<String, Entity> children = new LinkedHashMap<String, Entity>(100);
+	
+	static public Multiset<String> times = HashMultiset.create();
 
 	public Entity(String id) {
 		this.id = id;
@@ -75,8 +77,11 @@ public class Entity implements PropertiesHolder, MessageHandler, ComponentsHolde
 			return;
 
 		for (Entry<String, Component> entry : componentsHolder.getComponents().entrySet()) {
-			MessageHandler component = entry.getValue();
+			Component component = entry.getValue();
+			long iniTime = System.currentTimeMillis();
 			component.handleMessage(message);
+			long endTime = System.currentTimeMillis() - iniTime;
+			times.add(component.getId(), (int)endTime);
 		}
 
 		for (Entry<String, Entity> entry : children.entrySet()) {
