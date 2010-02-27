@@ -9,10 +9,10 @@ import java.util.Map;
 import org.codehaus.groovy.runtime.metaclass.MissingPropertyExceptionNoStack;
 
 public class MapBuilder {
-	Map<String, Object> parameters = new HashMap<String, Object>();
+	Map<String, Object> innerParameters = new HashMap<String, Object>();
 
 	public Object propertyMissing(String name) {
-		Object value = parameters.get(name);
+		Object value = innerParameters.get(name);
 		if (value != null)
 			return value;
 		else
@@ -21,14 +21,14 @@ public class MapBuilder {
 	}
 
 	public void propertyMissing(String name, Object value) {
-		parameters.put(name, value);
+		innerParameters.put(name, value);
 	}
 
-	public Map<String, Object> getParameters() {
-		return parameters;
+	public Map<String, Object> getInnerParameters() {
+		return innerParameters;
 	}
 
 	public void properties(Map forcedProperties) {
-		parameters.put("properties", forcedProperties);
+		innerParameters.put("properties", forcedProperties);
 	}
 }

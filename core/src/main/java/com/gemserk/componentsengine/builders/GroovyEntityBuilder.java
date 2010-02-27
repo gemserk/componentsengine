@@ -148,7 +148,7 @@ public class GroovyEntityBuilder {
 
 		closure.call();
 
-		child(templateName, entityName, mapBuilder.getParameters());
+		child(templateName, entityName, mapBuilder.getInnerParameters());
 	}
 
 	public Entity entity(Closure closure) {
