@@ -9,6 +9,8 @@ import org.newdawn.slick.Animation;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Font;
 import org.newdawn.slick.Image;
+import org.newdawn.slick.SlickException;
+import org.newdawn.slick.Sound;
 import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Vector2f;
@@ -68,6 +70,7 @@ public class BuilderUtils {
 	}
 
 	public class ResourceUtils {
+		
 		public Image image(String key) {
 			return imageManager.getImage(key);
 		}
@@ -109,6 +112,26 @@ public class BuilderUtils {
 				return new TrueTypeFont(new java.awt.Font(defaultType, defaultStyle, size), antiAlias);
 			}
 
+		}
+		
+		SoundUtils soundUtils = new SoundUtils();
+		
+		public SoundUtils getSounds() {
+			return soundUtils;
+		}
+		
+		public class SoundUtils {
+			
+			public Sound sound(String url) {
+				
+				try {
+					return new Sound(url);
+				} catch (SlickException e) {
+					throw new RuntimeException(e.getMessage(), e);
+				}
+				
+			}
+			
 		}
 
 	}
