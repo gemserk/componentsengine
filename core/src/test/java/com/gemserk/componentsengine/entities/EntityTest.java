@@ -93,6 +93,8 @@ public class EntityTest {
 
 		context.checking(new Expectations() {
 			{
+				ignoring(component1).getId();
+				ignoring(component2).getId();
 				oneOf(component1).handleMessage(message);
 				oneOf(component2).handleMessage(message);
 			}
