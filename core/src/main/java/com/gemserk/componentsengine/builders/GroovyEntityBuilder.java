@@ -3,6 +3,7 @@ package com.gemserk.componentsengine.builders;
 import groovy.lang.Closure;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -13,6 +14,9 @@ import com.gemserk.componentsengine.input.GroovyInputMappingBuilder;
 import com.gemserk.componentsengine.messages.GenericMessage;
 import com.gemserk.componentsengine.messages.Message;
 import com.gemserk.componentsengine.messages.MessageQueue;
+import com.gemserk.componentsengine.properties.ClosureProperty;
+import com.gemserk.componentsengine.properties.ReferenceProperty;
+import com.gemserk.componentsengine.properties.SimpleProperty;
 import com.gemserk.componentsengine.templates.EntityTemplate;
 import com.gemserk.componentsengine.templates.TemplateProvider;
 import com.google.inject.Inject;
@@ -21,20 +25,196 @@ import com.google.inject.Injector;
 public class GroovyEntityBuilder {
 
 	protected TemplateProvider templateProvider;
-	protected Entity entity;
 	protected Injector injector;
 	BuilderUtils utils;
-	protected PropertiesHolderBuilder propertiesHolderBuilder;
-	protected ComponentsHolderBuilder componentHolderBuilder;
+
 	protected String defaultEntityName;
-	protected Map<String, Object> parameters;
+
 	GroovyInputMappingBuilder inputMappingBuilder;
+
+	public class BuilderContext {
+
+		GroovyEntityBuilder builder;
+
+		Entity entity;
+
+		public BuilderContext(Entity entity, GroovyEntityBuilder builder) {
+			this.entity = entity;
+			this.builder = builder;
+		}
+
+		public void property(String key, Object value) {
+			entity.addProperty(key, new SimpleProperty<Object>(value));
+		}
+
+		public void propertyRef(String key, String referencedPropertyName) {
+			entity.addProperty(key, new ReferenceProperty<Object>(referencedPropertyName, entity));
+		}
+
+		public void property(String key, Closure closure) {
+			entity.addProperty(key, new ClosureProperty(entity, closure));
+		}
+
+		public void genericComponent(final Map<String, Object> parameters, final Closure closure) {
+			component(new Component((String) parameters.get("id")) {
+
+				@Inject
+				@Root
+				Entity rootEntity;
+
+				@Inject
+				MessageQueue messageQueue;
+
+				@Override
+				public void handleMessage(Message message) {
+					if (message instanceof GenericMessage) {
+						GenericMessage genericMessage = (GenericMessage) message;
+						if (!parameters.get("messageId").equals(genericMessage.getId()))
+							return;
+
+						closure.setDelegate(this);
+						closure.call(genericMessage);
+					}
+				}
+			});
+		}
+
+		public void component(Component component) {
+			injector.injectMembers(component);
+			entity.addComponent(component);
+		}
+
+		public void component(final Component component, Closure closure) {
+			component(component);
+
+			closure.setDelegate(new Object() {
+
+				@SuppressWarnings("unused")
+				public void property(String key, Object value) {
+					BuilderContext.this.property(component.getId() + "." + key, value);
+				}
+
+				@SuppressWarnings("unused")
+				public void propertyRef(String key, String referencedPropertyName) {
+					BuilderContext.this.propertyRef(component.getId() + "." + key, referencedPropertyName);
+				}
+
+				@SuppressWarnings("unused")
+				public void property(String key, Closure closure) {
+					BuilderContext.this.property(component.getId() + "." + key, closure);
+				}
+
+			});
+			closure.setResolveStrategy(Closure.DELEGATE_FIRST);
+			closure.call();
+		}
+
+		public Entity getEntity() {
+			return entity;
+		}
+
+		public void tags(String... tags) {
+			this.tags(Arrays.asList(tags));
+		}
+
+		public void tags(List<String> tags) {
+			entity.getTags().addAll(tags);
+		}
+
+		public BuilderUtils getUtils() {
+			return utils;
+		}
+
+		public void child(String templateName, String entityName, Map<String, Object> parameters) {
+			Entity child = templateProvider.getTemplate(templateName).instantiate(entityName, parameters);
+			child(child);
+		}
+
+		public void child(Map<String, Object> dslParameters) {
+			String entityName = (String) dslParameters.get("id");
+			String templateName = (String) dslParameters.get("template");
+			Map<String, Object> parameters = (Map<String, Object>) dslParameters.get("parameters");
+			child(templateName, entityName, parameters);
+		}
+
+		public void child(Map<String, Object> dslParameters, Closure closure) {
+			String entityName = (String) dslParameters.get("id");
+			String templateName = (String) dslParameters.get("template");
+
+			MapBuilder mapBuilder = new MapBuilder();
+
+			closure.setResolveStrategy(Closure.DELEGATE_FIRST);
+			closure.setDelegate(mapBuilder);
+
+			closure.call();
+
+			child(templateName, entityName, mapBuilder.getInnerParameters());
+		}
+
+		public void child(Entity child) {
+			entity.addEntity(child);
+		}
+
+		public Map<String, Object> map(Closure closure) {
+			MapBuilder mapBuilder = new MapBuilder();
+
+			closure.setResolveStrategy(Closure.DELEGATE_FIRST);
+			closure.setDelegate(mapBuilder);
+
+			closure.call();
+
+			return mapBuilder.innerParameters;
+		}
+
+		public void parent(String parent) {
+			this.parent(parent, new HashMap<String, Object>());
+		}
+
+		public void parent(String parent, Map<String, Object> parameters) {
+			EntityTemplate parentTemplate = templateProvider.getTemplate(parent);
+			parentTemplate.apply(entity, parameters);
+		}
+
+		public void parent(String parent, Closure closure) {
+			EntityTemplate parentTemplate = templateProvider.getTemplate(parent);
+			
+			MapBuilder mapBuilder = new MapBuilder();
+
+			closure.setResolveStrategy(Closure.DELEGATE_FIRST);
+			closure.setDelegate(mapBuilder);
+
+			closure.call();
+			
+			parentTemplate.apply(entity, mapBuilder.innerParameters);
+		}
+
+		public void input(String id, Closure closure) {
+			Component inputcomponent = inputMappingBuilder.configure(id, closure);
+			component(inputcomponent);
+		}
+
+		public void input(String id, String mapping) {
+			Component inputcomponent = inputMappingBuilder.configure(id, mapping);
+			component(inputcomponent);
+		}
+
+		// / calls to builder
+
+		public Entity entity(Closure closure) {
+			return builder.entity(closure);
+		}
+
+		public Entity entity(String id, Closure closure) {
+			return builder.entity(id, closure);
+		}
+
+	}
 
 	@Inject
 	public void setUtils(BuilderUtils utils) {
 		this.utils = utils;
 	}
-	
+
 	@Inject
 	public void setInjector(Injector injector) {
 		this.injector = injector;
@@ -44,111 +224,20 @@ public class GroovyEntityBuilder {
 	public void setTemplateProvider(TemplateProvider templateProvider) {
 		this.templateProvider = templateProvider;
 	}
+
 	@Inject
 	public void setInputMappingBuilder(GroovyInputMappingBuilder inputMappingBuilder) {
 		this.inputMappingBuilder = inputMappingBuilder;
 	}
 
-	
-	
-	public GroovyEntityBuilder(String defaultEntityName, Map<String, Object> parameters) {
+	public GroovyEntityBuilder(String defaultEntityName) {
 		this.defaultEntityName = defaultEntityName;
-		this.parameters = parameters;
 	}
 
-	public GroovyEntityBuilder(Entity entity, Map<String, Object> parameters) {
+	Entity entity = null;
+
+	public GroovyEntityBuilder(Entity entity) {
 		this.entity = entity;
-		this.parameters = parameters;
-		this.defaultEntityName = entity.getId();
-	}
-
-
-	public void genericComponent(final Map<String, Object> parameters, final Closure closure) {
-		component(new Component((String) parameters.get("id")) {
-
-			@Inject
-			@Root
-			Entity rootEntity;
-
-			@Inject
-			MessageQueue messageQueue;
-
-			@Override
-			public void handleMessage(Message message) {
-				if (message instanceof GenericMessage) {
-					GenericMessage genericMessage = (GenericMessage) message;
-					if (!parameters.get("messageId").equals(genericMessage.getId()))
-						return;
-
-					closure.setDelegate(this);
-					closure.call(genericMessage);
-				}
-			}
-		});
-	}
-
-	public void property(String key, Object value) {
-		propertiesHolderBuilder.property(key, value);
-	}
-
-	public void propertyRef(String key, String referencedPropertyName) {
-		propertiesHolderBuilder.propertyRef(key, referencedPropertyName);
-	}
-	
-	public void property(String key, Closure value) {
-		propertiesHolderBuilder.property(key, value);
-	}
-
-	public void component(Component component, Closure closure) {
-		componentHolderBuilder.component(component, closure);
-	}
-
-	public void component(Component component) {
-		componentHolderBuilder.component(component);
-	}
-
-	public Entity getEntity() {
-		return entity;
-	}
-
-	public void tags(String... tags) {
-		this.tags(Arrays.asList(tags));
-	}
-
-	public void tags(List<String> tags) {
-		entity.getTags().addAll(tags);
-	}
-
-
-
-	public BuilderUtils getUtils() {
-		return utils;
-	}
-
-	public void child(String templateName, String entityName, Map<String, Object> parameters) {
-		Entity child = templateProvider.getTemplate(templateName).instantiate(entityName, parameters);
-		entity.addEntity(child);
-	}
-
-	public void child(Map<String, Object> dslParameters) {
-		String entityName = (String) dslParameters.get("id");
-		String templateName = (String) dslParameters.get("template");
-		Map<String, Object> parameters = (Map<String, Object>) dslParameters.get("parameters");
-		child(templateName, entityName, parameters);
-	}
-
-	public void child(Map<String, Object> dslParameters, Closure closure) {
-		String entityName = (String) dslParameters.get("id");
-		String templateName = (String) dslParameters.get("template");
-
-		MapBuilder mapBuilder = new MapBuilder();
-
-		closure.setResolveStrategy(Closure.DELEGATE_FIRST);
-		closure.setDelegate(mapBuilder);
-
-		closure.call();
-
-		child(templateName, entityName, mapBuilder.getInnerParameters());
 	}
 
 	public Entity entity(Closure closure) {
@@ -156,32 +245,17 @@ public class GroovyEntityBuilder {
 	}
 
 	public Entity entity(String id, Closure closure) {
-		if (entity == null)
-			entity = new Entity(id);
 
-		propertiesHolderBuilder = new PropertiesHolderBuilder(entity);
-		componentHolderBuilder = new ComponentsHolderBuilder(entity, propertiesHolderBuilder, injector);
+		Entity entity = new Entity(id);
 
-		closure.setDelegate(this);
+		if (this.entity != null)
+			entity = this.entity;
+
+		closure.setDelegate(new BuilderContext(entity, this));
+		closure.setResolveStrategy(Closure.DELEGATE_FIRST);
 		closure.call();
+
 		return entity;
 	}
-
-	public void parent(String parent) {
-		EntityTemplate parentTemplate = this.templateProvider.getTemplate(parent);
-		parentTemplate.apply(entity, parameters);
-	}
-
-	public void input(String id, Closure closure) {
-		Component inputcomponent = inputMappingBuilder.configure(id, closure);
-		component(inputcomponent);
-	}
-
-	public void input(String id, String mapping) {
-		Component inputcomponent = inputMappingBuilder.configure(id, mapping);
-		component(inputcomponent);
-	}
-	
-	
 
 }

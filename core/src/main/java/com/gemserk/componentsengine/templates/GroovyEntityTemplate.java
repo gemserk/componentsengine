@@ -27,22 +27,21 @@ public class GroovyEntityTemplate implements EntityTemplate {
 	
 	@Override
 	public Entity instantiate(String entityName, Map<String, Object> parameters) {
-		GroovyEntityBuilder groovyEntityBuilder = new GroovyEntityBuilder(entityName,parameters);
+		GroovyEntityBuilder groovyEntityBuilder = new GroovyEntityBuilder(entityName);
 		injector.injectMembers(groovyEntityBuilder);
-
 		return bindAndExecuteTemplate(entityName, groovyEntityBuilder, parameters);
 	}
 	
 	@Override
 	public Entity apply(Entity entity) {
-		// I suppose we have to use null instead.
 		return apply(entity, new HashMap<String, Object>());
 	}
 
 	
 	@Override
 	public Entity apply(Entity entity, Map<String, Object> parameters) {
-		GroovyEntityBuilder groovyEntityBuilder = new GroovyEntityBuilder(entity,parameters);
+		// TODO: setear el contexto a la entity particular
+		GroovyEntityBuilder groovyEntityBuilder = new GroovyEntityBuilder(entity);
 		injector.injectMembers(groovyEntityBuilder);
 		return bindAndExecuteTemplate(entity.getId(), groovyEntityBuilder, parameters);
 	}
