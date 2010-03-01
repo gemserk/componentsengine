@@ -5,10 +5,16 @@ import groovy.lang.Closure;
 public class ClosureProperty implements Property<Object> {
 
 	private final Closure closure;
+	
 
-	public ClosureProperty(PropertiesHolder propertiesHolder, Closure closure) {
+	public ClosureProperty(final PropertiesHolder propertiesHolder, Closure closure) {
 		this.closure = closure;
-		closure.setProperty("entity", propertiesHolder);		
+		closure.setDelegate(new Object(){
+			public PropertiesHolder getEntity(){
+				return propertiesHolder;
+			}
+		});
+		closure.setResolveStrategy(Closure.DELEGATE_FIRST);
 	}
 
 	@Override
