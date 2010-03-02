@@ -19,6 +19,8 @@ public class ImageRenderableComponent extends ReflectionComponent {
 	PropertyLocator<Vector2f> directionProperty;
 	
 	PropertyLocator<Color> renderColorProperty;
+	
+	PropertyLocator<Vector2f> sizeProperty;
 
 	public ImageRenderableComponent(String id) {
 		super(id);
@@ -26,6 +28,7 @@ public class ImageRenderableComponent extends ReflectionComponent {
 		positionProperty = Properties.property(id, "position");
 		directionProperty = Properties.property(id, "direction");
 		renderColorProperty = Properties.property(id, "color");
+		sizeProperty = Properties.property(id, "size");
 	}
 
 	public void handleMessage(SlickRenderMessage message) {
@@ -33,10 +36,12 @@ public class ImageRenderableComponent extends ReflectionComponent {
 
 		Vector2f position = positionProperty.getValue(entity);
 		Color renderColor = renderColorProperty.getValue(entity, Color.white);
+		Vector2f size = sizeProperty.getValue(entity, new Vector2f(1,1));
 
 		g.pushTransform();
 		{
 			g.translate(position.x, position.y);
+			g.scale(size.x, size.y);
 			g.rotate(0, 0, (float) directionProperty.getValue(entity).getTheta());
 
 			Image image = imageProperty.getValue(entity);
