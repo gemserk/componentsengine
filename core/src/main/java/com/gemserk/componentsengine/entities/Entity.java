@@ -1,28 +1,13 @@
 package com.gemserk.componentsengine.entities;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.Map.Entry;
 
-import com.gemserk.componentsengine.components.Component;
-import com.gemserk.componentsengine.components.ComponentsHolder;
-import com.gemserk.componentsengine.components.ComponentsHolderImpl;
-import com.gemserk.componentsengine.components.MessageHandler;
-import com.gemserk.componentsengine.messages.ChildMessage;
-import com.gemserk.componentsengine.messages.Message;
-import com.gemserk.componentsengine.properties.PropertiesHolder;
-import com.gemserk.componentsengine.properties.PropertiesHolderImpl;
-import com.gemserk.componentsengine.properties.Property;
+import com.gemserk.componentsengine.components.*;
+import com.gemserk.componentsengine.messages.*;
+import com.gemserk.componentsengine.properties.*;
 import com.google.common.base.Predicate;
-import com.google.common.collect.HashMultiset;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Multiset;
+import com.google.common.collect.*;
 
 public class Entity implements PropertiesHolder, MessageHandler, ComponentsHolder {
 
@@ -84,10 +69,10 @@ public class Entity implements PropertiesHolder, MessageHandler, ComponentsHolde
 			times.add(component.getId(), (int)endTime);
 		}
 
-		for (Entry<String, Entity> entry : children.entrySet()) {
-			Entity entity = entry.getValue();
-			entity.handleMessage(message);
+		for (Entity child : children.values()) {
+			child.handleMessage(message);
 		}
+		
 	}
 
 	private boolean handleChildrenModificationMessage(Message message) {
@@ -96,19 +81,32 @@ public class Entity implements PropertiesHolder, MessageHandler, ComponentsHolde
 			return false;
 
 		ChildMessage childMessage = (ChildMessage) message;
-		if (!this.getId().equals(childMessage.getWhereEntityId()))
-			return false;
 
 		Entity entity = childMessage.getEntityToAdd();
 		switch (childMessage.getOperation()) {
 		case ADD:
-			this.addEntity(entity);
-			break;
+			return handleAddChildren(childMessage, entity);
 		case REMOVE:
-			this.removeEntity(entity);
-			break;
+			return handleRemoveChildren(entity);
 		}
 
+		return true;
+	}
+
+	private boolean handleRemoveChildren(Entity entity) {
+		
+		if (!children.containsValue(entity))
+			return false;
+		
+		removeEntity(entity);
+		
+		return true;
+	}
+
+	private boolean handleAddChildren(ChildMessage childMessage, Entity entity) {
+		if (!getId().equals(childMessage.getWhereEntityId()))
+			return false;
+		addEntity(entity);
 		return true;
 	}
 

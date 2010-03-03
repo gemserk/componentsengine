@@ -23,9 +23,8 @@ public class ChildMessage extends Message {
 		return new ChildMessage(entitytoadd, whereEntityId, Operation.ADD);
 	}
 
-	// TODO: remove whereEntityId.
-	public static ChildMessage removeEntity(Entity entityToRemove, String whereEntityId) {
-		return new ChildMessage(entityToRemove, whereEntityId, Operation.REMOVE);
+	public static ChildMessage removeEntity(Entity entityToRemove) {
+		return new ChildMessage(entityToRemove, null, Operation.REMOVE);
 	}
 
 	public Entity getEntityToAdd() {
