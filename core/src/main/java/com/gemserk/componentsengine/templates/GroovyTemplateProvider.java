@@ -1,7 +1,6 @@
 package com.gemserk.componentsengine.templates;
 
-import com.google.inject.Inject;
-import com.google.inject.Injector;
+import com.google.inject.*;
 
 public class GroovyTemplateProvider implements TemplateProvider {
 
@@ -25,7 +24,7 @@ public class GroovyTemplateProvider implements TemplateProvider {
 		try {
 			return new GroovyEntityTemplate(groovyScriptProvider.load(name), injector);
 		} catch (Exception e) {
-			throw new TemplateNotFoundException("Unable to load template", e);
+			throw new TemplateNotFoundException("Unable to load template" + name, e);
 		}
 	}
 
