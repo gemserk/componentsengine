@@ -4,7 +4,9 @@ import com.gemserk.componentsengine.entities.Entity;
 import com.gemserk.componentsengine.messages.Message;
 
 public abstract class Component implements MessageHandler {
+	
 	protected String id;
+	
 	protected Entity entity;
 
 	public Component(String id) {
@@ -16,6 +18,10 @@ public abstract class Component implements MessageHandler {
 	}
 
 	public void onAdd(Entity entity){
+		this.entity = entity;
+	}
+	
+	protected void setEntity(Entity entity) {
 		this.entity = entity;
 	}
 	

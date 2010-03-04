@@ -4,7 +4,7 @@ import java.util.*;
 import java.util.Map.Entry;
 
 import com.gemserk.componentsengine.components.*;
-import com.gemserk.componentsengine.messages.*;
+import com.gemserk.componentsengine.messages.Message;
 import com.gemserk.componentsengine.properties.*;
 import com.google.common.base.Predicate;
 import com.google.common.collect.*;
@@ -20,9 +20,9 @@ public class Entity implements PropertiesHolder, MessageHandler, ComponentsHolde
 	Set<String> tags = new HashSet<String>();
 
 	protected Entity parent = null;
-	
+
 	protected Map<String, Entity> children = new LinkedHashMap<String, Entity>(100);
-	
+
 	static public Multiset<String> times = HashMultiset.create();
 
 	public Entity(String id) {
@@ -58,56 +58,18 @@ public class Entity implements PropertiesHolder, MessageHandler, ComponentsHolde
 
 	public void handleMessage(Message message) {
 
-		if (handleChildrenModificationMessage(message))
-			return;
-
 		for (Entry<String, Component> entry : componentsHolder.getComponents().entrySet()) {
 			Component component = entry.getValue();
 			long iniTime = System.currentTimeMillis();
 			component.handleMessage(message);
 			long endTime = System.currentTimeMillis() - iniTime;
-			times.add(component.getId(), (int)endTime);
+			times.add(component.getId(), (int) endTime);
 		}
 
 		for (Entity child : children.values()) {
 			child.handleMessage(message);
 		}
-		
-	}
 
-	private boolean handleChildrenModificationMessage(Message message) {
-
-		if (!(message instanceof ChildMessage))
-			return false;
-
-		ChildMessage childMessage = (ChildMessage) message;
-
-		Entity entity = childMessage.getEntityToAdd();
-		switch (childMessage.getOperation()) {
-		case ADD:
-			return handleAddChildren(childMessage, entity);
-		case REMOVE:
-			return handleRemoveChildren(entity);
-		}
-
-		return true;
-	}
-
-	private boolean handleRemoveChildren(Entity entity) {
-		
-		if (!children.containsValue(entity))
-			return false;
-		
-		removeEntity(entity);
-		
-		return true;
-	}
-
-	private boolean handleAddChildren(ChildMessage childMessage, Entity entity) {
-		if (!getId().equals(childMessage.getWhereEntityId()))
-			return false;
-		addEntity(entity);
-		return true;
 	}
 
 	public boolean hasTag(String tag) {
@@ -151,39 +113,41 @@ public class Entity implements PropertiesHolder, MessageHandler, ComponentsHolde
 	}
 
 	public Collection<Entity> getEntities(Predicate<? super Entity> predicate) {
-		return Lists.newArrayList(this.getChildrenIterable(predicate));		
+		return Lists.newArrayList(this.getChildrenIterable(predicate));
 	}
-	
-	public Iterable<Entity> getChildrenIterable(Predicate<? super Entity> predicate){
+
+	public Iterable<Entity> getChildrenIterable(Predicate<? super Entity> predicate) {
 		List<Iterable<Entity>> iterables = new ArrayList<Iterable<Entity>>(this.children.size());
-		
-		for (Entity child: children.values()) {
+
+		for (Entity child : children.values()) {
 			Iterable<Entity> childIterable = child.getChildrenIterable(predicate);
 			iterables.add(childIterable);
 		}
-		
-		if(predicate.apply(this))
+
+		if (predicate.apply(this))
 			iterables.add(Lists.newArrayList(this));
-		
+
 		return Iterables.concat(iterables);
 	}
-	
-	
-	
 
 	public Entity getEntityById(String id) {
 		Entity entity = children.get(id);
-		
+
 		if (entity != null)
 			return entity;
-		
+
 		for (Entry<String, Entity> entry : children.entrySet()) {
 			Entity child = entry.getValue();
 			entity = child.getEntityById(id);
 			if (entity != null)
 				return entity;
 		}
-		
+
 		return null;
+	}
+
+	public void removeFromParent() {
+		if (parent!=null)
+			parent.removeEntity(this);
 	}
 }

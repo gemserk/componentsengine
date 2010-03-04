@@ -3,17 +3,13 @@ package com.gemserk.componentsengine.reflection;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.slf4j.*;
 
 import com.gemserk.componentsengine.annotations.EntityProperty;
 import com.gemserk.componentsengine.components.Component;
 import com.gemserk.componentsengine.entities.Entity;
-import com.gemserk.componentsengine.properties.Property;
-import com.gemserk.componentsengine.properties.ReferenceProperty;
-import com.gemserk.componentsengine.properties.SimpleProperty;
-import com.gemserk.componentsengine.reflection.wrapper.ComponentPropertiesWrapper;
-import com.gemserk.componentsengine.reflection.wrapper.ComponentPropertiesWrapperImpl;
+import com.gemserk.componentsengine.properties.*;
+import com.gemserk.componentsengine.reflection.wrapper.*;
 
 public class ReflectionTest {
 
@@ -191,7 +187,7 @@ public class ReflectionTest {
 	}
 
 	@Test
-	public void testTimesPrivateFieldWithGetterSetterMethodsPromedial() {
+	public void testTimesPrivateFieldWithGetterSetterMethods() {
 		CheckWrapperTimeComponent component = new CheckWrapperTimeComponent("another");
 		component.value = "internal";
 
@@ -199,6 +195,46 @@ public class ReflectionTest {
 		entity.addProperty("another.value", new SimpleProperty<Object>("otherValue"));
 
 		ComponentPropertiesWrapper componentPropertyWrapperImpl = new ComponentPropertiesWrapperImpl(CheckWrapperTimeComponent.class);
+
+		// TODO: make an average of 100 excecutions
+		
+		long time = System.nanoTime();
+		componentPropertyWrapperImpl.importFrom(component, entity);
+		componentPropertyWrapperImpl.exportTo(component, entity);
+		long wrapperTime = System.nanoTime() - time;		
+
+		time = System.nanoTime();
+		Property<Object> property = entity.getProperty("another.value");
+		component.value = ((String) property.get());
+		property.set(component.value);		
+		long directAccessTime = System.nanoTime() - time;		
+
+		float proporcion = (float)wrapperTime / (float)directAccessTime;
+		
+		logger.info("wrapper time: {}, direct access time: {}", new Object[] {wrapperTime, directAccessTime});
+		logger.info("wrapper time =(aprox) {} x direct access time", new Object[] {proporcion});
+	}
+	
+	public class CheckWrapperTimeComponent2 extends Component {
+
+		@EntityProperty
+		private String value;
+
+		public CheckWrapperTimeComponent2(String id) {
+			super(id);
+		}
+
+	}
+
+	@Test
+	public void testTimesPrivateFieldWithouyGetterSetterMethods() {
+		CheckWrapperTimeComponent2 component = new CheckWrapperTimeComponent2("another");
+		component.value = "internal";
+
+		Entity entity = new Entity("entity");
+		entity.addProperty("another.value", new SimpleProperty<Object>("otherValue"));
+
+		ComponentPropertiesWrapper componentPropertyWrapperImpl = new ComponentPropertiesWrapperImpl(CheckWrapperTimeComponent2.class);
 
 		// TODO: make an average of 100 excecutions
 		
