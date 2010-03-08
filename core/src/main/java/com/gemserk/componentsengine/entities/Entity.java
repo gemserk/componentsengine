@@ -150,4 +150,12 @@ public class Entity implements PropertiesHolder, MessageHandler, ComponentsHolde
 		if (parent!=null)
 			parent.removeEntity(this);
 	}
+	
+	public Entity getRoot(){
+		if(parent == null)
+			return this;
+		
+		return parent.getRoot();
+	}
 }
+
