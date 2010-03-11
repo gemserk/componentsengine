@@ -3,18 +3,13 @@ package com.gemserk.componentsengine.builders;
 import groovy.lang.Closure;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import com.gemserk.componentsengine.components.Component;
 import com.gemserk.componentsengine.entities.Entity;
-import com.gemserk.componentsengine.entities.Root;
 import com.gemserk.componentsengine.input.GroovyInputMappingBuilder;
-import com.gemserk.componentsengine.messages.GenericMessage;
-import com.gemserk.componentsengine.messages.Message;
-import com.gemserk.componentsengine.messages.MessageQueue;
 import com.gemserk.componentsengine.properties.ClosureProperty;
 import com.gemserk.componentsengine.properties.ReferenceProperty;
 import com.gemserk.componentsengine.properties.SimpleProperty;
@@ -22,7 +17,6 @@ import com.gemserk.componentsengine.templates.EntityTemplate;
 import com.gemserk.componentsengine.templates.TemplateProvider;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
-import com.google.inject.internal.Lists;
 
 public class GroovyEntityBuilder {
 
@@ -57,43 +51,6 @@ public class GroovyEntityBuilder {
 			entity.addProperty(key, new ClosureProperty(entity, closure));
 		}
 
-		@SuppressWarnings("unchecked")
-		public void genericComponent(final Map<String, Object> parameters, final Closure closure) {
-			Object messageIdsCandidates = parameters.get("messageId");
-			final Collection messageIds;
-			if (messageIdsCandidates == null)
-				throw new RuntimeException("messageId cant be null");
-
-			if (messageIdsCandidates instanceof Collection) {
-				messageIds = (Collection) messageIdsCandidates;
-			} else {
-				messageIds = Lists.newArrayList(messageIdsCandidates.toString());
-			}
-
-			component(new Component((String) parameters.get("id")) {
-
-				@Inject
-				@Root
-				Entity rootEntity;
-
-				@Inject
-				MessageQueue messageQueue;
-
-				@Override
-				public void handleMessage(Message message) {
-					if (message instanceof GenericMessage) {
-
-						GenericMessage genericMessage = (GenericMessage) message;
-
-						if (!messageIds.contains(genericMessage.getId()))
-							return;
-
-						closure.setDelegate(this);
-						closure.call(genericMessage);
-					}
-				}
-			});
-		}
 
 		public void component(Component component) {
 			injector.injectMembers(component);

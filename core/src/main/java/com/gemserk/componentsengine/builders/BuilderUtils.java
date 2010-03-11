@@ -2,6 +2,7 @@ package com.gemserk.componentsengine.builders;
 
 import groovy.lang.Closure;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,12 +16,18 @@ import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Vector2f;
 
+import com.gemserk.componentsengine.components.Component;
+import com.gemserk.componentsengine.entities.Entity;
+import com.gemserk.componentsengine.entities.Root;
 import com.gemserk.componentsengine.messages.GenericMessage;
+import com.gemserk.componentsengine.messages.Message;
+import com.gemserk.componentsengine.messages.MessageQueue;
 import com.gemserk.componentsengine.resources.AnimationManager;
 import com.gemserk.componentsengine.resources.ImageManager;
 import com.gemserk.componentsengine.utils.Container;
 import com.gemserk.componentsengine.utils.Interval;
 import com.google.inject.Inject;
+import com.google.inject.internal.Lists;
 
 public class BuilderUtils {
 
@@ -70,7 +77,7 @@ public class BuilderUtils {
 	}
 
 	public class ResourceUtils {
-		
+
 		public Image image(String key) {
 			return imageManager.getImage(key);
 		}
@@ -88,11 +95,11 @@ public class BuilderUtils {
 		public class FontUtils {
 
 			public Font font(Map<String, Object> parameters) {
-				
+
 				Boolean italic = (Boolean) (parameters.get("italic") != null ? parameters.get("italic") : false);
 				Boolean bold = (Boolean) (parameters.get("bold") != null ? parameters.get("bold") : false);
 				Integer size = (Integer) (parameters.get("size") != null ? parameters.get("size") : 12);
-				
+
 				return font(italic, bold, size);
 			}
 
@@ -113,27 +120,71 @@ public class BuilderUtils {
 			}
 
 		}
-		
+
 		SoundUtils soundUtils = new SoundUtils();
-		
+
 		public SoundUtils getSounds() {
 			return soundUtils;
 		}
-		
+
 		public class SoundUtils {
-			
+
 			public Sound sound(String url) {
-				
+
 				try {
 					return new Sound(url);
 				} catch (SlickException e) {
 					throw new RuntimeException(e.getMessage(), e);
 				}
-				
+
 			}
-			
+
 		}
 
+	}
+
+	public ComponentUtils getComponents() {
+		return new ComponentUtils();
+	}
+
+	public class ComponentUtils {
+		
+		public Component genericComponent(final Map<String, Object> parameters, final Closure closure) {
+			Object messageIdsCandidates = parameters.get("messageId");
+			final Collection messageIds;
+			if (messageIdsCandidates == null)
+				throw new RuntimeException("messageId cant be null");
+
+			if (messageIdsCandidates instanceof Collection) {
+				messageIds = (Collection) messageIdsCandidates;
+			} else {
+				messageIds = Lists.newArrayList(messageIdsCandidates.toString());
+			}
+
+			return new Component((String) parameters.get("id")) {
+
+				@Inject
+				@Root
+				Entity rootEntity;
+
+				@Inject
+				MessageQueue messageQueue;
+
+				@Override
+				public void handleMessage(Message message) {
+					if (message instanceof GenericMessage) {
+
+						GenericMessage genericMessage = (GenericMessage) message;
+
+						if (!messageIds.contains(genericMessage.getId()))
+							return;
+
+						closure.setDelegate(this);
+						closure.call(genericMessage);
+					}
+				}
+			};
+		}
 	}
 
 }
