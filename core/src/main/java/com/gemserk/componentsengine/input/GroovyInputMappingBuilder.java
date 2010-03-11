@@ -2,7 +2,6 @@ package com.gemserk.componentsengine.input;
 
 import groovy.lang.Binding;
 import groovy.lang.Closure;
-import groovy.lang.GroovyClassLoader;
 import groovy.lang.Script;
 
 import java.util.HashMap;

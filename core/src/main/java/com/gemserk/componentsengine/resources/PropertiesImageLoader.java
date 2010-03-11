@@ -9,7 +9,6 @@ import java.io.InputStream;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
-import com.gemserk.componentsengine.resources.ImageManager;
 import com.google.inject.Inject;
 
 public class PropertiesImageLoader {

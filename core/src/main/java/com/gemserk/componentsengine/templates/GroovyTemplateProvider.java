@@ -1,6 +1,7 @@
 package com.gemserk.componentsengine.templates;
 
-import com.google.inject.*;
+import com.google.inject.Inject;
+import com.google.inject.Injector;
 
 public class GroovyTemplateProvider implements TemplateProvider {
 

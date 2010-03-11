@@ -8,7 +8,6 @@ import java.util.Set;
 
 import com.gemserk.componentsengine.entities.Entity;
 import com.gemserk.componentsengine.properties.SimpleProperty;
-import com.gemserk.componentsengine.templates.EntityTemplate;
 
 public class DefaultEntityTemplate implements EntityTemplate {
 

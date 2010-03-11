@@ -1,7 +1,9 @@
 package com.gemserk.componentsengine.components;
 
 import com.gemserk.componentsengine.entities.Entity;
-import com.gemserk.componentsengine.messages.*;
+import com.gemserk.componentsengine.messages.AddEntityMessage;
+import com.gemserk.componentsengine.messages.Message;
+import com.gemserk.componentsengine.messages.RemoveEntityMessage;
 
 public class ChildrenManagementComponent extends Component {
 

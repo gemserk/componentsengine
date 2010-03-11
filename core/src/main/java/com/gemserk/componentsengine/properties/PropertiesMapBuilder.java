@@ -2,11 +2,7 @@ package com.gemserk.componentsengine.properties;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 import java.util.Map.Entry;
-
-import com.gemserk.componentsengine.properties.Property;
-import com.gemserk.componentsengine.properties.SimpleProperty;
 
 public class PropertiesMapBuilder {
 
