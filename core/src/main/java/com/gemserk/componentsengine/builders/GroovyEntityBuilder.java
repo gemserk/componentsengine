@@ -3,6 +3,7 @@ package com.gemserk.componentsengine.builders;
 import groovy.lang.Closure;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +22,7 @@ import com.gemserk.componentsengine.templates.EntityTemplate;
 import com.gemserk.componentsengine.templates.TemplateProvider;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
+import com.google.inject.internal.Lists;
 
 public class GroovyEntityBuilder {
 
@@ -55,7 +57,19 @@ public class GroovyEntityBuilder {
 			entity.addProperty(key, new ClosureProperty(entity, closure));
 		}
 
+		@SuppressWarnings("unchecked")
 		public void genericComponent(final Map<String, Object> parameters, final Closure closure) {
+			Object messageIdsCandidates = parameters.get("messageId");
+			final Collection messageIds;
+			if (messageIdsCandidates == null)
+				throw new RuntimeException("messageId cant be null");
+
+			if (messageIdsCandidates instanceof Collection) {
+				messageIds = (Collection) messageIdsCandidates;
+			} else {
+				messageIds = Lists.newArrayList(messageIdsCandidates.toString());
+			}
+
 			component(new Component((String) parameters.get("id")) {
 
 				@Inject
@@ -68,8 +82,10 @@ public class GroovyEntityBuilder {
 				@Override
 				public void handleMessage(Message message) {
 					if (message instanceof GenericMessage) {
+
 						GenericMessage genericMessage = (GenericMessage) message;
-						if (!parameters.get("messageId").equals(genericMessage.getId()))
+
+						if (!messageIds.contains(genericMessage.getId()))
 							return;
 
 						closure.setDelegate(this);
@@ -177,14 +193,14 @@ public class GroovyEntityBuilder {
 
 		public void parent(String parent, Closure closure) {
 			EntityTemplate parentTemplate = templateProvider.getTemplate(parent);
-			
+
 			MapBuilder mapBuilder = new MapBuilder();
 
 			closure.setResolveStrategy(Closure.DELEGATE_FIRST);
 			closure.setDelegate(mapBuilder);
 
 			closure.call();
-			
+
 			parentTemplate.apply(entity, mapBuilder.innerParameters);
 		}
 
