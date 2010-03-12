@@ -1,14 +1,6 @@
 package com.gemserk.componentsengine.utils;
 
-import static org.lwjgl.opengl.GL11.GL_QUADS;
-import static org.lwjgl.opengl.GL11.glBegin;
-import static org.lwjgl.opengl.GL11.glColor4f;
-import static org.lwjgl.opengl.GL11.glEnd;
-import static org.lwjgl.opengl.GL11.glPopMatrix;
-import static org.lwjgl.opengl.GL11.glPushMatrix;
-import static org.lwjgl.opengl.GL11.glRotatef;
-import static org.lwjgl.opengl.GL11.glTranslatef;
-import static org.lwjgl.opengl.GL11.glVertex3f;
+import static org.lwjgl.opengl.GL11.*;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.geom.Vector2f;
@@ -43,6 +35,10 @@ public class OpenGlUtils {
 
 	public static void glColor(Color c) {
 		glColor4f(c.r, c.g, c.b, c.a);
+	}
+
+	public static void glVertex(Vector2f v) {
+		glVertex3f(v.x, v.y, 0);
 	}
 
 }

@@ -6,26 +6,26 @@ import java.util.Collection;
 
 public class ExplosionEffect {
 
-	Collection<LineEffect> particles;
+	Collection<LineEffect> lineEffects;
 
 	public ExplosionEffect(ArrayList<LineEffect> particles) {
-		this.particles = particles;
+		this.lineEffects = particles;
 	}
 
 	public void update(int delta) {
-		for (LineEffect particle : particles) {
+		for (LineEffect particle : lineEffects) {
 			particle.update(delta);
 		}
 	}
 
 	public void render() {
-		for (LineEffect particle : particles) {
+		for (LineEffect particle : lineEffects) {
 			particle.render();
 		}
 	}
 	
 	public boolean isDone() {
-		for (LineEffect particle : particles) {
+		for (LineEffect particle : lineEffects) {
 			if (!particle.isDone())
 				return false;
 		}
