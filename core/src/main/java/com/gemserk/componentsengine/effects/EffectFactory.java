@@ -29,18 +29,18 @@ public class EffectFactory {
 		}
 	}
 
-	public static ExplosionEffect explosionEffect(int count, int x, int y, float minAngle, float maxAngle, int time, float minLength, float maxLength, float width) {
+	public static ExplosionEffect explosionEffect(int count, int x, int y, float minAngle, float maxAngle, int time, float length, float minDistance, float maxDistance, float width) {
 		Color startColor = randomColor(color(0f, 0f, 0f, 1f), color(0.7f, 0.7f, 0.7f, 1));
 		Color endColor = new Color(startColor);
 		endColor.add(color(0.5f, 0.5f, 0.5f, 0.0f));
-		return explosionEffect(count, x, y, minAngle, maxAngle, time, minLength, maxLength, width, startColor, endColor);
+		return explosionEffect(count, x, y, minAngle, maxAngle, time, length, minDistance, maxDistance, width, startColor, endColor);
 	}
 
-	public static ExplosionEffect explosionEffect(int count, int x, int y, float minAngle, float maxAngle, int time, float minLength, float maxLength, float width, Color startColor, Color endColor) {
+	public static ExplosionEffect explosionEffect(int count, int x, int y, float minAngle, float maxAngle, int time, float length, float minDistance, float maxDistance, float width, Color startColor, Color endColor) {
 		ArrayList<LineEffect> particles = new ArrayList<LineEffect>();
 
 		for (int i = 0; i < count; i++)
-			particles.add(lineEffect(x, y, minAngle, maxAngle, time, minLength, maxLength, width, new Color(startColor), new Color(endColor)));
+			particles.add(lineEffect(x, y, minAngle, maxAngle, time, length, minDistance, maxDistance, width, new Color(startColor), new Color(endColor)));
 
 		return new ExplosionEffect(particles);
 	}
@@ -66,13 +66,13 @@ public class EffectFactory {
 		return new Color(r, g, b, a);
 	}
 
-	public static LineEffect lineEffect(int x, int y, float minAngle, float maxAngle, int totalTime, float minLength, float maxLength, float width, Color startColor, Color endColor) {
+	public static LineEffect lineEffect(int x, int y, float minAngle, float maxAngle, int totalTime, float length, float minDistance, float maxDistance, float width, Color startColor, Color endColor) {
 
 		maxAngle = -maxAngle;
 		minAngle = -minAngle;
 
-		float length = random.nextFloat() * maxLength + minLength;
-		LineEffectParticle lineParticleEffect = new LineEffectParticle(length, totalTime);
+		float distance = random.nextFloat() * maxDistance + minDistance;
+		LineEffectParticle lineParticleEffect = new LineEffectParticle(distance, totalTime, length);
 
 		float angle = random.nextFloat() * maxAngle + minAngle;
 		LineEffectOpenGlRenderer lineParticleEffectRenderer = new LineEffectOpenGlRenderer(new Vector2f(x, y), angle, width);

@@ -16,11 +16,12 @@ public class LineEffectParticle {
 
 	float deltaTime = 0;
 
-	float l = 10.0f;
+	float length;
 
-	public LineEffectParticle(float target, float time) {
+	public LineEffectParticle(float target, float time, float length) {
 		this.target = target;
 		this.totalTime = time;
+		this.length = length;
 	}
 
 	public float getDeltaTime() {
@@ -40,9 +41,9 @@ public class LineEffectParticle {
 
 		deltaTime = (totalTime - currentTime) / totalTime;
 
-		float length = l * deltaTime;
+		float l = length * deltaTime;
 
-		float x = 1.0f * length;
+		float x = 1.0f * l;
 
 		p1 = source + ((target - source) * currentTime / totalTime);
 		p2 = p1 + x;
