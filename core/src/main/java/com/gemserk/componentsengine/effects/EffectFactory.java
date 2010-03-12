@@ -81,7 +81,7 @@ public class EffectFactory {
 		return effect;
 	}
 
-	public static LightingBoltEffect lightingBoltEffect(Vector2f start, Vector2f end, int numberOfGenerations, float maxOffset, float maxAngle, double partitionProbability, int duration) {
+	public static LightingBoltEffect lightingBoltEffect(Vector2f start, Vector2f end, int numberOfGenerations, float maxOffset, float maxAngle, double partitionProbability, int duration, float lineWidth) {
 
 		Collection<Line> segments = new ArrayList<Line>();
 		segments.add(new Line(start, end));
@@ -100,7 +100,7 @@ public class EffectFactory {
 
 				// direction = midPoint - startPoint;
 				// splitEnd = Rotate(direction, randomSmallAngle)*lengthScale + midPoint; // lengthScale is, for best results, < 1. 0.7 is a good value.
-				// segmentList.Add(new Segment(midPoint, splitEnd));
+				// segmentList.Add(new Segment(midPoint, splitEnd));= 2.0f
 
 				Vector2f perpendicular = midPoint.copy().add(90);
 				perpendicular.normalise().scale(random.nextFloat() * offset - (offset / 2));
@@ -122,7 +122,7 @@ public class EffectFactory {
 			offset /= 2;
 		}
 
-		return new LightingBoltEffect(duration, segments);
+		return new LightingBoltEffect(duration, segments, lineWidth);
 	}
 
 }

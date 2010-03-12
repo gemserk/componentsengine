@@ -16,10 +16,13 @@ public class LightingBoltEffect {
 
 	int currentTime;
 
-	public LightingBoltEffect(int time, Collection<Line> segments) {
+	private float lineWidth;
+
+	public LightingBoltEffect(int time, Collection<Line> segments, float lineWidth) {
 		this.totalTime = time;
 		this.segments = segments;
 		this.currentTime = time;
+		this.lineWidth = lineWidth;
 	}
 
 	public void update(int delta) {
@@ -37,7 +40,7 @@ public class LightingBoltEffect {
 
 		glPushMatrix();
 		glColor4f(alpha, alpha, alpha, alpha);
-		glLineWidth(2.0f);
+		glLineWidth(lineWidth);
 
 		glBegin(GL_LINES);
 		{
