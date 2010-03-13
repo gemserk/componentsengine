@@ -3,7 +3,7 @@ package com.gemserk.componentsengine.components;
 import com.gemserk.componentsengine.entities.Entity;
 import com.gemserk.componentsengine.messages.Message;
 
-public abstract class Component implements MessageHandler {
+public class Component implements MessageHandler {
 	
 	protected String id;
 	

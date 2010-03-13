@@ -124,5 +124,9 @@ public class EffectFactory {
 
 		return new LightingBoltEffect(duration, segments, lineWidth);
 	}
+	
+	public static BeamEffect beamEffect(int time, Vector2f start, Vector2f end, float startWidth, float endWidth, Color color) {
+		return new BeamEffect(time, start, end, startWidth, endWidth, color);
+	}
 
 }

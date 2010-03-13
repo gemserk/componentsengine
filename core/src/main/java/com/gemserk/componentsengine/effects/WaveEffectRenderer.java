@@ -18,7 +18,7 @@ public class WaveEffectRenderer {
 
 	float lineWidth = 1.0f;
 
-	public Color lineColor = new Color(1, 1, 1, 1);
+	public Color lineColor = new Color(1f, 1f, 1f, 1f);
 
 	float pointSize = 2.0f;
 
@@ -30,20 +30,20 @@ public class WaveEffectRenderer {
 
 	public void render(WaveParticleEffect waveEffect) {
 
+		float medium = waveEffect.vertexCount * separation / 2f;
+
 		glPushMatrix();
 		glLineWidth(lineWidth);
 		glTranslate(translation);
 		glRotatef(angle, 0f, 0f, 1f);
 		glBegin(GL_LINE_STRIP);
+		{
+			glColor(lineColor);
 
-		glColor(lineColor);
-
-		float medium = waveEffect.vertexCount * separation / 2f;
-
-		for (int i = 0; i < waveEffect.vertexCount; i++) {
-			glVertex2f(i * separation - medium, waveEffect.yVector[i]);
+			for (int i = 0; i < waveEffect.vertexCount; i++) {
+				glVertex2f(i * separation - medium, waveEffect.yVector[i]);
+			}
 		}
-
 		glEnd();
 		glPopMatrix();
 
@@ -52,13 +52,13 @@ public class WaveEffectRenderer {
 		glTranslate(translation);
 		glRotatef(angle, 0f, 0f, 1f);
 		glBegin(GL_POINTS);
+		{
+			glColor(pointsColor);
 
-		glColor(pointsColor);
-
-		for (int i = 0; i < waveEffect.vertexCount; i++) {
-			glVertex2f(i * separation - medium, waveEffect.yVector[i]);
+			for (int i = 0; i < waveEffect.vertexCount; i++) {
+				glVertex2f(i * separation - medium, waveEffect.yVector[i]);
+			}
 		}
-
 		glEnd();
 
 		glPopMatrix();

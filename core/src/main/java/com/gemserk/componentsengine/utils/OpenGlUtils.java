@@ -10,23 +10,45 @@ public class OpenGlUtils {
 	/**
 	 * Renders a rectangle of width and height centered on position rotated by angle
 	 * @param position the center of the rectangle
+	 * @param length
 	 * @param width
-	 * @param height
 	 * @param angle
 	 * @param color
 	 */
-	public static void renderRectangle(Vector2f position, float width, float height, float angle, Color color) {
+	public static void renderRectangle(Vector2f position, float length, float width, float angle, Color color) {
+		renderPolygon(position, length, width, width, angle, color);
+	}
+	
+	/** Renders a rectangle from start to end with the width and color specified. 
+	 * @param start
+	 * @param end
+	 * @param width
+	 * @param color
+	 */
+	public void renderLine(Vector2f start, Vector2f end, float width, Color color) {
+
+		Vector2f difference = end.copy().sub(start);
+
+		float length = difference.length();
+		float angle = (float) difference.getTheta();
+
+		Vector2f midpoint = difference.copy().scale(0.5f).add(start);
+
+		OpenGlUtils.renderRectangle(midpoint, length, width, angle, color);
+	}
+	
+	public static void renderPolygon(Vector2f position, float length, float startWidth, float endWidth, float angle, Color color) {
 		glPushMatrix();
 		{
-			glColor(color);
+			OpenGlUtils.glColor(color);
 			glTranslatef(position.x, position.y, 0);
 			glRotatef(angle, 0, 0, 1);
 			glBegin(GL_QUADS);
 			{
-				glVertex3f(-width / 2, -height / 2, 0);
-				glVertex3f(-width / 2, height / 2, 0);
-				glVertex3f(width / 2, height / 2, 0);
-				glVertex3f(width / 2, -height / 2, 0);
+				glVertex3f(-length / 2, -startWidth / 2, 0);
+				glVertex3f(-length / 2, startWidth / 2, 0);
+				glVertex3f(length / 2, endWidth / 2, 0);
+				glVertex3f(length / 2, -endWidth / 2, 0);
 			}
 			glEnd();
 		}
