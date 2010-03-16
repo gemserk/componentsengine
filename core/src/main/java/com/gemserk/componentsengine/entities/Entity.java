@@ -1,27 +1,13 @@
 package com.gemserk.componentsengine.entities;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.Map.Entry;
 
-import com.gemserk.componentsengine.components.Component;
-import com.gemserk.componentsengine.components.ComponentsHolder;
-import com.gemserk.componentsengine.components.ComponentsHolderImpl;
-import com.gemserk.componentsengine.components.MessageHandler;
+import com.gemserk.componentsengine.components.*;
 import com.gemserk.componentsengine.messages.Message;
-import com.gemserk.componentsengine.properties.PropertiesHolder;
-import com.gemserk.componentsengine.properties.PropertiesHolderImpl;
-import com.gemserk.componentsengine.properties.Property;
+import com.gemserk.componentsengine.properties.*;
 import com.google.common.base.Predicate;
-import com.google.common.collect.HashMultiset;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Multiset;
+import com.google.common.collect.*;
 
 public class Entity implements PropertiesHolder, MessageHandler, ComponentsHolder {
 
@@ -45,6 +31,10 @@ public class Entity implements PropertiesHolder, MessageHandler, ComponentsHolde
 
 	public String getId() {
 		return id;
+	}
+	
+	public Map<String, Entity> getChildren() {
+		return children;
 	}
 
 	public void addComponent(Component component) {
