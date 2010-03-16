@@ -32,7 +32,7 @@ public class Entity implements PropertiesHolder, MessageHandler, ComponentsHolde
 	public String getId() {
 		return id;
 	}
-	
+
 	public Map<String, Entity> getChildren() {
 		return children;
 	}
@@ -70,9 +70,13 @@ public class Entity implements PropertiesHolder, MessageHandler, ComponentsHolde
 			times.add(component.getId(), (int) endTime);
 		}
 
-		for (Entity child : children.values()) {
-			child.handleMessage(message);
+		if (message.shouldPropagate()) {
+			for (Entity child : children.values()) {
+				child.handleMessage(message);
+			}
 		}
+		
+		message.enablePropagation();
 
 	}
 
@@ -151,15 +155,14 @@ public class Entity implements PropertiesHolder, MessageHandler, ComponentsHolde
 	}
 
 	public void removeFromParent() {
-		if (parent!=null)
+		if (parent != null)
 			parent.removeEntity(this);
 	}
-	
-	public Entity getRoot(){
-		if(parent == null)
+
+	public Entity getRoot() {
+		if (parent == null)
 			return this;
-		
+
 		return parent.getRoot();
 	}
 }
-

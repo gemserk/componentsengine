@@ -110,7 +110,7 @@ public class GemserkGameState extends BasicGameState {
 
 		builderUtils.addCustomUtil("templateProvider", injector.getInstance(TemplateProvider.class));
 		builderUtils.addCustomUtil("game", injector.getInstance(Game.class));
-
+		builderUtils.addCustomUtil("messageQueue", messageQueue);
 		// slick utils
 		builderUtils.addCustomUtil("gameStateManager", stateBasedGame);
 		builderUtils.addCustomUtil("gameContainer", container);

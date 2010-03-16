@@ -21,6 +21,6 @@ public class SimpleProperty<T extends Object> implements Property<T> {
 	
 	@Override
 	public String toString() {
-		return "PROP: " + value.toString();
+		return "PROP: " + value;
 	}
 }

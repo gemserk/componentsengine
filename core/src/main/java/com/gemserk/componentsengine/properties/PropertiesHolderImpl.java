@@ -34,4 +34,9 @@ public class PropertiesHolderImpl implements PropertiesHolder {
 		return properties;
 	}
 	
+	
+	@Override
+	public String toString() {
+		return properties.toString();
+	}
 }
