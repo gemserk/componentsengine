@@ -173,12 +173,13 @@ public class GroovyEntityBuilder {
 
 		// / calls to builder
 
-		public Entity entity(Closure closure) {
-			return builder.entity(closure);
-		}
 
 		public Entity entity(String id, Closure closure) {
-			return builder.entity(id, closure);
+			Entity newEntity = new Entity(id);
+			closure.setDelegate(new BuilderContext(newEntity, GroovyEntityBuilder.this));
+			closure.setResolveStrategy(Closure.DELEGATE_FIRST);
+			closure.call();
+			return newEntity;
 		}
 
 	}
@@ -230,5 +231,4 @@ public class GroovyEntityBuilder {
 
 		return entity;
 	}
-
 }

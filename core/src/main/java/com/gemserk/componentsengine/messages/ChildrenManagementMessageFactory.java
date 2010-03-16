@@ -7,6 +7,10 @@ public class ChildrenManagementMessageFactory  {
 	public static Message addEntity(Entity entitytoadd, String whereEntityId) {
 		return new AddEntityMessage(entitytoadd, whereEntityId);
 	}
+	
+	public static Message addEntity(Entity entitytoadd, Entity whereEntity) {
+		return addEntity(entitytoadd, whereEntity.getId());
+	}
 
 	public static Message removeEntity(Entity entityToRemove) {
 		return new RemoveEntityMessage(entityToRemove);
