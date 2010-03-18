@@ -25,7 +25,7 @@ public class OpenGlUtils {
 	 * @param width
 	 * @param color
 	 */
-	public void renderLine(Vector2f start, Vector2f end, float width, Color color) {
+	public static void renderLine(Vector2f start, Vector2f end, float width, Color color) {
 
 		Vector2f difference = end.copy().sub(start);
 
