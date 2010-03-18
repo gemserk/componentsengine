@@ -1,15 +1,18 @@
 package com.gemserk.componentsengine.entities;
 
-import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.sameInstance;
 import static org.junit.Assert.assertThat;
 
-import org.jmock.*;
+import org.jmock.Expectations;
+import org.jmock.Mockery;
 import org.jmock.integration.junit4.JMock;
 import org.jmock.lib.legacy.ClassImposteriser;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import com.gemserk.componentsengine.components.*;
+import com.gemserk.componentsengine.components.Component;
+import com.gemserk.componentsengine.components.ComponentsHolderImpl;
 import com.gemserk.componentsengine.messages.Message;
 
 @RunWith(JMock.class)
@@ -87,6 +90,9 @@ public class EntityTest {
 
 		context.checking(new Expectations() {
 			{
+				oneOf(message).shouldPropagate();
+				will(returnValue(true));
+				oneOf(message).enablePropagation();
 				ignoring(component1).getId();
 				ignoring(component2).getId();
 				oneOf(component1).handleMessage(message);
