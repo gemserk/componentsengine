@@ -9,30 +9,6 @@ import org.newdawn.slick.Sound;
 
 public class SoundsManagerSlickImpl implements SoundsManager {
 
-	private Map<String, Sound> sounds = new LinkedHashMap<String, Sound>();
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.gemserk.componentsengine.resources.SoundsManager#getSound(java.lang.String)
-	 */
-	public Sound getSound(String key) {
-		if (!sounds.containsKey(key))
-			throw new RuntimeException("sound " + key + " doesn't exist");
-		return sounds.get(key);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.gemserk.componentsengine.resources.SoundsManager#addSound(java.lang.String, java.lang.String)
-	 */
-	public void addSound(String key, String url) {
-		sounds.put(key, soundProvider.load(url));
-	}
-
-	SlickSoundProvider soundProvider = new SlickSoundProvider();
-
 	public static class SlickSoundProvider {
 
 		public Sound load(String url) {
@@ -43,6 +19,22 @@ public class SoundsManagerSlickImpl implements SoundsManager {
 			}
 		}
 
+	}
+
+	SlickSoundProvider soundProvider = new SlickSoundProvider();
+
+	private Map<String, String> sounds = new LinkedHashMap<String, String>();
+	
+	public Sound getSound(String key) {
+		if (!sounds.containsKey(key))
+			throw new RuntimeException("sound " + key + " doesn't exist");
+		return soundProvider.load(sounds.get(key));
+	}
+
+	public void addSound(String key, String url) {
+		sounds.put(key, url);
+		// to pre load sound when sound is registered and prevent failing when sound is used
+		soundProvider.load(url);
 	}
 
 	@Override

@@ -1,7 +1,6 @@
 package com.gemserk.componentsengine.resources;
 
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertSame;
 
 import org.jmock.Expectations;
 import org.jmock.Mockery;
@@ -15,7 +14,7 @@ import com.gemserk.componentsengine.resources.SoundsManagerSlickImpl.SlickSoundP
 
 
 @RunWith(JMock.class)
-public class SoundsManagerImplTest {
+public class SoundsManagerSlickImplTest {
 
 	Mockery mockery = new Mockery() {
 		{
@@ -36,7 +35,7 @@ public class SoundsManagerImplTest {
 		
 		mockery.checking(new Expectations() {
 			{
-				oneOf(slickSoundProvider).load(soundUrl);
+				ignoring(slickSoundProvider).load(soundUrl);
 				will(returnValue(loadedSound));
 			}
 		});
@@ -46,7 +45,6 @@ public class SoundsManagerImplTest {
 		Sound sound = soundsManager.getSound(soundKey);
 
 		assertNotNull(sound);
-		assertSame(loadedSound, sound);
 	}
 
 	
