@@ -2,11 +2,11 @@ package com.gemserk.componentsengine.gamestates;
 
 import groovy.lang.Closure;
 
-import org.newdawn.slick.Color;
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Input;
-import org.newdawn.slick.SlickException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Map;
+
+import org.newdawn.slick.*;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -20,28 +20,11 @@ import com.gemserk.componentsengine.genericproviders.GenericProvider;
 import com.gemserk.componentsengine.genericproviders.ValueFromClosure;
 import com.gemserk.componentsengine.input.MonitorFactory;
 import com.gemserk.componentsengine.input.SlickMonitorFactory;
-import com.gemserk.componentsengine.messages.GenericMessage;
-import com.gemserk.componentsengine.messages.MessageQueue;
-import com.gemserk.componentsengine.messages.MessageQueueImpl;
-import com.gemserk.componentsengine.messages.SlickRenderMessage;
-import com.gemserk.componentsengine.messages.UpdateMessage;
-import com.gemserk.componentsengine.resources.AnimationManager;
-import com.gemserk.componentsengine.resources.AnimationManagerImpl;
-import com.gemserk.componentsengine.resources.ImageManager;
-import com.gemserk.componentsengine.resources.ImageManagerImpl;
-import com.gemserk.componentsengine.resources.PropertiesImageLoader;
-import com.gemserk.componentsengine.templates.CachedScriptProvider;
-import com.gemserk.componentsengine.templates.GroovyScriptProvider;
-import com.gemserk.componentsengine.templates.GroovyScriptProviderImpl;
-import com.gemserk.componentsengine.templates.GroovyTemplateProvider;
-import com.gemserk.componentsengine.templates.TemplateProvider;
-import com.gemserk.componentsengine.triggers.ClosureTrigger;
-import com.gemserk.componentsengine.triggers.GroovySingleGenericMessageTrigger;
-import com.gemserk.componentsengine.triggers.Trigger;
-import com.google.inject.AbstractModule;
-import com.google.inject.Guice;
-import com.google.inject.Injector;
-import com.google.inject.Singleton;
+import com.gemserk.componentsengine.messages.*;
+import com.gemserk.componentsengine.resources.*;
+import com.gemserk.componentsengine.templates.*;
+import com.gemserk.componentsengine.triggers.*;
+import com.google.inject.*;
 
 public class GemserkGameState extends BasicGameState {
 
@@ -99,6 +82,7 @@ public class GemserkGameState extends BasicGameState {
 
 				bind(ImageManager.class).to(ImageManagerImpl.class).in(Singleton.class);
 				bind(AnimationManager.class).to(AnimationManagerImpl.class).in(Singleton.class);
+				bind(SoundsManager.class).to(SoundsManagerSlickImpl.class).in(Singleton.class);
 
 				bind(TemplateProvider.class).toInstance(new GroovyTemplateProvider());
 			}
@@ -169,6 +153,18 @@ public class GemserkGameState extends BasicGameState {
 		propertiesImageLoader.load();
 		long loadTime = System.currentTimeMillis() - loadIni;
 		System.out.println("Loaded images (" + imagePropertiesFile + "): " + loadTime);
+	}
+	
+	public void sounds(String soundsPropertiesFile) {
+		SoundsManager soundsManager = injector.getInstance(SoundsManager.class);
+		try {
+			java.util.Properties soundsProperties = new java.util.Properties();
+			InputStream soundsInputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(soundsPropertiesFile);
+			soundsProperties.load(soundsInputStream);
+			soundsManager.addSounds((Map)soundsProperties);
+		} catch (IOException e) {
+			throw new RuntimeException("failed to load sounds from " + soundsPropertiesFile, e);
+		}
 	}
 
 	@Override

@@ -2,28 +2,17 @@ package com.gemserk.componentsengine.builders;
 
 import groovy.lang.Closure;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
-import org.newdawn.slick.Animation;
-import org.newdawn.slick.Color;
-import org.newdawn.slick.Font;
-import org.newdawn.slick.Image;
-import org.newdawn.slick.SlickException;
-import org.newdawn.slick.Sound;
-import org.newdawn.slick.TrueTypeFont;
+import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Vector2f;
 
 import com.gemserk.componentsengine.components.Component;
 import com.gemserk.componentsengine.entities.Entity;
 import com.gemserk.componentsengine.entities.Root;
-import com.gemserk.componentsengine.messages.GenericMessage;
-import com.gemserk.componentsengine.messages.Message;
-import com.gemserk.componentsengine.messages.MessageQueue;
-import com.gemserk.componentsengine.resources.AnimationManager;
-import com.gemserk.componentsengine.resources.ImageManager;
+import com.gemserk.componentsengine.messages.*;
+import com.gemserk.componentsengine.resources.*;
 import com.gemserk.componentsengine.utils.Container;
 import com.gemserk.componentsengine.utils.Interval;
 import com.google.inject.Inject;
@@ -35,9 +24,13 @@ public class BuilderUtils {
 
 	@Inject
 	ImageManager imageManager;
+	
 	@Inject
 	AnimationManager animationManager;
-
+	
+	@Inject
+	SoundsManager soundsManager;
+	
 	public void addCustomUtil(String key, Object value) {
 		custom.put(key, value);
 	}
@@ -129,14 +122,8 @@ public class BuilderUtils {
 
 		public class SoundUtils {
 
-			public Sound sound(String url) {
-
-				try {
-					return new Sound(url);
-				} catch (SlickException e) {
-					throw new RuntimeException(e.getMessage(), e);
-				}
-
+			public Sound sound(String key) {
+				return soundsManager.getSound(key);
 			}
 
 		}
