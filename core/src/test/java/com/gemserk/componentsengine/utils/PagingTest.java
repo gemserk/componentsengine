@@ -6,7 +6,7 @@ import static org.junit.Assert.assertThat;
 import org.hamcrest.core.IsEqual;
 import org.junit.Test;
 
-
+@SuppressWarnings("unchecked")
 public class PagingTest {
 
 	@Test
@@ -14,19 +14,19 @@ public class PagingTest {
 		Paging paging = new Paging(new Object[] {}, 2);
 		assertEquals(0, paging.getTotalPages());
 
-		paging = new Paging(new Object[] {0, 1}, 2);
+		paging = new Paging(new Object[] { 0, 1 }, 2);
 		assertEquals(1, paging.getTotalPages());
 
-		paging = new Paging(new Object[] {0, 1, 2}, 2);
+		paging = new Paging(new Object[] { 0, 1, 2 }, 2);
 		assertEquals(2, paging.getTotalPages());
 
-		paging = new Paging(new Object[] {0, 1, 2, 3}, 2);
+		paging = new Paging(new Object[] { 0, 1, 2, 3 }, 2);
 		assertEquals(2, paging.getTotalPages());
-		
-		paging = new Paging(new Object[] {0, 1, 2, 3, 4}, 2);
+
+		paging = new Paging(new Object[] { 0, 1, 2, 3, 4 }, 2);
 		assertEquals(3, paging.getTotalPages());
 	}
-	
+
 	@Test
 	public void shouldInitWithValues() {
 		Object[] items = {};
@@ -46,25 +46,25 @@ public class PagingTest {
 		int itemsPerPage = 2;
 
 		Paging paging = new Paging(items, itemsPerPage);
-		
+
 		assertEquals(4, paging.getTotalItems());
 
 		Integer item = (Integer) paging.getItem(0);
 		assertEquals(1, item.intValue());
-		
+
 		paging.nextPage();
 		item = (Integer) paging.getItem(0);
 		assertEquals(3, item.intValue());
-		
+
 		item = (Integer) paging.getItem(1);
 		assertEquals(4, item.intValue());
-		
+
 		paging.previousPage();
 
 		item = (Integer) paging.getItem(0);
 		assertEquals(1, item.intValue());
 	}
-	
+
 	@Test
 	public void shouldNotIncrementCurrentPageWhenIsInLastPage() {
 		Object[] items = { 1, 2, 3, 4 };
@@ -79,7 +79,7 @@ public class PagingTest {
 		assertEquals(1, paging.getCurrentPage());
 
 	}
-	
+
 	@Test
 	public void shouldNotDecrementCurrentPageWhenIsInFirstPage() {
 		Object[] items = { 1, 2, 3, 4 };
@@ -92,7 +92,7 @@ public class PagingTest {
 		assertEquals(0, paging.getCurrentPage());
 
 	}
-	
+
 	@Test
 	public void shouldNotReturnItemFromPageWhenNotExist() {
 		Object[] items = { 1, 2, 3 };
