@@ -8,9 +8,9 @@ import org.jmock.integration.junit4.JMock;
 import org.jmock.lib.legacy.ClassImposteriser;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.newdawn.slick.Sound;
 
 import com.gemserk.componentsengine.resources.SoundsManagerSlickImpl.SlickSoundProvider;
+import com.gemserk.componentsengine.sounds.Sound;
 
 
 @RunWith(JMock.class)

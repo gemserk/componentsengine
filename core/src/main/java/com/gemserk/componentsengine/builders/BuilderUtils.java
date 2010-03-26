@@ -13,6 +13,7 @@ import com.gemserk.componentsengine.entities.Entity;
 import com.gemserk.componentsengine.entities.Root;
 import com.gemserk.componentsengine.messages.*;
 import com.gemserk.componentsengine.resources.*;
+import com.gemserk.componentsengine.sounds.Sound;
 import com.gemserk.componentsengine.utils.Container;
 import com.gemserk.componentsengine.utils.Interval;
 import com.google.inject.Inject;

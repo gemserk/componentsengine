@@ -2,7 +2,7 @@ package com.gemserk.componentsengine.resources;
 
 import java.util.Map;
 
-import org.newdawn.slick.Sound;
+import com.gemserk.componentsengine.sounds.Sound;
 
 public interface SoundsManager {
 
