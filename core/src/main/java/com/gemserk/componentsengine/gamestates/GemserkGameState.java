@@ -6,9 +6,18 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
 
-import org.newdawn.slick.*;
+import org.newdawn.slick.Color;
+import org.newdawn.slick.GameContainer;
+import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Input;
+import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
+
+import paulscode.sound.SoundSystemConfig;
+import paulscode.sound.codecs.CodecJOrbis;
+import paulscode.sound.codecs.CodecWav;
+import paulscode.sound.libraries.LibraryJavaSound;
 
 import com.gemserk.componentsengine.builders.BuilderUtils;
 import com.gemserk.componentsengine.components.ChildrenManagementComponent;
@@ -20,11 +29,31 @@ import com.gemserk.componentsengine.genericproviders.GenericProvider;
 import com.gemserk.componentsengine.genericproviders.ValueFromClosure;
 import com.gemserk.componentsengine.input.MonitorFactory;
 import com.gemserk.componentsengine.input.SlickMonitorFactory;
-import com.gemserk.componentsengine.messages.*;
-import com.gemserk.componentsengine.resources.*;
-import com.gemserk.componentsengine.templates.*;
-import com.gemserk.componentsengine.triggers.*;
-import com.google.inject.*;
+import com.gemserk.componentsengine.messages.GenericMessage;
+import com.gemserk.componentsengine.messages.MessageQueue;
+import com.gemserk.componentsengine.messages.MessageQueueImpl;
+import com.gemserk.componentsengine.messages.SlickRenderMessage;
+import com.gemserk.componentsengine.messages.UpdateMessage;
+import com.gemserk.componentsengine.resources.AnimationManager;
+import com.gemserk.componentsengine.resources.AnimationManagerImpl;
+import com.gemserk.componentsengine.resources.ImageManager;
+import com.gemserk.componentsengine.resources.ImageManagerImpl;
+import com.gemserk.componentsengine.resources.PaulsSoundSystemSoundsManager;
+import com.gemserk.componentsengine.resources.PropertiesImageLoader;
+import com.gemserk.componentsengine.resources.SoundsManager;
+import com.gemserk.componentsengine.resources.SoundsManagerSlickImpl;
+import com.gemserk.componentsengine.templates.CachedScriptProvider;
+import com.gemserk.componentsengine.templates.GroovyScriptProvider;
+import com.gemserk.componentsengine.templates.GroovyScriptProviderImpl;
+import com.gemserk.componentsengine.templates.GroovyTemplateProvider;
+import com.gemserk.componentsengine.templates.TemplateProvider;
+import com.gemserk.componentsengine.triggers.ClosureTrigger;
+import com.gemserk.componentsengine.triggers.GroovySingleGenericMessageTrigger;
+import com.gemserk.componentsengine.triggers.Trigger;
+import com.google.inject.AbstractModule;
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+import com.google.inject.Singleton;
 
 public class GemserkGameState extends BasicGameState {
 
@@ -82,12 +111,14 @@ public class GemserkGameState extends BasicGameState {
 
 				bind(ImageManager.class).to(ImageManagerImpl.class).in(Singleton.class);
 				bind(AnimationManager.class).to(AnimationManagerImpl.class).in(Singleton.class);
-				bind(SoundsManager.class).to(SoundsManagerSlickImpl.class).in(Singleton.class);
+				bind(SoundsManager.class).to(PaulsSoundSystemSoundsManager.class).in(Singleton.class);
 
 				bind(TemplateProvider.class).toInstance(new GroovyTemplateProvider());
 			}
 		});
 
+		
+		
 		messageQueue = injector.getInstance(MessageQueue.class);
 		game = injector.getInstance(Game.class);
 		final BuilderUtils builderUtils = injector.getInstance(BuilderUtils.class);

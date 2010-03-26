@@ -90,6 +90,14 @@
 			<artifactId>jinput</artifactId>
 			<version>2.3.0-GEMSERK</version>
 		</dependency>
+		<dependency>
+			<groupId>com.paulscode.soundsystem</groupId>
+			<artifactId>soundsystem</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.paulscode.soundsystem</groupId>
+			<artifactId>codecjorbis</artifactId>
+		</dependency>
 	</dependencies>
 
 </project>
