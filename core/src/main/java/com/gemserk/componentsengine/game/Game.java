@@ -16,6 +16,10 @@ public class Game implements MessageHandler {
 	
 	@Inject @Root 
 	Entity rootEntity;
+	
+	public void setRootEntity(Entity rootEntity) {
+		this.rootEntity = rootEntity;
+	}
 
 	public void loadScene(String sceneName) {
 

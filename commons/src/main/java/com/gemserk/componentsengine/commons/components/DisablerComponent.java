@@ -15,6 +15,10 @@ public class DisablerComponent extends Component {
 	private final Component component;
 	
 	@Inject Injector injector;
+	
+	public void setInjector(Injector injector) {
+		this.injector = injector;
+	}
 
 	public DisablerComponent(Component component) {
 		super(component.getId());
