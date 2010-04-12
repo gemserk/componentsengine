@@ -12,7 +12,7 @@ import com.gemserk.componentsengine.triggers.Trigger;
 
 public class WeaponComponent extends ReflectionComponent {
 
-	PropertyLocator<Entity> targetEntityProperty;
+	PropertyLocator<Boolean> shouldFireProperty;
 
 	PropertyLocator<Vector2f> positionProperty;
 
@@ -24,7 +24,7 @@ public class WeaponComponent extends ReflectionComponent {
 	
 	public WeaponComponent(String id) {
 		super(id);
-		targetEntityProperty = property(id, "targetEntity");
+		shouldFireProperty = property(id, "shouldFire");
 		positionProperty = property(id, "position");
 		reloadTimeProperty = property(id, "reloadTime");
 		currentReloadTimeProperty = property(id, "currentReloadTime");
@@ -47,8 +47,7 @@ public class WeaponComponent extends ReflectionComponent {
 			return;
 		}
 
-		Entity targetEntity = targetEntityProperty.getValue(entity);
-		if (targetEntity == null)
+		if (!shouldFireProperty.getValue(entity))
 			return;
 
 		Trigger trigger = triggerProperty.getValue(entity);
