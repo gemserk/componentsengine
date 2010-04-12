@@ -83,12 +83,12 @@
 		<dependency>
 			<groupId>lwjgl</groupId>
 			<artifactId>lwjgl</artifactId>
-			<version>2.3.0-GEMSERK</version>
+			<version>2.4.0-GEMSERK</version>
 		</dependency>
 		<dependency>
 			<groupId>lwjgl</groupId>
 			<artifactId>jinput</artifactId>
-			<version>2.3.0-GEMSERK</version>
+			<version>2.4.0-GEMSERK</version>
 		</dependency>
 		<dependency>
 			<groupId>com.paulscode.soundsystem</groupId>
