@@ -63,6 +63,9 @@ public class Entity implements PropertiesHolder, MessageHandler, ComponentsHolde
 	public void handleMessage(Message message) {
 
 		for (Entry<String, Component> entry : componentsHolder.getComponents().entrySet()) {
+			if(!message.shouldProcess())
+				break;
+			
 			Component component = entry.getValue();
 			long iniTime = System.currentTimeMillis();
 			component.handleMessage(message);
@@ -77,7 +80,7 @@ public class Entity implements PropertiesHolder, MessageHandler, ComponentsHolde
 		}
 		
 		message.enablePropagation();
-
+		message.enableProcessing();
 	}
 
 	public boolean hasTag(String tag) {
