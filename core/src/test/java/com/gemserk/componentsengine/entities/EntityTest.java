@@ -90,11 +90,14 @@ public class EntityTest {
 
 		context.checking(new Expectations() {
 			{
-				oneOf(message).shouldPropagate();
+				ignoring(message).shouldProcess();will(returnValue(true));
+				oneOf(message).shouldPropagate();will(returnValue(true));
 				will(returnValue(true));
+				ignoring(message).enableProcessing();
 				oneOf(message).enablePropagation();
 				ignoring(component1).getId();
 				ignoring(component2).getId();
+				
 				oneOf(component1).handleMessage(message);
 				oneOf(component2).handleMessage(message);
 			}
