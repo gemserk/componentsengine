@@ -2,11 +2,12 @@ package com.gemserk.componentsengine.commons.components;
 
 import java.text.MessageFormat;
 
-import org.newdawn.slick.*;
+import org.newdawn.slick.Color;
+import org.newdawn.slick.Font;
+import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Vector2f;
 
 import com.gemserk.componentsengine.annotations.EntityProperty;
-import com.gemserk.componentsengine.commons.components.FieldsReflectionComponent;
 import com.gemserk.componentsengine.messages.SlickRenderMessage;
 
 public class LabelComponent extends FieldsReflectionComponent {
@@ -26,6 +27,12 @@ public class LabelComponent extends FieldsReflectionComponent {
 	@EntityProperty(readOnly = true, required = false)
 	Object value = null;
 
+	@EntityProperty(readOnly = true, required = false)
+	String align = "center";
+
+	@EntityProperty(readOnly = true, required = false)
+	String valign = "center";
+	
 	public LabelComponent(String id) {
 		super(id);
 	}
@@ -48,11 +55,25 @@ public class LabelComponent extends FieldsReflectionComponent {
 		if (font != null)
 			g.setFont(font);
 
+		float left = 0.0f;
+
+		if (align.equals("center"))
+			left = -textWidth / 2;
+		else if (align.equals("right"))
+			left = -textWidth;
+		
+		float top = 0.0f;
+
+		if (valign.equals("center"))
+			top = -textHeight / 2;
+		else if (valign.equals("bottom"))
+			top = -textHeight;
+		
 		g.pushTransform();
 		{
 			g.setColor(color);
 			g.translate(position.x, position.y);
-			g.drawString(text, -textWidth / 2, -textHeight / 2);
+			g.drawString(text, left, top);
 		}
 		g.popTransform();
 
