@@ -55,4 +55,9 @@ public class SoundsManagerSlickImpl implements SoundsManager {
 			addSound(soundEntry.getKey(), soundEntry.getValue());
 	}
 
+	@Override
+	public Sound getSound(String key, boolean priority, boolean toLoop) {
+		throw new UnsupportedOperationException("not implemented");
+	}
+
 }

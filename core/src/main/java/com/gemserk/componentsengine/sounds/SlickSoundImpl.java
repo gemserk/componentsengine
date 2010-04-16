@@ -18,5 +18,10 @@ public class SlickSoundImpl implements Sound {
 		slickSound.play(pitch, volume);
 	}
 
+	@Override
+	public void stop() {
+		slickSound.stop();
+	}
+
 	
 }

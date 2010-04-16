@@ -10,4 +10,9 @@ public class NullSoundImpl implements Sound {
 	public void play(float pitch, float volume) {
 	}
 
+	@Override
+	public void stop() {
+		
+	}
+
 }
