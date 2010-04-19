@@ -32,12 +32,18 @@ public class BuilderUtils {
 	@Inject
 	SoundsManager soundsManager;
 	
+	Random random = new Random();
+	
 	public void addCustomUtil(String key, Object value) {
 		custom.put(key, value);
 	}
 
 	public Vector2f vector(float x, float y) {
 		return new Vector2f(x, y);
+	}
+	
+	public Vector2f randomVector(Rectangle rectangle){
+		return new Vector2f(rectangle.getMinX()+random.nextFloat()*rectangle.getWidth(),rectangle.getMinY()+random.nextFloat()*rectangle.getHeight());
 	}
 
 	public Interval interval(int min, int max) {
