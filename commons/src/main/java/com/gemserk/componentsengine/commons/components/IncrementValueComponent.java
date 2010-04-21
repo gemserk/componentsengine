@@ -13,6 +13,9 @@ public class IncrementValueComponent extends FieldsReflectionComponent {
 
 	@EntityProperty(readOnly=true)
 	Float increment;
+	
+	@EntityProperty(readOnly=true, required=false)
+	Boolean loop = true;
 
 	public IncrementValueComponent(String id) {
 		super(id);
@@ -21,8 +24,9 @@ public class IncrementValueComponent extends FieldsReflectionComponent {
 	public void handleMessage(UpdateMessage updateMessage) {
 		
 		value += increment * updateMessage.getDelta();
-		if (value > maxValue)
-			value -= maxValue;
+		if (value > maxValue){
+			value = loop ? value - maxValue : maxValue;
+		}
 		
 	}
 	
