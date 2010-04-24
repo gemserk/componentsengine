@@ -6,6 +6,10 @@ public interface Sound {
 	
 	void play(float pitch, float volume);
 	
+	void loop();
+	
 	void stop();
+	
+	boolean isPlaying();
 	
 }

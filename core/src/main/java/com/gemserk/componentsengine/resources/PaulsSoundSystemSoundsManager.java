@@ -10,7 +10,6 @@ import paulscode.sound.SoundSystemException;
 import paulscode.sound.codecs.CodecJOrbis;
 import paulscode.sound.codecs.CodecWav;
 import paulscode.sound.libraries.LibraryJavaSound;
-import paulscode.sound.libraries.LibraryLWJGLOpenAL;
 
 import com.gemserk.componentsengine.sounds.Sound;
 
@@ -61,7 +60,11 @@ public class PaulsSoundSystemSoundsManager implements SoundsManager {
 
 		@Override
 		public void play() {
-			soundSourceName = soundSystem.quickPlay(priority, soundsMapping.get(key), looped, 0, 0, 0, SoundSystemConfig.ATTENUATION_NONE, 0);
+			internalPlay(looped);
+		}
+
+		public void internalPlay(boolean loop) {
+			soundSourceName = soundSystem.quickPlay(priority, soundsMapping.get(key), loop, 0, 0, 0, SoundSystemConfig.ATTENUATION_NONE, 0);
 		}
 
 		@Override
@@ -70,6 +73,18 @@ public class PaulsSoundSystemSoundsManager implements SoundsManager {
 				return;
 			
 			soundSystem.stop(soundSourceName);
+		}
+
+		@Override
+		public boolean isPlaying() {
+			if(soundSourceName == null)
+				return false;
+			return soundSystem.playing(soundSourceName);
+		}
+
+		@Override
+		public void loop() {
+			internalPlay(true);
 		}
 	}
 

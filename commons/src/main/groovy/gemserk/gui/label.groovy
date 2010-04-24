@@ -19,14 +19,14 @@ builder.entity {
 		property("left", {(float)(entity.position.x + entity.bounds.minX)})
 	else if (align == "right") 
 		property("left", {(float)(entity.position.x + entity.bounds.maxX)})
-	else if (align == "center") 
+	else // center 
 		property("left", {(float)(entity.position.x)})
 	
 	if (valign == "top") 
 		property("top", {(float)(entity.position.y + entity.bounds.minY)})
 	else if (valign == "bottom") 
 		property("top", {(float)(entity.position.y + entity.bounds.maxY)})
-	else if (valign == "center") 
+	else // center
 		property("top", {(float)(entity.position.y)})
 	
 	

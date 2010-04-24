@@ -23,5 +23,15 @@ public class SlickSoundImpl implements Sound {
 		slickSound.stop();
 	}
 
+	@Override
+	public boolean isPlaying() {
+		return slickSound.playing();
+	}
+
+	@Override
+	public void loop() {
+		slickSound.loop();
+	}
+
 	
 }

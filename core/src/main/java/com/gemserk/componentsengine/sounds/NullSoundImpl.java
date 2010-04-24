@@ -15,4 +15,13 @@ public class NullSoundImpl implements Sound {
 		
 	}
 
+	@Override
+	public boolean isPlaying() {
+		return false;
+	}
+
+	@Override
+	public void loop() {
+	}
+
 }
