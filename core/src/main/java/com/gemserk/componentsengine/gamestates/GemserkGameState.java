@@ -14,11 +14,6 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
-import paulscode.sound.SoundSystemConfig;
-import paulscode.sound.codecs.CodecJOrbis;
-import paulscode.sound.codecs.CodecWav;
-import paulscode.sound.libraries.LibraryJavaSound;
-
 import com.gemserk.componentsengine.builders.BuilderUtils;
 import com.gemserk.componentsengine.components.ChildrenManagementComponent;
 import com.gemserk.componentsengine.components.MessageHandler;
@@ -41,7 +36,6 @@ import com.gemserk.componentsengine.resources.ImageManagerImpl;
 import com.gemserk.componentsengine.resources.PaulsSoundSystemSoundsManager;
 import com.gemserk.componentsengine.resources.PropertiesImageLoader;
 import com.gemserk.componentsengine.resources.SoundsManager;
-import com.gemserk.componentsengine.resources.SoundsManagerSlickImpl;
 import com.gemserk.componentsengine.templates.CachedScriptProvider;
 import com.gemserk.componentsengine.templates.GroovyScriptProvider;
 import com.gemserk.componentsengine.templates.GroovyScriptProviderImpl;
@@ -213,5 +207,7 @@ public class GemserkGameState extends BasicGameState {
 	public void loadScene(String sceneName){
 		game.loadScene(sceneName);
 	}
+	
+	
 
 }
