@@ -2,17 +2,28 @@ package com.gemserk.componentsengine.builders;
 
 import groovy.lang.Closure;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
 
-import org.newdawn.slick.*;
+import org.newdawn.slick.Animation;
+import org.newdawn.slick.Color;
+import org.newdawn.slick.Font;
+import org.newdawn.slick.Image;
+import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Vector2f;
 
 import com.gemserk.componentsengine.components.Component;
 import com.gemserk.componentsengine.entities.Entity;
 import com.gemserk.componentsengine.entities.Root;
-import com.gemserk.componentsengine.messages.*;
-import com.gemserk.componentsengine.resources.*;
+import com.gemserk.componentsengine.messages.GenericMessage;
+import com.gemserk.componentsengine.messages.Message;
+import com.gemserk.componentsengine.messages.MessageQueue;
+import com.gemserk.componentsengine.resources.AnimationManager;
+import com.gemserk.componentsengine.resources.ImageManager;
+import com.gemserk.componentsengine.resources.SoundsManager;
 import com.gemserk.componentsengine.sounds.Sound;
 import com.gemserk.componentsengine.utils.Container;
 import com.gemserk.componentsengine.utils.Interval;
@@ -33,6 +44,8 @@ public class BuilderUtils {
 	SoundsManager soundsManager;
 	
 	Random random = new Random();
+
+	ResourceUtils resourceUtils = new ResourceUtils();
 	
 	public void addCustomUtil(String key, Object value) {
 		custom.put(key, value);
@@ -73,7 +86,7 @@ public class BuilderUtils {
 	}
 
 	public ResourceUtils getResources() {
-		return new ResourceUtils();
+		return resourceUtils;
 	}
 
 	public class ResourceUtils {
@@ -93,6 +106,8 @@ public class BuilderUtils {
 		}
 
 		public class FontUtils {
+			
+			private Map<String, Font> cachedFonts = new HashMap<String, Font>();
 
 			public Font font(Map<String, Object> parameters) {
 
@@ -104,6 +119,12 @@ public class BuilderUtils {
 			}
 
 			public Font font(boolean italic, boolean bold, int size) {
+				
+				String key = "i_" + italic + ",b_" + bold + ",s_" + size;
+				
+				Font cachedFont = cachedFonts.get(key);
+				if (cachedFont != null)
+					return cachedFont;
 
 				boolean antiAlias = true;
 
@@ -116,7 +137,9 @@ public class BuilderUtils {
 				if (bold)
 					defaultStyle |= java.awt.Font.BOLD;
 
-				return new TrueTypeFont(new java.awt.Font(defaultType, defaultStyle, size), antiAlias);
+				TrueTypeFont newFont = new TrueTypeFont(new java.awt.Font(defaultType, defaultStyle, size), antiAlias);
+				cachedFonts.put(key, newFont);
+				return newFont;
 			}
 
 		}
