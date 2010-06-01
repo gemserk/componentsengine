@@ -21,4 +21,8 @@ public class ReferenceProperty<T extends Object> implements Property<T> {
 		holder.getProperty(referencedPropertyName).set(value);
 	}
 
+	@Override
+	public String toString() {
+		return "REFPROP: " + referencedPropertyName;
+	}
 }

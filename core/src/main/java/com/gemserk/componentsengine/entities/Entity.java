@@ -36,6 +36,10 @@ public class Entity implements PropertiesHolder, MessageHandler, ComponentsHolde
 	public Map<String, Entity> getChildren() {
 		return children;
 	}
+	
+	public Map<String, Component> getComponents() {
+		return componentsHolder.getComponents();
+	}
 
 	public void addComponent(Component component) {
 		componentsHolder.addComponent(component);
@@ -72,7 +76,7 @@ public class Entity implements PropertiesHolder, MessageHandler, ComponentsHolde
 			long endTime = System.currentTimeMillis() - iniTime;
 			times.add(component.getId(), (int) endTime);
 		}
-
+		
 		if (message.shouldPropagate()) {
 			for (Entity child : children.values()) {
 				child.handleMessage(message);
