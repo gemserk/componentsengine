@@ -37,6 +37,11 @@ public class GenericMessage extends Message implements PropertiesHolder {
 	public Property<Object> getProperty(String key) {
 		return propertiesHolder.getProperty(key);
 	}
+	
+	@Override
+	public String toString() {
+		return "GenericMessage: " + getId();
+	}
 
 
 }

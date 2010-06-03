@@ -8,12 +8,13 @@ import java.util.Map.Entry;
 
 import com.gemserk.componentsengine.components.MessageHandler;
 import com.gemserk.componentsengine.messages.Message;
+import com.gemserk.componentsengine.messages.MessageQueue;
 import com.gemserk.componentsengine.messages.UpdateMessage;
 import com.google.inject.Inject;
 
 public class InputMapping implements MessageHandler {
-
-	MessageHandler handler;
+	
+	MessageQueue messageQueue;
 
 	List<InputAction> inputActions = new ArrayList<InputAction>();
 
@@ -42,8 +43,8 @@ public class InputMapping implements MessageHandler {
 	}
 
 	@Inject
-	public void setHandler(MessageHandler handler) {
-		this.handler = handler;
+	public void setMessageQueue(MessageQueue messageQueue) {
+		this.messageQueue = messageQueue;
 	}
 
 	@Override
@@ -59,7 +60,7 @@ public class InputMapping implements MessageHandler {
 			for (InputAction inputAction : inputActions) {
 				Message newMessage = inputAction.run();
 				if (newMessage != null) {
-					handler.handleMessage(newMessage);
+					messageQueue.enqueue(newMessage);
 				}
 			}
 		}
