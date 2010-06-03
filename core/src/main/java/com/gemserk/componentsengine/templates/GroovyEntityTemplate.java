@@ -5,6 +5,9 @@ import groovy.lang.Script;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Logger;
+
+import org.slf4j.LoggerFactory;
 
 import com.gemserk.componentsengine.builders.GroovyEntityBuilder;
 import com.gemserk.componentsengine.entities.Entity;
@@ -50,7 +53,7 @@ public class GroovyEntityTemplate implements EntityTemplate {
 		Binding binding = new Binding();
 		binding.setVariable("entityName", entityName);
 		binding.setVariable("parameters", parameters);
-		
+		binding.setVariable("log", LoggerFactory.getLogger(scriptClass.getName()));
 		binding.setVariable("builder", groovyEntityBuilder);
 		
 		return executeTemplate(this.scriptClass,binding);
