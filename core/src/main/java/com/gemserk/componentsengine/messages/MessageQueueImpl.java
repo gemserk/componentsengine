@@ -26,6 +26,7 @@ public class MessageQueueImpl implements MessageQueue {
 	
 	public void enqueueDelay(Message message) {
 		messages.add(message);
+		//messageHandler.handleMessage(message);
 	}
 
 

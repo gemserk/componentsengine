@@ -78,7 +78,8 @@ public class Entity implements PropertiesHolder, MessageHandler, ComponentsHolde
 		}
 		
 		if (message.shouldPropagate()) {
-			for (Entity child : children.values()) {
+			
+			for (Entity child : new LinkedList<Entity>(children.values())) {
 				child.handleMessage(message);
 			}
 		}
@@ -110,7 +111,8 @@ public class Entity implements PropertiesHolder, MessageHandler, ComponentsHolde
 
 	@Override
 	public String toString() {
-		return "Entity [id=" + id + ", tags=" + tags + ", components=" + componentsHolder.getComponents() + ", properties=" + propertiesHolder.getProperties() + ", children: " + children.size() + "]";
+		//return "Entity [id=" + id + ", tags=" + tags + ", components=" + componentsHolder.getComponents() + ", properties=" + propertiesHolder.getProperties() + ", children: " + children.size() + "]";
+		return "Entity [id=" + id + ", tags=" + tags + " children: " + children.size() + "]";
 	}
 
 	public Map<String, Property<Object>> getProperties() {
