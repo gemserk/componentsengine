@@ -21,6 +21,7 @@ import com.gemserk.componentsengine.entities.Root;
 import com.gemserk.componentsengine.messages.GenericMessage;
 import com.gemserk.componentsengine.messages.Message;
 import com.gemserk.componentsengine.messages.MessageQueue;
+import com.gemserk.componentsengine.properties.PropertiesMapBuilder;
 import com.gemserk.componentsengine.resources.AnimationManager;
 import com.gemserk.componentsengine.resources.ImageManager;
 import com.gemserk.componentsengine.resources.SoundsManager;
@@ -82,6 +83,11 @@ public class BuilderUtils {
 	public GenericMessage genericMessage(String id, Closure closure) {
 		GenericMessage genericMessage = new GenericMessage(id);
 		closure.call(genericMessage);
+		return genericMessage;
+	}
+	
+	public GenericMessage delayedMessage(int delay, Message delayedMessage) {
+		GenericMessage genericMessage = new GenericMessage("delayedMessage",new PropertiesMapBuilder().property("delay", delay).property("message", delayedMessage).build());
 		return genericMessage;
 	}
 

@@ -5,6 +5,8 @@ import groovy.lang.Closure;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
+import java.util.concurrent.Delayed;
+import java.util.concurrent.TimeUnit;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
@@ -16,6 +18,7 @@ import org.newdawn.slick.state.StateBasedGame;
 
 import com.gemserk.componentsengine.builders.BuilderUtils;
 import com.gemserk.componentsengine.components.ChildrenManagementComponent;
+import com.gemserk.componentsengine.components.DelayedMessagesComponent;
 import com.gemserk.componentsengine.components.MessageHandler;
 import com.gemserk.componentsengine.entities.Entity;
 import com.gemserk.componentsengine.entities.Root;
@@ -84,8 +87,8 @@ public class GemserkGameState extends BasicGameState {
 		this.stateBasedGame = stateBasedGame;
 
 		final Entity rootEntity = new Entity("root");
-		rootEntity.addComponent(new ChildrenManagementComponent("childrenManagementComponent"));
-
+		
+		
 		injector = Guice.createInjector(new AbstractModule() {
 			
 
@@ -110,7 +113,12 @@ public class GemserkGameState extends BasicGameState {
 				bind(TemplateProvider.class).toInstance(new GroovyTemplateProvider());
 			}
 		});
-
+		ChildrenManagementComponent childrenManagementComponent = new ChildrenManagementComponent("childrenManagementComponent");
+		injector.injectMembers(childrenManagementComponent);
+		rootEntity.addComponent(childrenManagementComponent);
+		DelayedMessagesComponent delayedMessagesComponent = new DelayedMessagesComponent("delayedMessagesComponent");
+		injector.injectMembers(delayedMessagesComponent);
+		rootEntity.addComponent(delayedMessagesComponent);
 		
 		
 		messageQueue = injector.getInstance(MessageQueue.class);

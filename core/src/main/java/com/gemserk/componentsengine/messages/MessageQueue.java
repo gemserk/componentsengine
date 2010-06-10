@@ -9,5 +9,7 @@ public interface MessageQueue {
 	void enqueue(Message message);
 
 	void processMessages();
+
+	void enqueueDelay(Message message);
 	
 }
