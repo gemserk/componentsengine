@@ -23,9 +23,17 @@ public class ChildrenManagementComponent extends Component {
 	}
 
 	private void handleAddEntityMessage(AddEntityMessage addEntityMessage) {
-		Entity childEntity = entity.getEntityById(addEntityMessage.getWhereEntityId());
-		if (childEntity != null)
-			childEntity.addEntity(addEntityMessage.getEntity());
+		Entity newParentEntity = null;
+
+		String whereEntityId = addEntityMessage.getWhereEntityId();
+		
+		if (entity.getId().equals(whereEntityId))
+			newParentEntity = entity;
+		else
+			newParentEntity = entity.getEntityById(whereEntityId);
+		
+		if (newParentEntity != null)
+			newParentEntity.addEntity(addEntityMessage.getEntity());
 	}
 
 	private void handleRemoveEntityMessage(RemoveEntityMessage removeEntityMessage) {
