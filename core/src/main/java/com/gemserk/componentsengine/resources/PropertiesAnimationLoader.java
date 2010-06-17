@@ -3,6 +3,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import org.newdawn.slick.Animation;
+import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
 
@@ -31,7 +32,8 @@ public class PropertiesAnimationLoader {
 				final int framesCount = Integer.parseInt(values[4]);
 
 				try {
-					final SpriteSheet spriteSheet = new SpriteSheet(file, width, height);
+					final Image image = new Image(file);
+					final SpriteSheet spriteSheet = new SpriteSheet(image, width, height);
 					animationManager.addAnimation(key, new AnimationInstantiator() {
 						@Override
 						public Animation instantiate() {
