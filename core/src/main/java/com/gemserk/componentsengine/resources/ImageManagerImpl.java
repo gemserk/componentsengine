@@ -6,6 +6,7 @@ import java.util.Map;
 import org.newdawn.slick.Image;
 
 public class ImageManagerImpl implements ImageManager {
+	
 	Map<String, Image> images = new HashMap<String, Image>();
 	
 	public void addImage(String key, Image image){

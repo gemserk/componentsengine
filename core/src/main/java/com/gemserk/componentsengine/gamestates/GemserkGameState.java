@@ -5,8 +5,6 @@ import groovy.lang.Closure;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
-import java.util.concurrent.Delayed;
-import java.util.concurrent.TimeUnit;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
@@ -37,6 +35,7 @@ import com.gemserk.componentsengine.resources.AnimationManagerImpl;
 import com.gemserk.componentsengine.resources.ImageManager;
 import com.gemserk.componentsengine.resources.ImageManagerImpl;
 import com.gemserk.componentsengine.resources.PaulsSoundSystemSoundsManager;
+import com.gemserk.componentsengine.resources.PropertiesAnimationLoader;
 import com.gemserk.componentsengine.resources.PropertiesImageLoader;
 import com.gemserk.componentsengine.resources.SoundsManager;
 import com.gemserk.componentsengine.templates.CachedScriptProvider;
@@ -179,7 +178,7 @@ public class GemserkGameState extends BasicGameState {
 		messageQueue.processMessages();
 	}
 
-	public void images(Injector injector, String imagePropertiesFile) {
+	public void images(String imagePropertiesFile) {
 		long loadIni = System.currentTimeMillis();
 		PropertiesImageLoader propertiesImageLoader = new PropertiesImageLoader(imagePropertiesFile);
 		injector.injectMembers(propertiesImageLoader);
@@ -198,6 +197,12 @@ public class GemserkGameState extends BasicGameState {
 		} catch (IOException e) {
 			throw new RuntimeException("failed to load sounds from " + soundsPropertiesFile, e);
 		}
+	}
+	
+	public void animations(String animationPropertiesFile) {
+		PropertiesAnimationLoader loader = new PropertiesAnimationLoader();
+		injector.injectMembers(loader);
+		loader.load(animationPropertiesFile);
 	}
 
 	@Override

@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.gemserk.componentsengine.resources;
 
 import java.io.IOException;
