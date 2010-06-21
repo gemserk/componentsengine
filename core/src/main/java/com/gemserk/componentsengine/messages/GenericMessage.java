@@ -5,7 +5,7 @@ import java.util.Map;
 import com.gemserk.componentsengine.properties.PropertiesHolder;
 import com.gemserk.componentsengine.properties.Property;
 
-public class GenericMessage extends Message implements PropertiesHolder {
+public class GenericMessage extends Message {
 
 	public GenericMessage(String id) {
 		super(id);

@@ -1,8 +1,7 @@
 package com.gemserk.componentsengine.commons.components;
 
 import com.gemserk.componentsengine.annotations.EntityProperty;
-import com.gemserk.componentsengine.commons.components.FieldsReflectionComponent;
-import com.gemserk.componentsengine.messages.GenericMessage;
+import com.gemserk.componentsengine.messages.Message;
 import com.gemserk.componentsengine.triggers.NullTrigger;
 import com.gemserk.componentsengine.triggers.Trigger;
 
@@ -30,30 +29,34 @@ public class PressedReleasedTriggerComponent extends FieldsReflectionComponent {
 		super(id);
 	}
 
-	public void handleMessage(GenericMessage message) {
-		
-		if (!cursorOver)
-		{
-			pressed = false;
-			return;
-		}
-		
-		if (message.getId().equals(pressedEvent)) {
-			
-			if (pressed)
+	@Override
+	public void handleMessage(Message message) {
+		try {
+			preHandleMessage(message);
+			if (!cursorOver) {
+				pressed = false;
 				return;
-			
-			pressed = true;
-			onPressedTrigger.trigger();
-		}
+			}
 
-		if (message.getId().equals(releasedEvent)) {
-			
-			if (!pressed)
-				return;
-			
-			pressed = false;
-			onReleasedTrigger.trigger();
+			if (message.getId().equals(pressedEvent)) {
+
+				if (pressed)
+					return;
+
+				pressed = true;
+				onPressedTrigger.trigger();
+			}
+
+			if (message.getId().equals(releasedEvent)) {
+
+				if (!pressed)
+					return;
+
+				pressed = false;
+				onReleasedTrigger.trigger();
+			}
+		} finally {
+			postHandleMessage(message);
 		}
 	}
 }

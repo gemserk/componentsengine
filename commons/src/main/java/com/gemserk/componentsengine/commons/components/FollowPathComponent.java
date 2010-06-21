@@ -3,9 +3,10 @@ package com.gemserk.componentsengine.commons.components;
 import org.newdawn.slick.geom.Vector2f;
 
 import com.gemserk.componentsengine.components.ReflectionComponent;
+import com.gemserk.componentsengine.components.annotations.Handles;
 import com.gemserk.componentsengine.entities.Entity;
 import com.gemserk.componentsengine.entities.Root;
-import com.gemserk.componentsengine.messages.UpdateMessage;
+import com.gemserk.componentsengine.messages.Message;
 import com.gemserk.componentsengine.properties.Properties;
 import com.gemserk.componentsengine.properties.PropertyLocator;
 import com.gemserk.componentsengine.utils.AngleUtils;
@@ -34,7 +35,8 @@ public class FollowPathComponent extends ReflectionComponent {
 		positionProperty = Properties.property(id, "position");
 	}
 
-	public void handleMessage(UpdateMessage updateMessage) {
+	@Handles
+	public void update(Message message) {
 
 		Path path = pathProperty.getValue(entity);
 

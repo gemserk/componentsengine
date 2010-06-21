@@ -5,6 +5,8 @@ import java.util.Collection;
 import org.newdawn.slick.geom.Rectangle;
 
 import com.gemserk.componentsengine.components.Component;
+import com.gemserk.componentsengine.components.ReflectionComponent;
+import com.gemserk.componentsengine.components.annotations.Handles;
 import com.gemserk.componentsengine.entities.*;
 import com.gemserk.componentsengine.messages.*;
 import com.gemserk.componentsengine.predicates.EntityPredicates;
@@ -12,14 +14,15 @@ import com.gemserk.componentsengine.properties.*;
 import com.google.common.base.Predicates;
 import com.google.inject.Inject;
 
-public class OutOfBoundsRemover extends Component {
+public class OutOfBoundsRemover extends ReflectionComponent {
 
 	private PropertyLocator<Rectangle> boundsProperty;
 
 	private PropertyLocator<String[]> tagsProperties;
 
-	@Inject	@Root 
-	Entity  rootEntity;
+	@Inject
+	@Root
+	Entity rootEntity;
 
 	@Inject
 	MessageQueue messageQueue;
@@ -30,22 +33,19 @@ public class OutOfBoundsRemover extends Component {
 		tagsProperties = Properties.property(id, "tags");
 	}
 
-	@Override
-	public void handleMessage(Message message) {
-		if (message instanceof UpdateMessage) {
+	@Handles
+	public void update(Message message) {
 
-			
-			String[] tags = tagsProperties.getValue(entity);
+		String[] tags = tagsProperties.getValue(entity);
 
-			Rectangle worldBounds = boundsProperty.getValue(entity);
+		Rectangle worldBounds = boundsProperty.getValue(entity);
 
-			Collection<Entity> entitiesToRemove = rootEntity.getEntities(Predicates.and(EntityPredicates.withAnyTag(tags), Predicates.not(EntityPredicates.isIn(worldBounds))));
+		Collection<Entity> entitiesToRemove = rootEntity.getEntities(Predicates.and(EntityPredicates.withAnyTag(tags), Predicates.not(EntityPredicates.isIn(worldBounds))));
 
-			for (Entity entityToRemove : entitiesToRemove) {
-				messageQueue.enqueueDelay(ChildrenManagementMessageFactory.removeEntity(entityToRemove));
-			}
-
+		for (Entity entityToRemove : entitiesToRemove) {
+			messageQueue.enqueueDelay(ChildrenManagementMessageFactory.removeEntity(entityToRemove));
 		}
+
 	}
 
 }

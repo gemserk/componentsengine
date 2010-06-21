@@ -26,10 +26,11 @@ import com.gemserk.componentsengine.genericproviders.ValueFromClosure;
 import com.gemserk.componentsengine.input.MonitorFactory;
 import com.gemserk.componentsengine.input.SlickMonitorFactory;
 import com.gemserk.componentsengine.messages.GenericMessage;
+import com.gemserk.componentsengine.messages.Message;
 import com.gemserk.componentsengine.messages.MessageQueue;
 import com.gemserk.componentsengine.messages.MessageQueueImpl;
-import com.gemserk.componentsengine.messages.SlickRenderMessage;
 import com.gemserk.componentsengine.messages.UpdateMessage;
+import com.gemserk.componentsengine.properties.SimpleProperty;
 import com.gemserk.componentsengine.resources.AnimationManager;
 import com.gemserk.componentsengine.resources.AnimationManagerImpl;
 import com.gemserk.componentsengine.resources.ImageManager;
@@ -168,7 +169,9 @@ public class GemserkGameState extends BasicGameState {
 	@Override
 	public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
 		g.setBackground(new Color(0.15f, 0.15f, 0.15f));
-		messageQueue.enqueue(new SlickRenderMessage(g));
+		Message message = new Message("render");
+		message.addProperty("graphics", new SimpleProperty<Object>(g));
+		messageQueue.enqueue(message);
 		messageQueue.processMessages();
 	}
 

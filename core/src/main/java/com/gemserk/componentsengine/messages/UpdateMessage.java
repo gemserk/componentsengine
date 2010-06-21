@@ -1,16 +1,13 @@
 package com.gemserk.componentsengine.messages;
 
+import com.gemserk.componentsengine.properties.SimpleProperty;
+
 
 public class UpdateMessage extends Message {
 
-	int delta;
-
 	public UpdateMessage(int delta) {
-		this.delta = delta;
-	}
-
-	public int getDelta() {
-		return delta;
+		super("update");
+		addProperty("delta", new SimpleProperty<Object>(delta));
 	}
 
 }

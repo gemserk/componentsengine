@@ -8,7 +8,7 @@ import com.gemserk.componentsengine.properties.PropertiesHolderImpl;
 import com.gemserk.componentsengine.properties.Property;
 
 
-public class Message {
+public class Message implements PropertiesHolder {
 	
 	boolean propagate = true;
 	boolean process = true;

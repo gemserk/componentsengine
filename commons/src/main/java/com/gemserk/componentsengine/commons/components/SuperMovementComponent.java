@@ -3,7 +3,9 @@ package com.gemserk.componentsengine.commons.components;
 import org.newdawn.slick.geom.Vector2f;
 
 import com.gemserk.componentsengine.components.ReflectionComponent;
+import com.gemserk.componentsengine.components.annotations.Handles;
 import com.gemserk.componentsengine.entities.Entity;
+import com.gemserk.componentsengine.messages.Message;
 import com.gemserk.componentsengine.messages.UpdateMessage;
 import com.gemserk.componentsengine.properties.Properties;
 import com.gemserk.componentsengine.properties.PropertyLocator;
@@ -31,8 +33,9 @@ public class SuperMovementComponent extends ReflectionComponent {
 		frictionFactorProperty = Properties.property(id, "frictionFactor");
 	}
 
-	public void handleMessage(UpdateMessage message) {
-		int delta = message.getDelta();
+	@Handles
+	public void update(Message message) {
+		int delta = (Integer) Properties.getValue(message, "delta");
 		Vector2f position = this.positionProperty.getValue(entity);
 		Vector2f velocity = this.velocityProperty.getValue(entity);
 		Vector2f force = this.forceProperty.getValue(entity);

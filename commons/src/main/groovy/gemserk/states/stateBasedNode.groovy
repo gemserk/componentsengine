@@ -1,6 +1,5 @@
 package gemserk.states
 
-import com.gemserk.componentsengine.messages.SlickRenderMessage;
 import com.gemserk.componentsengine.commons.components.ProcessingDisablerComponent 
 
 builder.entity("statebasednode") {

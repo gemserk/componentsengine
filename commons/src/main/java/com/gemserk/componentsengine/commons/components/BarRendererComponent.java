@@ -5,7 +5,9 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Vector2f;
 
 import com.gemserk.componentsengine.annotations.EntityProperty;
-import com.gemserk.componentsengine.messages.SlickRenderMessage;
+import com.gemserk.componentsengine.components.annotations.Handles;
+import com.gemserk.componentsengine.messages.Message;
+import com.gemserk.componentsengine.properties.Properties;
 import com.gemserk.componentsengine.utils.Container;
 
 public class BarRendererComponent extends FieldsReflectionComponent {
@@ -32,8 +34,9 @@ public class BarRendererComponent extends FieldsReflectionComponent {
 		super(id);
 	}
 
-	public void handleMessage(SlickRenderMessage message) {
-		Graphics g = message.getGraphics();
+	@Handles
+	public void render(Message message) {
+		Graphics g = Properties.getValue(message, "graphics");
 		
 		g.pushTransform();
 		{

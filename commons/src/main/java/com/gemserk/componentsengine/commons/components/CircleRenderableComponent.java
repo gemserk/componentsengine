@@ -5,8 +5,8 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Vector2f;
 
 import com.gemserk.componentsengine.components.ReflectionComponent;
-import com.gemserk.componentsengine.entities.Entity;
-import com.gemserk.componentsengine.messages.SlickRenderMessage;
+import com.gemserk.componentsengine.components.annotations.Handles;
+import com.gemserk.componentsengine.messages.Message;
 import com.gemserk.componentsengine.properties.Properties;
 import com.gemserk.componentsengine.properties.PropertyLocator;
 
@@ -27,8 +27,10 @@ public class CircleRenderableComponent extends ReflectionComponent {
 		fillColorProperty = Properties.property(id, "fillColor");
 	}
 
-	public void handleMessage(SlickRenderMessage message) {
-		Graphics g = message.getGraphics();
+
+	@Handles
+	public void render(Message message) {
+		Graphics g = Properties.getValue(message, "graphics");
 		Vector2f position = positionProperty.getValue(entity);
 		float radius = radiusProperty.getValue(entity);
 

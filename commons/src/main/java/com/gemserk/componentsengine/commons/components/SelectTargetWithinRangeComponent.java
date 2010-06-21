@@ -5,8 +5,10 @@ import java.util.Collection;
 import org.newdawn.slick.geom.Vector2f;
 
 import com.gemserk.componentsengine.components.ReflectionComponent;
+import com.gemserk.componentsengine.components.annotations.Handles;
 import com.gemserk.componentsengine.entities.Entity;
 import com.gemserk.componentsengine.entities.Root;
+import com.gemserk.componentsengine.messages.Message;
 import com.gemserk.componentsengine.messages.UpdateMessage;
 import com.gemserk.componentsengine.predicates.EntityPredicates;
 import com.gemserk.componentsengine.properties.Properties;
@@ -35,7 +37,8 @@ public class SelectTargetWithinRangeComponent extends ReflectionComponent {
 		targetEntityProperty = Properties.property(id, "targetEntity");
 	}
 
-	public void handleMessage(UpdateMessage message) {
+	@Handles
+	public void update(Message message) {
 		String targetTag = targetTagProperty.getValue(entity);
 
 		Vector2f position = positionProperty.getValue(entity);

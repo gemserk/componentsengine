@@ -3,7 +3,9 @@ package com.gemserk.componentsengine.commons.components;
 import org.newdawn.slick.geom.Vector2f;
 
 import com.gemserk.componentsengine.annotations.EntityProperty;
+import com.gemserk.componentsengine.components.annotations.Handles;
 import com.gemserk.componentsengine.entities.Entity;
+import com.gemserk.componentsengine.messages.Message;
 import com.gemserk.componentsengine.messages.UpdateMessage;
 import com.gemserk.componentsengine.properties.Properties;
 import com.gemserk.componentsengine.utils.AngleUtils;
@@ -28,7 +30,8 @@ public class FaceTargetComponent extends FieldsReflectionComponent {
 		super(id);
 	}
 
-	public void handleMessage(UpdateMessage message) {
+	@Handles
+	public void update(Message message) {
 
 		if (targetEntity == null)
 			return;
@@ -36,7 +39,7 @@ public class FaceTargetComponent extends FieldsReflectionComponent {
 		Vector2f targetPosition = (Vector2f) Properties.property("position").getValue(targetEntity);
 		Vector2f desiredDirection = targetPosition.copy().sub(position).normalise();
 		
-		int delta = message.getDelta();
+		int delta = (Integer) Properties.getValue(message, "delta");
 
 		turnToAngle(delta, direction.getTheta(), desiredDirection.getTheta());
 		

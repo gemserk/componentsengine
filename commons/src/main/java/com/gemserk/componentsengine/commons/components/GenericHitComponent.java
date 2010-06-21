@@ -3,6 +3,7 @@ package com.gemserk.componentsengine.commons.components;
 import java.util.*;
 
 import com.gemserk.componentsengine.components.ReflectionComponent;
+import com.gemserk.componentsengine.components.annotations.Handles;
 import com.gemserk.componentsengine.entities.*;
 import com.gemserk.componentsengine.messages.*;
 import com.gemserk.componentsengine.predicates.EntityPredicates;
@@ -35,7 +36,8 @@ public class GenericHitComponent extends ReflectionComponent {
 
 	}
 
-	public void handleMessage(final UpdateMessage message) {
+	@Handles
+	public void update(Message message) {
 
 
 		String targetTags = targetTagProperty.getValue(entity);
@@ -46,11 +48,12 @@ public class GenericHitComponent extends ReflectionComponent {
 		if (candidates.size() == 0)
 			return;
 
+		final int delta = (Integer) Properties.getValue(message, "delta");
 		messageBuilderProperty.getValue(entity).trigger(new HashMap<String, Object>() {
 			{
 				put("source", entity);
 				put("targets", new ArrayList<Entity>(candidates));
-				put("delta",message.getDelta());
+				put("delta",delta);
 			}
 		});
 	}

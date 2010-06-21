@@ -8,7 +8,8 @@ import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.opengl.SlickCallable;
 
 import com.gemserk.componentsengine.components.ReflectionComponent;
-import com.gemserk.componentsengine.messages.SlickRenderMessage;
+import com.gemserk.componentsengine.components.annotations.Handles;
+import com.gemserk.componentsengine.messages.Message;
 import com.gemserk.componentsengine.properties.Properties;
 import com.gemserk.componentsengine.properties.PropertyLocator;
 import com.gemserk.componentsengine.utils.OpenGlUtils;
@@ -28,8 +29,10 @@ public class PathRendererComponent extends ReflectionComponent {
 		lineWidthProperty = Properties.property(id, "lineWidth");
 	}
 
-	public void handleMessage(SlickRenderMessage slickRenderMessage) {
-		Graphics g = slickRenderMessage.getGraphics();
+
+	@Handles
+	public void render(Message message) {
+		Graphics g = Properties.getValue(message, "graphics");
 
 		List<Vector2f> points = pathProperty.getValue(entity).getPoints();
 		Color lineColor = lineColorProperty.getValue(entity, Color.white);

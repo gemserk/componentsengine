@@ -13,7 +13,7 @@ public class ProcessingDisablerComponent extends Component {
 
 	PropertyLocator<Boolean> enabledProperty;
 	
-	PropertyLocator<Collection<Class>> exclusionMessageListProperty;
+	PropertyLocator<Collection<String>> exclusionMessageListProperty;
 
 	public ProcessingDisablerComponent(String id) {
 		super(id);
@@ -27,8 +27,8 @@ public class ProcessingDisablerComponent extends Component {
 		boolean enabled = enabledProperty.getValue(entity);
 		
 		if (!enabled) {
-			Collection<Class> exclusions = exclusionMessageListProperty.getValue(entity, new ArrayList<Class>());
-			if (exclusions.contains(message.getClass()))
+			Collection<String> exclusions = exclusionMessageListProperty.getValue(entity, new ArrayList<String>());
+			if (exclusions.contains(message.getId()))
 				return;
 			message.suspendProcessing();
 		}

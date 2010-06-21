@@ -4,13 +4,13 @@ import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Vector2f;
 
 import com.gemserk.componentsengine.annotations.EntityProperty;
-import com.gemserk.componentsengine.commons.components.FieldsReflectionComponent;
-import com.gemserk.componentsengine.messages.GenericMessage;
-import com.gemserk.componentsengine.messages.UpdateMessage;
+import com.gemserk.componentsengine.components.annotations.Handles;
+import com.gemserk.componentsengine.messages.Message;
 import com.gemserk.componentsengine.properties.Properties;
 import com.gemserk.componentsengine.triggers.NullTrigger;
 import com.gemserk.componentsengine.triggers.Trigger;
 
+@Deprecated
 public class CursorOverDetector extends FieldsReflectionComponent {
 
 	@EntityProperty(readOnly = true)
@@ -37,7 +37,8 @@ public class CursorOverDetector extends FieldsReflectionComponent {
 		super(id);
 	}
 
-	public void handleMessage(UpdateMessage message) {
+	@Handles
+	public void update(Message message) {
 		boolean newCursorOver = bounds.contains(cursorPosition.x - position.x, cursorPosition.y - position.y);
 
 		if (cursorOver)
@@ -51,14 +52,19 @@ public class CursorOverDetector extends FieldsReflectionComponent {
 		cursorOver = newCursorOver;
 	}
 
-	public void handleMessage(GenericMessage message) {
-		if (!message.getId().equals(eventId))
+	@Override
+	public void handleMessage(Message message) {
+		if (!message.getId().equals(eventId)){
+			super.handleMessage(message);
 			return;
+		}
+		preHandleMessage(message);
 
 		Float x = Properties.getValue(message, "x");
 		Float y = Properties.getValue(message, "y");
 		
 		cursorPosition.set(x, y);
+		postHandleMessage(message);
 	}
 
 }

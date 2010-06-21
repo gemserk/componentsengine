@@ -3,6 +3,7 @@ package com.gemserk.componentsengine.commons.components;
 import java.util.HashMap;
 
 import com.gemserk.componentsengine.components.ReflectionComponent;
+import com.gemserk.componentsengine.components.annotations.Handles;
 import com.gemserk.componentsengine.messages.Message;
 import com.gemserk.componentsengine.messages.MessageQueue;
 import com.gemserk.componentsengine.messages.UpdateMessage;
@@ -26,9 +27,11 @@ public class TimerComponent extends ReflectionComponent {
 		triggerProperty = Properties.property(id, "trigger");
 	}
 
-	public void handleMessage(UpdateMessage message) {
+	@Handles
+	public void update(Message message) {
+		int delta = (Integer) Properties.getValue(message, "delta");
 		Timer timer = timerProperty.getValue(entity);
-		boolean fired = timer.update(message.getDelta());
+		boolean fired = timer.update(delta);
 		if (!fired)
 			return;
 

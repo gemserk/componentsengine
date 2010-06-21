@@ -7,28 +7,23 @@ import java.util.Iterator;
 import org.newdawn.slick.opengl.SlickCallable;
 
 import com.gemserk.componentsengine.annotations.EntityProperty;
-import com.gemserk.componentsengine.commons.components.FieldsReflectionComponent;
+import com.gemserk.componentsengine.components.annotations.Handles;
 import com.gemserk.componentsengine.effects.ExplosionEffect;
-import com.gemserk.componentsengine.messages.GenericMessage;
-import com.gemserk.componentsengine.messages.SlickRenderMessage;
-import com.gemserk.componentsengine.messages.UpdateMessage;
+import com.gemserk.componentsengine.messages.Message;
 import com.gemserk.componentsengine.properties.Properties;
 
 public class ExplosionComponent extends FieldsReflectionComponent {
 
 	@EntityProperty(required = false)
 	Collection<ExplosionEffect> explosions = new ArrayList<ExplosionEffect>();
-	
-	@EntityProperty(required = false, readOnly=true)
-	String eventId = "explosion";
 
 	public ExplosionComponent(String id) {
 		super(id);
 	}
 
-	public void handleMessage(UpdateMessage message) {
-
-		int delta = message.getDelta();
+	@Handles
+	public void update(Message message) {
+		int delta = (Integer) Properties.getValue(message, "delta");
 
 		Iterator<ExplosionEffect> iterator = explosions.iterator();
 		while (iterator.hasNext()) {
@@ -41,7 +36,8 @@ public class ExplosionComponent extends FieldsReflectionComponent {
 
 	}
 
-	public void handleMessage(SlickRenderMessage message) {
+	@Handles
+	public void render(Message message) {
 		SlickCallable.enterSafeBlock();
 		for (ExplosionEffect explosionEffect : explosions) {
 			explosionEffect.render();
@@ -49,12 +45,10 @@ public class ExplosionComponent extends FieldsReflectionComponent {
 		SlickCallable.leaveSafeBlock();
 	}
 
-	public void handleMessage(GenericMessage message) {
-
-		if (message.getId().equals(eventId)) {
-			ExplosionEffect explosion = Properties.getValue(message, eventId);
-			explosions.add(explosion);
-		}
+	@Handles
+	public void explosion(Message message) {
+		ExplosionEffect explosion = Properties.getValue(message, "explosion");
+		explosions.add(explosion);
 	}
 
 }

@@ -37,17 +37,17 @@ public class BuilderUtils {
 
 	@Inject
 	ImageManager imageManager;
-	
+
 	@Inject
 	AnimationManager animationManager;
-	
+
 	@Inject
 	SoundsManager soundsManager;
-	
+
 	Random random = new Random();
 
 	ResourceUtils resourceUtils = new ResourceUtils();
-	
+
 	public void addCustomUtil(String key, Object value) {
 		custom.put(key, value);
 	}
@@ -55,9 +55,9 @@ public class BuilderUtils {
 	public Vector2f vector(float x, float y) {
 		return new Vector2f(x, y);
 	}
-	
-	public Vector2f randomVector(Rectangle rectangle){
-		return new Vector2f(rectangle.getMinX()+random.nextFloat()*rectangle.getWidth(),rectangle.getMinY()+random.nextFloat()*rectangle.getHeight());
+
+	public Vector2f randomVector(Rectangle rectangle) {
+		return new Vector2f(rectangle.getMinX() + random.nextFloat() * rectangle.getWidth(), rectangle.getMinY() + random.nextFloat() * rectangle.getHeight());
 	}
 
 	public Interval interval(int min, int max) {
@@ -85,9 +85,9 @@ public class BuilderUtils {
 		closure.call(genericMessage);
 		return genericMessage;
 	}
-	
+
 	public GenericMessage delayedMessage(int delay, Message delayedMessage) {
-		GenericMessage genericMessage = new GenericMessage("delayedMessage",new PropertiesMapBuilder().property("delay", delay).property("message", delayedMessage).build());
+		GenericMessage genericMessage = new GenericMessage("delayedMessage", new PropertiesMapBuilder().property("delay", delay).property("message", delayedMessage).build());
 		return genericMessage;
 	}
 
@@ -112,7 +112,7 @@ public class BuilderUtils {
 		}
 
 		public class FontUtils {
-			
+
 			private Map<String, Font> cachedFonts = new HashMap<String, Font>();
 
 			public Font font(Map<String, Object> parameters) {
@@ -125,9 +125,9 @@ public class BuilderUtils {
 			}
 
 			public Font font(boolean italic, boolean bold, int size) {
-				
+
 				String key = "i_" + italic + ",b_" + bold + ",s_" + size;
-				
+
 				Font cachedFont = cachedFonts.get(key);
 				if (cachedFont != null)
 					return cachedFont;
@@ -171,7 +171,7 @@ public class BuilderUtils {
 	}
 
 	public class ComponentUtils {
-		
+
 		public Component genericComponent(final Map<String, Object> parameters, final Closure closure) {
 			Object messageIdsCandidates = parameters.get("messageId");
 			final Collection messageIds;
@@ -195,17 +195,14 @@ public class BuilderUtils {
 
 				@Override
 				public void handleMessage(Message message) {
-					if (message instanceof GenericMessage) {
 
-						GenericMessage genericMessage = (GenericMessage) message;
+					if (!messageIds.contains(message.getId()))
+						return;
 
-						if (!messageIds.contains(genericMessage.getId()))
-							return;
-
-						closure.setDelegate(this);
-						closure.call(genericMessage);
-					}
+					closure.setDelegate(this);
+					closure.call(message);
 				}
+
 			};
 		}
 	}
