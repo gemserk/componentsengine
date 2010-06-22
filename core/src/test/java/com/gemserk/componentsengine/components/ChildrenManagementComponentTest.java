@@ -8,8 +8,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import com.gemserk.componentsengine.entities.Entity;
-import com.gemserk.componentsengine.messages.AddEntityMessage;
-import com.gemserk.componentsengine.messages.RemoveEntityMessage;
+import com.gemserk.componentsengine.messages.ChildrenManagementMessageFactory;
 
 @RunWith(JMock.class)
 public class ChildrenManagementComponentTest {
@@ -37,7 +36,7 @@ public class ChildrenManagementComponentTest {
 			}
 		});
 
-		childrenManagementComponent.handleMessage(new RemoveEntityMessage(childName));
+		childrenManagementComponent.handleMessage(ChildrenManagementMessageFactory.removeEntity(childName));
 	}
 
 	@Test
@@ -55,7 +54,7 @@ public class ChildrenManagementComponentTest {
 			}
 		});
 
-		childrenManagementComponent.handleMessage(new RemoveEntityMessage(childName));
+		childrenManagementComponent.handleMessage(ChildrenManagementMessageFactory.removeEntity(childName));
 	}
 
 	// test: remove rootEntity? root entity doesn't have root entity as child!!
@@ -80,7 +79,7 @@ public class ChildrenManagementComponentTest {
 			}
 		});
 
-		childrenManagementComponent.handleMessage(new AddEntityMessage(entity, whereEntityId));
+		childrenManagementComponent.handleMessage(ChildrenManagementMessageFactory.addEntity(entity, whereEntityId));
 	}
 
 	@Test
@@ -99,7 +98,7 @@ public class ChildrenManagementComponentTest {
 			}
 		});
 
-		childrenManagementComponent.handleMessage(new AddEntityMessage(entity, "root"));
+		childrenManagementComponent.handleMessage(ChildrenManagementMessageFactory.addEntity(entity, "root"));
 	}
 
 	@Test
@@ -120,7 +119,7 @@ public class ChildrenManagementComponentTest {
 			}
 		});
 
-		childrenManagementComponent.handleMessage(new AddEntityMessage(entity, targetEntityId));
+		childrenManagementComponent.handleMessage(ChildrenManagementMessageFactory.addEntity(entity, targetEntityId));
 	}
 
 }
