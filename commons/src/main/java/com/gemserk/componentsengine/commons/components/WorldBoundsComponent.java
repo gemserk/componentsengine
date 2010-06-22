@@ -4,11 +4,8 @@ import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Vector2f;
 
 import com.gemserk.componentsengine.annotations.EntityProperty;
-import com.gemserk.componentsengine.commons.components.FieldsReflectionComponent;
 import com.gemserk.componentsengine.components.annotations.Handles;
 import com.gemserk.componentsengine.messages.Message;
-import com.gemserk.componentsengine.messages.UpdateMessage;
-import com.gemserk.componentsengine.properties.Properties;
 
 public class WorldBoundsComponent extends FieldsReflectionComponent {
 

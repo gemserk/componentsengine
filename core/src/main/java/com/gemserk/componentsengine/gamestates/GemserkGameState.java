@@ -29,7 +29,6 @@ import com.gemserk.componentsengine.messages.GenericMessage;
 import com.gemserk.componentsengine.messages.Message;
 import com.gemserk.componentsengine.messages.MessageQueue;
 import com.gemserk.componentsengine.messages.MessageQueueImpl;
-import com.gemserk.componentsengine.messages.UpdateMessage;
 import com.gemserk.componentsengine.properties.SimpleProperty;
 import com.gemserk.componentsengine.resources.AnimationManager;
 import com.gemserk.componentsengine.resources.AnimationManagerImpl;
@@ -177,7 +176,9 @@ public class GemserkGameState extends BasicGameState {
 
 	@Override
 	public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
-		messageQueue.enqueue(new UpdateMessage(delta));
+		Message message = new Message("update");
+		message.addProperty("delta", new SimpleProperty<Object>(delta));
+		messageQueue.enqueue(message);
 		messageQueue.processMessages();
 	}
 

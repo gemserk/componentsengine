@@ -6,16 +6,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import com.gemserk.componentsengine.components.MessageHandler;
 import com.gemserk.componentsengine.messages.Message;
-import com.gemserk.componentsengine.messages.MessageQueue;
-import com.gemserk.componentsengine.messages.UpdateMessage;
-import com.google.inject.Inject;
 
-public class InputMapping implements MessageHandler {
+public class InputMapping {
 	
-	MessageQueue messageQueue;
-
 	List<InputAction> inputActions = new ArrayList<InputAction>();
 
 	Map<InputKey, ButtonMonitor> buttonMonitors = new HashMap<InputKey, ButtonMonitor>();
@@ -42,14 +36,7 @@ public class InputMapping implements MessageHandler {
 		inputActions.add(inputAction);
 	}
 
-	@Inject
-	public void setMessageQueue(MessageQueue messageQueue) {
-		this.messageQueue = messageQueue;
-	}
-
-	@Override
-	public void handleMessage(Message message) {
-		if (message instanceof UpdateMessage) {
+	public List<Message> update() {
 			
 			for (Entry<InputKey, ButtonMonitor> entry : buttonMonitors.entrySet()) 
 				entry.getValue().update();
@@ -57,13 +44,14 @@ public class InputMapping implements MessageHandler {
 			for (Entry<InputKey, CoordinatesMonitor> entry : coordinatesMonitors.entrySet()) 
 				entry.getValue().update();
 
+			List<Message> messages = new ArrayList<Message>(inputActions.size());
 			for (InputAction inputAction : inputActions) {
 				Message newMessage = inputAction.run();
 				if (newMessage != null) {
-					messageQueue.enqueue(newMessage);
+					messages.add(newMessage);
 				}
 			}
-		}
+			return messages;
 
 	}
 

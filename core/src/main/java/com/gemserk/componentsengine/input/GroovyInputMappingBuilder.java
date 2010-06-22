@@ -42,7 +42,7 @@ public class GroovyInputMappingBuilder {
 		closure.setDelegate(new RootNode());
 		closure.call();
 
-		return new MessageHandlerToComponentConverter(id, inputMapping);
+		return new InputMappingComponent(id, inputMapping);
 	}
 
 	class RootNode {
@@ -232,7 +232,7 @@ public class GroovyInputMappingBuilder {
 
 			script.setBinding(binding);
 			script.run();
-			return new MessageHandlerToComponentConverter(id, inputMapping);
+			return new InputMappingComponent(id, inputMapping);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
