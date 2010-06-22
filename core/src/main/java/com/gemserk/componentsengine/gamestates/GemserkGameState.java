@@ -23,7 +23,10 @@ import com.gemserk.componentsengine.entities.Root;
 import com.gemserk.componentsengine.game.Game;
 import com.gemserk.componentsengine.genericproviders.GenericProvider;
 import com.gemserk.componentsengine.genericproviders.ValueFromClosure;
+import com.gemserk.componentsengine.input.CachedMonitorFactory;
+import com.gemserk.componentsengine.input.InputMonitorUpdaterComponent;
 import com.gemserk.componentsengine.input.MonitorFactory;
+import com.gemserk.componentsengine.input.MonitorUpdater;
 import com.gemserk.componentsengine.input.SlickMonitorFactory;
 import com.gemserk.componentsengine.messages.GenericMessage;
 import com.gemserk.componentsengine.messages.Message;
@@ -98,7 +101,11 @@ public class GemserkGameState extends BasicGameState {
 				bind(GameContainer.class).toInstance(container);
 
 				bind(GroovyScriptProvider.class).toInstance(new CachedScriptProvider(new GroovyScriptProviderImpl()));
-				bind(MonitorFactory.class).to(SlickMonitorFactory.class).in(Singleton.class);
+				MonitorFactory realMonitorFactory = new SlickMonitorFactory();
+				requestInjection(realMonitorFactory);
+				CachedMonitorFactory cachedMonitorFactory = new CachedMonitorFactory(realMonitorFactory);
+				bind(MonitorFactory.class).toInstance(cachedMonitorFactory);
+				bind(MonitorUpdater.class).toInstance(cachedMonitorFactory);
 				bind(MessageHandler.class).to(Game.class).in(Singleton.class);
 				bind(MessageQueue.class).to(MessageQueueImpl.class).in(Singleton.class);
 
@@ -118,7 +125,9 @@ public class GemserkGameState extends BasicGameState {
 		DelayedMessagesComponent delayedMessagesComponent = new DelayedMessagesComponent("delayedMessagesComponent");
 		injector.injectMembers(delayedMessagesComponent);
 		rootEntity.addComponent(delayedMessagesComponent);
-		
+		InputMonitorUpdaterComponent inputMonitorUpdaterComponent = new InputMonitorUpdaterComponent("inputMonitorUpdaterComponent");
+		injector.injectMembers(inputMonitorUpdaterComponent);
+		rootEntity.addComponent(inputMonitorUpdaterComponent);
 		
 		messageQueue = injector.getInstance(MessageQueue.class);
 		game = injector.getInstance(Game.class);

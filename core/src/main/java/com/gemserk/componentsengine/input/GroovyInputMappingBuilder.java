@@ -60,14 +60,7 @@ public class GroovyInputMappingBuilder {
 	class KeyboardNode {
 
 		public ButtonMonitor getButtonMonitor(String button) {
-			InputKey inputKey = new InputKey("keyboard.", button);
-			ButtonMonitor buttonMonitor = inputMapping.getButtonMonitor(inputKey);
-			if (buttonMonitor == null) {
-				buttonMonitor = monitorFactory.keyboardButtonMonitor(button);
-				inputMapping.addButtonMonitor(inputKey, buttonMonitor);
-			}
-
-			return buttonMonitor;
+			return monitorFactory.keyboardButtonMonitor(button);
 		}
 
 		public void press(Map<String, String> parameters) {
@@ -115,25 +108,11 @@ public class GroovyInputMappingBuilder {
 	class MouseNode {
 
 		public ButtonMonitor getButtonMonitor(String button) {
-			InputKey inputKey = new InputKey("mouse.", button);
-			ButtonMonitor buttonMonitor = inputMapping.getButtonMonitor(inputKey);
-			if (buttonMonitor == null) {
-				buttonMonitor = monitorFactory.mouseButtonMonitor(button);
-				inputMapping.addButtonMonitor(inputKey, buttonMonitor);
-			}
-
-			return buttonMonitor;
+			return monitorFactory.mouseButtonMonitor(button);
 		}
 
 		public CoordinatesMonitor getCoordinatesMonitor() {
-			InputKey inputKey = new InputKey("mouse.move", "");
-			CoordinatesMonitor coordinatesMonitor = inputMapping.getCoordinatesMonitor(inputKey);
-			if (coordinatesMonitor == null) {
-				coordinatesMonitor = monitorFactory.mouseCoordinatesMonitor();
-				inputMapping.addCoordinatesMonitor(inputKey, coordinatesMonitor);
-			}
-
-			return coordinatesMonitor;
+			return monitorFactory.mouseCoordinatesMonitor();
 		}
 
 		Map<String, String> mappingMouseKeys = new HashMap<String, String>() {
