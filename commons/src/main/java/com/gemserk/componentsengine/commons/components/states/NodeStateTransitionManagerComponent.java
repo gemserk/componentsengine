@@ -30,9 +30,9 @@ public class NodeStateTransitionManagerComponent extends FieldsReflectionCompone
 			List<String> transition = transitions.get(messageId);
 			if (transition == null)
 				return;
-			messageQueue.enqueue(new Message("leaveNodeState", new PropertiesMapBuilder().property("message", message).build()));
-			messageQueue.enqueue(new Message("changeNodeState", new PropertiesMapBuilder().property("states", transition).build()));
-			messageQueue.enqueue(new Message("enterNodeState", new PropertiesMapBuilder().property("message", message).build()));
+			messageQueue.enqueueDelay(new Message("leaveNodeState", new PropertiesMapBuilder().property("message", message).build()));
+			messageQueue.enqueueDelay(new Message("changeNodeState", new PropertiesMapBuilder().property("states", transition).build()));
+			messageQueue.enqueueDelay(new Message("enterNodeState", new PropertiesMapBuilder().property("message", message).build()));
 		} finally {
 			postHandleMessage(message);
 		}
