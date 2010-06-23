@@ -5,7 +5,6 @@ package com.gemserk.componentsengine.input;
 
 import groovy.lang.Closure;
 
-import com.gemserk.componentsengine.messages.GenericMessage;
 import com.gemserk.componentsengine.messages.Message;
 
 public abstract class GroovyInputAction implements InputAction {
@@ -21,7 +20,7 @@ public abstract class GroovyInputAction implements InputAction {
 
 	public Message run() {
 		if (shouldRun()) {
-			Message message = new GenericMessage(eventId);
+			Message message = new Message(eventId);
 			if (closure != null) {
 				closure.call(message);
 			}

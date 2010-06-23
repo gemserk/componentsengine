@@ -28,7 +28,6 @@ import com.gemserk.componentsengine.input.InputMonitorUpdaterComponent;
 import com.gemserk.componentsengine.input.MonitorFactory;
 import com.gemserk.componentsengine.input.MonitorUpdater;
 import com.gemserk.componentsengine.input.SlickMonitorFactory;
-import com.gemserk.componentsengine.messages.GenericMessage;
 import com.gemserk.componentsengine.messages.Message;
 import com.gemserk.componentsengine.messages.MessageQueue;
 import com.gemserk.componentsengine.messages.MessageQueueImpl;
@@ -220,13 +219,13 @@ public class GemserkGameState extends BasicGameState {
 
 	@Override
 	public void enter(GameContainer container, StateBasedGame game) throws SlickException {
-		messageQueue.enqueue(new GenericMessage("enterState"));
+		messageQueue.enqueue(new Message("enterState"));
 		messageQueue.processMessages();
 	}
 
 	@Override
 	public void leave(GameContainer container, StateBasedGame game) throws SlickException {
-		messageQueue.enqueue(new GenericMessage("leaveState"));
+		messageQueue.enqueue(new Message("leaveState"));
 		messageQueue.processMessages();
 	}
 	

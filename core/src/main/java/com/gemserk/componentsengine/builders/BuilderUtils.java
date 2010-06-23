@@ -18,7 +18,6 @@ import org.newdawn.slick.geom.Vector2f;
 import com.gemserk.componentsengine.components.Component;
 import com.gemserk.componentsengine.entities.Entity;
 import com.gemserk.componentsengine.entities.Root;
-import com.gemserk.componentsengine.messages.GenericMessage;
 import com.gemserk.componentsengine.messages.Message;
 import com.gemserk.componentsengine.messages.MessageQueue;
 import com.gemserk.componentsengine.properties.PropertiesMapBuilder;
@@ -80,15 +79,15 @@ public class BuilderUtils {
 		return new Container(current, total);
 	}
 
-	public GenericMessage genericMessage(String id, Closure closure) {
-		GenericMessage genericMessage = new GenericMessage(id);
-		closure.call(genericMessage);
-		return genericMessage;
+	public Message genericMessage(String id, Closure closure) {
+		Message message = new Message(id);
+		closure.call(message);
+		return message;
 	}
 
-	public GenericMessage delayedMessage(int delay, Message delayedMessage) {
-		GenericMessage genericMessage = new GenericMessage("delayedMessage", new PropertiesMapBuilder().property("delay", delay).property("message", delayedMessage).build());
-		return genericMessage;
+	public Message delayedMessage(int delay, Message delayedMessage) {
+		Message message = new Message("delayedMessage", new PropertiesMapBuilder().property("delay", delay).property("message", delayedMessage).build());
+		return message;
 	}
 
 	public ResourceUtils getResources() {

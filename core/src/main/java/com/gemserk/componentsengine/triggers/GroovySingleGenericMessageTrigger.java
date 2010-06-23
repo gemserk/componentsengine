@@ -4,7 +4,7 @@ import groovy.lang.Closure;
 
 import java.util.Map;
 
-import com.gemserk.componentsengine.messages.GenericMessage;
+import com.gemserk.componentsengine.messages.Message;
 import com.gemserk.componentsengine.messages.MessageQueue;
 import com.gemserk.componentsengine.properties.PropertiesMapBuilder;
 
@@ -30,7 +30,7 @@ public class GroovySingleGenericMessageTrigger implements Trigger {
 	@Override
 	public void trigger(Object ...parameters){
 		
-		GenericMessage message = parameters.length == 0 ? new GenericMessage(messageId) : new GenericMessage(messageId, new PropertiesMapBuilder().addProperties((Map)parameters[0]).build());
+		Message message = parameters.length == 0 ? new Message(messageId) : new Message(messageId, new PropertiesMapBuilder().addProperties((Map)parameters[0]).build());
 
 		closure.setProperty("message", message);
 		closure.call();
