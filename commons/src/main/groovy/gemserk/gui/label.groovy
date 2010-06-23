@@ -49,6 +49,7 @@ builder.entity {
 		property("color", parameters.fontColor ?: utils.color(1,1,1,1))
 		property("align", align)
 		property("valign", valign)
+		property("layer",parameters.layer ?:0)
 	}
 	
 	

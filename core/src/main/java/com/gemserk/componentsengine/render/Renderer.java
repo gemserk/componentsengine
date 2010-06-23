@@ -12,6 +12,13 @@ import com.google.inject.Inject;
 
 public class Renderer {
 
+	public static class RenderObjectComparator implements Comparator<RenderObject> {
+		@Override
+		public int compare(RenderObject o1, RenderObject o2) {
+			return o1.getLayer() - o2.getLayer();
+		}
+	}
+
 	@Inject
 	Graphics graphics;
 
@@ -22,14 +29,7 @@ public class Renderer {
 	}
 
 	public void render() {
-		
-		Collections.sort(renderObjectsQueue, new Comparator<RenderObject>() {
-			@Override
-			public int compare(RenderObject o1, RenderObject o2) {
-				return o1.getLayer() - o2.getLayer();
-			}
-		});
-		
+		Collections.sort(renderObjectsQueue, new RenderObjectComparator());
 		for (RenderObject renderObject : renderObjectsQueue) {
 			render(renderObject);
 		}
