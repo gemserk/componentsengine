@@ -1,9 +1,10 @@
 package com.gemserk.componentsengine.render;
 
-import java.util.LinkedList;
-import java.util.List;
 
-import groovy.lang.Closure;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 import org.newdawn.slick.Graphics;
 
@@ -11,58 +12,24 @@ import com.google.inject.Inject;
 
 public class Renderer {
 
-	public static interface RenderObject {
-		int getLayer();
-	}
-
-	public static class ClosureRenderObject implements RenderObject {
-
-		Closure closure;
-		int layer;
-
-		public ClosureRenderObject(Closure closure, int layer) {
-			this.closure = closure;
-			this.layer = layer;
-		}
-
-		public Closure getClosure() {
-			return closure;
-		}
-
-		@Override
-		public int getLayer() {
-			return layer;
-		}
-
-	}
-
-	public static abstract class SlickCallableRenderObject implements RenderObject {
-
-		int layer;
-
-		public abstract void execute(Graphics graphics);
-
-		public SlickCallableRenderObject(int layer) {
-			this.layer = layer;
-		}
-
-		@Override
-		public int getLayer() {
-			return layer;
-		}
-
-	}
-
 	@Inject
 	Graphics graphics;
 
-	List<RenderObject> renderObjectsQueue = new LinkedList<RenderObject>();
+	List<RenderObject> renderObjectsQueue = new ArrayList<RenderObject>();
 
 	public void enqueue(RenderObject renderObject) {
 		renderObjectsQueue.add(renderObject);
 	}
 
 	public void render() {
+		
+		Collections.sort(renderObjectsQueue, new Comparator<RenderObject>() {
+			@Override
+			public int compare(RenderObject o1, RenderObject o2) {
+				return o1.getLayer() - o2.getLayer();
+			}
+		});
+		
 		for (RenderObject renderObject : renderObjectsQueue) {
 			render(renderObject);
 		}

@@ -11,6 +11,7 @@ import com.gemserk.componentsengine.messages.Message;
 import com.gemserk.componentsengine.properties.Properties;
 import com.gemserk.componentsengine.properties.PropertyLocator;
 import com.gemserk.componentsengine.render.Renderer;
+import com.gemserk.componentsengine.render.SlickCallableRenderObject;
 
 public class ImageRenderableComponent extends ReflectionComponent {
 
@@ -50,7 +51,7 @@ public class ImageRenderableComponent extends ReflectionComponent {
 		final float theta = (float) directionProperty.getValue(entity).getTheta();
 		Integer layer = layerProperty.getValue(entity, 0);
 
-		renderer.enqueue(new Renderer.SlickCallableRenderObject(layer) {
+		renderer.enqueue(new SlickCallableRenderObject(layer) {
 
 			@Override
 			public void execute(Graphics g) {

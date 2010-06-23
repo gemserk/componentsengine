@@ -12,6 +12,7 @@ import com.gemserk.componentsengine.components.annotations.Handles;
 import com.gemserk.componentsengine.messages.Message;
 import com.gemserk.componentsengine.properties.Properties;
 import com.gemserk.componentsengine.render.Renderer;
+import com.gemserk.componentsengine.render.SlickCallableRenderObject;
 
 public class LabelComponent extends FieldsReflectionComponent {
 
@@ -68,7 +69,7 @@ public class LabelComponent extends FieldsReflectionComponent {
 		final float finalLeft = left;
 		final float finalTop = top;
 		
-		renderer.enqueue(new Renderer.SlickCallableRenderObject(layer) {
+		renderer.enqueue(new SlickCallableRenderObject(layer) {
 
 			@Override
 			public void execute(Graphics g) {
