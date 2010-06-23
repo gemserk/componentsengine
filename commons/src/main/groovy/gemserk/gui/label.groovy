@@ -9,7 +9,7 @@ builder.entity {
 	property("position", parameters.position)
 	property("message", parameters.message)
 	property("value", parameters.value)
-	property("font", parameters.font)
+	property("font", parameters.font ?: utils.resources.fonts.defaultFont)
 	property("bounds", parameters.bounds)
 	
 	def align = parameters.align ?: "left"

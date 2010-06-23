@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
+import org.newdawn.slick.Graphics;
 import org.newdawn.slick.opengl.SlickCallable;
 
 import com.gemserk.componentsengine.annotations.EntityProperty;
@@ -11,11 +12,25 @@ import com.gemserk.componentsengine.components.annotations.Handles;
 import com.gemserk.componentsengine.effects.ExplosionEffect;
 import com.gemserk.componentsengine.messages.Message;
 import com.gemserk.componentsengine.properties.Properties;
+import com.gemserk.componentsengine.render.Renderer;
 
 public class ExplosionComponent extends FieldsReflectionComponent {
 
 	@EntityProperty(required = false)
-	Collection<ExplosionEffect> explosions = new ArrayList<ExplosionEffect>();
+	Collection<Effect> explosions = new ArrayList<Effect>();
+
+	class Effect {
+
+		private final int layer;
+
+		private final ExplosionEffect explosionEffect;
+
+		public Effect(int layer, ExplosionEffect explosionEffect) {
+			this.layer = layer;
+			this.explosionEffect = explosionEffect;
+		}
+
+	}
 
 	public ExplosionComponent(String id) {
 		super(id);
@@ -25,12 +40,12 @@ public class ExplosionComponent extends FieldsReflectionComponent {
 	public void update(Message message) {
 		int delta = (Integer) Properties.getValue(message, "delta");
 
-		Iterator<ExplosionEffect> iterator = explosions.iterator();
+		Iterator<Effect> iterator = explosions.iterator();
 		while (iterator.hasNext()) {
-			ExplosionEffect explosion = iterator.next();
-			explosion.update(delta);
+			Effect explosion = iterator.next();
+			explosion.explosionEffect.update(delta);
 
-			if (explosion.isDone())
+			if (explosion.explosionEffect.isDone())
 				iterator.remove();
 		}
 
@@ -38,17 +53,28 @@ public class ExplosionComponent extends FieldsReflectionComponent {
 
 	@Handles
 	public void render(Message message) {
-		SlickCallable.enterSafeBlock();
-		for (ExplosionEffect explosionEffect : explosions) {
-			explosionEffect.render();
+		Renderer renderer = Properties.getValue(message, "renderer");
+
+		for (Effect effect : explosions) {
+			final ExplosionEffect explosionEffect = effect.explosionEffect;
+			renderer.enqueue(new Renderer.SlickCallableRenderObject(effect.layer) {
+
+				@Override
+				public void execute(Graphics g) {
+					SlickCallable.enterSafeBlock();
+					explosionEffect.render();
+					SlickCallable.leaveSafeBlock();
+				}
+			});
 		}
-		SlickCallable.leaveSafeBlock();
+
 	}
 
 	@Handles
 	public void explosion(Message message) {
 		ExplosionEffect explosion = Properties.getValue(message, "explosion");
-		explosions.add(explosion);
+		int layer = (Integer) Properties.property("layer").getValue(message, 0);
+		explosions.add(new Effect(layer, explosion));
 	}
 
 }

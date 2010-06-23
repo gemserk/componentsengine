@@ -9,6 +9,7 @@ import com.gemserk.componentsengine.annotations.EntityProperty;
 import com.gemserk.componentsengine.components.annotations.Handles;
 import com.gemserk.componentsengine.messages.Message;
 import com.gemserk.componentsengine.properties.Properties;
+import com.gemserk.componentsengine.render.Renderer;
 
 public class RectangleRendererComponent extends FieldsReflectionComponent {
 
@@ -27,39 +28,46 @@ public class RectangleRendererComponent extends FieldsReflectionComponent {
 	@EntityProperty(readOnly=true)
 	Rectangle rectangle ;
 
+	@EntityProperty(readOnly = true, required = false)
+	int layer = 0;
+	
 	public RectangleRendererComponent(String id) {
 		super(id);
 	}
 
-
 	@Handles
 	public void render(Message message) {
-		Graphics g = Properties.getValue(message, "graphics");
-		
-		g.pushTransform();
-		{
-			g.translate(position.x, position.y);
+		Renderer renderer = Properties.getValue(message, "renderer");
+		renderer.enqueue(new Renderer.SlickCallableRenderObject(layer) {
 
-			Color color = g.getColor();
+			@Override
+			public void execute(Graphics g) {
+				g.pushTransform();
+				{
+					g.translate(position.x, position.y);
 
-			if (cornerRadius != null) {
-				g.setColor(fillColor);
-				g.fillRoundRect(rectangle.getX(), rectangle.getY(), rectangle.getWidth(), rectangle.getHeight(), 5);
-				
-				g.setColor(lineColor);
-				g.drawRoundRect(rectangle.getX(), rectangle.getY(), rectangle.getWidth(), rectangle.getHeight(), 5);
-			} else {
-				g.setColor(fillColor);
-				g.fill(rectangle);
-				
-				g.setColor(lineColor);
-				g.draw(rectangle);
+					Color color = g.getColor();
+
+					if (cornerRadius != null) {
+						g.setColor(fillColor);
+						g.fillRoundRect(rectangle.getX(), rectangle.getY(), rectangle.getWidth(), rectangle.getHeight(), 5);
+						
+						g.setColor(lineColor);
+						g.drawRoundRect(rectangle.getX(), rectangle.getY(), rectangle.getWidth(), rectangle.getHeight(), 5);
+					} else {
+						g.setColor(fillColor);
+						g.fill(rectangle);
+						
+						g.setColor(lineColor);
+						g.draw(rectangle);
+					}
+
+					g.setColor(color);
+
+				}
+				g.popTransform();
 			}
-
-			g.setColor(color);
-
-		}
-		g.popTransform();
+		});
 	}
 
 }

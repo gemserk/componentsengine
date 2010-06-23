@@ -11,6 +11,7 @@ import com.gemserk.componentsengine.annotations.EntityProperty;
 import com.gemserk.componentsengine.components.annotations.Handles;
 import com.gemserk.componentsengine.messages.Message;
 import com.gemserk.componentsengine.properties.Properties;
+import com.gemserk.componentsengine.render.Renderer;
 
 public class LabelComponent extends FieldsReflectionComponent {
 
@@ -20,7 +21,7 @@ public class LabelComponent extends FieldsReflectionComponent {
 	@EntityProperty(readOnly = true)
 	Vector2f position;
 
-	@EntityProperty(readOnly = true, required = false)
+	@EntityProperty(readOnly = true)
 	Font font;
 
 	@EntityProperty(readOnly = true)
@@ -35,29 +36,20 @@ public class LabelComponent extends FieldsReflectionComponent {
 	@EntityProperty(readOnly = true, required = false)
 	String valign = "center";
 	
+	@EntityProperty(readOnly = true, required = false)
+	int layer = 0;
+	
 	public LabelComponent(String id) {
 		super(id);
 	}
 
-
 	@Handles
 	public void render(Message message) {
-		Graphics g = Properties.getValue(message, "graphics");
-
-		String text = MessageFormat.format(this.message, value);
-
-		if (font == null)
-			font = g.getFont();
-
-		Color currentColor = g.getColor();
-
-		Font currentFont = g.getFont();
-
+		Renderer renderer = Properties.getValue(message, "renderer");
+		final String text = MessageFormat.format(this.message, value);
+		
 		int textWidth = font.getWidth(text);
 		int textHeight = font.getLineHeight();
-
-		if (font != null)
-			g.setFont(font);
 
 		float left = 0.0f;
 
@@ -72,16 +64,31 @@ public class LabelComponent extends FieldsReflectionComponent {
 			top = -textHeight / 2;
 		else if (valign.equals("bottom"))
 			top = -textHeight;
-		
-		g.pushTransform();
-		{
-			g.setColor(color);
-			g.translate(position.x, position.y);
-			g.drawString(text, left, top);
-		}
-		g.popTransform();
 
-		g.setColor(currentColor);
-		g.setFont(currentFont);
+		final float finalLeft = left;
+		final float finalTop = top;
+		
+		renderer.enqueue(new Renderer.SlickCallableRenderObject(layer) {
+
+			@Override
+			public void execute(Graphics g) {
+
+				Color currentColor = g.getColor();
+
+				g.setFont(font);
+				
+				g.pushTransform();
+				{
+					g.setColor(color);
+					g.translate(position.x, position.y);
+					g.drawString(text, finalLeft, finalTop);
+				}
+				g.popTransform();
+
+				g.setColor(currentColor);
+			}
+		});
+
+		
 	}
 }

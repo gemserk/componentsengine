@@ -32,6 +32,7 @@ import com.gemserk.componentsengine.messages.Message;
 import com.gemserk.componentsengine.messages.MessageQueue;
 import com.gemserk.componentsengine.messages.MessageQueueImpl;
 import com.gemserk.componentsengine.properties.SimpleProperty;
+import com.gemserk.componentsengine.render.Renderer;
 import com.gemserk.componentsengine.resources.AnimationManager;
 import com.gemserk.componentsengine.resources.AnimationManagerImpl;
 import com.gemserk.componentsengine.resources.ImageManager;
@@ -67,6 +68,8 @@ public class GemserkGameState extends BasicGameState {
 
 	protected Injector injector;
 
+	private Renderer renderer;
+
 	public GemserkGameState(int id) {
 		this(id,null);
 	}
@@ -98,7 +101,8 @@ public class GemserkGameState extends BasicGameState {
 				bind(Input.class).toInstance(container.getInput());
 				bind(Game.class).in(Singleton.class);
 				bind(GameContainer.class).toInstance(container);
-
+				bind(Graphics.class).toInstance(container.getGraphics());
+				bind(Renderer.class).in(Singleton.class);
 				bind(GroovyScriptProvider.class).toInstance(new CachedScriptProvider(new GroovyScriptProviderImpl()));
 				MonitorFactory realMonitorFactory = new SlickMonitorFactory();
 				requestInjection(realMonitorFactory);
@@ -130,6 +134,10 @@ public class GemserkGameState extends BasicGameState {
 		
 		messageQueue = injector.getInstance(MessageQueue.class);
 		game = injector.getInstance(Game.class);
+		
+		renderer = injector.getInstance(Renderer.class);
+		
+		
 		final BuilderUtils builderUtils = injector.getInstance(BuilderUtils.class);
 
 		builderUtils.addCustomUtil("templateProvider", injector.getInstance(TemplateProvider.class));
@@ -178,8 +186,11 @@ public class GemserkGameState extends BasicGameState {
 		g.setBackground(new Color(0.15f, 0.15f, 0.15f));
 		Message message = new Message("render");
 		message.addProperty("graphics", new SimpleProperty<Object>(g));
+		message.addProperty("renderer", new SimpleProperty<Object>(renderer));
 		messageQueue.enqueue(message);
 		messageQueue.processMessages();
+		
+		renderer.render();
 	}
 
 	@Override

@@ -7,7 +7,7 @@ import java.util.Collection;
 public class ExplosionEffect {
 
 	Collection<LineEffect> lineEffects;
-
+	
 	public ExplosionEffect(ArrayList<LineEffect> particles) {
 		this.lineEffects = particles;
 	}

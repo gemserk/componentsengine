@@ -7,10 +7,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
+import org.newdawn.slick.AngelCodeFont;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Font;
 import org.newdawn.slick.Image;
+import org.newdawn.slick.SlickException;
 import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Vector2f;
@@ -113,6 +115,17 @@ public class BuilderUtils {
 		public class FontUtils {
 
 			private Map<String, Font> cachedFonts = new HashMap<String, Font>();
+
+			public Font getDefaultFont() {
+				try {
+					String defaultFontKey = "defaultFont";
+					if (!cachedFonts.containsKey(defaultFontKey))
+						cachedFonts.put(defaultFontKey, new AngelCodeFont("org/newdawn/slick/data/defaultfont.fnt", "org/newdawn/slick/data/defaultfont.png"));
+					return cachedFonts.get(defaultFontKey);
+				} catch (SlickException e) {
+					throw new RuntimeException("failed to load default font", e);
+				}
+			}
 
 			public Font font(Map<String, Object> parameters) {
 
