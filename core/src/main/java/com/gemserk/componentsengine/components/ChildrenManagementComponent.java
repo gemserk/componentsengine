@@ -2,13 +2,18 @@ package com.gemserk.componentsengine.components;
 
 import com.gemserk.componentsengine.components.annotations.Handles;
 import com.gemserk.componentsengine.entities.Entity;
+import com.gemserk.componentsengine.entities.EntityManager;
 import com.gemserk.componentsengine.messages.ChildrenManagementMessageFactory;
 import com.gemserk.componentsengine.messages.Message;
 import com.gemserk.componentsengine.properties.Properties;
 import com.gemserk.componentsengine.properties.PropertyLocator;
+import com.google.inject.Inject;
 
 public class ChildrenManagementComponent extends ReflectionComponent {
 
+	@Inject
+	EntityManager entityManager;
+	
 	private PropertyLocator<Entity> entityProperty = Properties.property(ChildrenManagementMessageFactory.PARAMETER_ENTITY);
 	private PropertyLocator<String> removeEntityIdProperty = Properties.property(ChildrenManagementMessageFactory.PARAMETER_REMOVE_ENTITY_ID);
 	private PropertyLocator<String> whereEntityIdProperty = Properties.property(ChildrenManagementMessageFactory.PARAMETER_WHERE_ENTITY_ID);
@@ -32,7 +37,7 @@ public class ChildrenManagementComponent extends ReflectionComponent {
 			newParentEntity = entity.getEntityById(whereEntityId);
 		
 		if (newParentEntity != null)
-			newParentEntity.addEntity(entityToAdd);
+			entityManager.addEntity(entityToAdd, newParentEntity);
 	}
 
 	@Handles(ids={ChildrenManagementMessageFactory.REMOVE_MESSAGE_ID})
@@ -40,6 +45,6 @@ public class ChildrenManagementComponent extends ReflectionComponent {
 		String entityToRemove = removeEntityIdProperty.getValue(message);
 		Entity childEntity = entity.getEntityById(entityToRemove);
 		if (childEntity != null)
-			childEntity.removeFromParent();
+			entityManager.removeEntity(childEntity);
 	}
 }

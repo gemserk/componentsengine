@@ -19,6 +19,7 @@ import com.gemserk.componentsengine.components.ChildrenManagementComponent;
 import com.gemserk.componentsengine.components.DelayedMessagesComponent;
 import com.gemserk.componentsengine.components.MessageHandler;
 import com.gemserk.componentsengine.entities.Entity;
+import com.gemserk.componentsengine.entities.EntityManager;
 import com.gemserk.componentsengine.entities.Root;
 import com.gemserk.componentsengine.game.Game;
 import com.gemserk.componentsengine.genericproviders.GenericProvider;
@@ -29,6 +30,7 @@ import com.gemserk.componentsengine.input.MonitorFactory;
 import com.gemserk.componentsengine.input.MonitorUpdater;
 import com.gemserk.componentsengine.input.SlickMonitorFactory;
 import com.gemserk.componentsengine.messages.Message;
+import com.gemserk.componentsengine.messages.MessageDispatcher;
 import com.gemserk.componentsengine.messages.MessageQueue;
 import com.gemserk.componentsengine.messages.MessageQueueImpl;
 import com.gemserk.componentsengine.properties.SimpleProperty;
@@ -70,6 +72,8 @@ public class GemserkGameState extends BasicGameState {
 
 	private Renderer renderer;
 
+	private MonitorUpdater monitorUpdater;
+
 	public GemserkGameState(int id) {
 		this(id,null);
 	}
@@ -109,9 +113,10 @@ public class GemserkGameState extends BasicGameState {
 				CachedMonitorFactory cachedMonitorFactory = new CachedMonitorFactory(realMonitorFactory);
 				bind(MonitorFactory.class).toInstance(cachedMonitorFactory);
 				bind(MonitorUpdater.class).toInstance(cachedMonitorFactory);
-				bind(MessageHandler.class).to(Game.class).in(Singleton.class);
-				bind(MessageQueue.class).to(MessageQueueImpl.class).in(Singleton.class);
-
+				//bind(MessageHandler.class).to(Game.class).in(Singleton.class);
+				bind(MessageDispatcher.class).in(Singleton.class);
+				bind(MessageQueue.class).to(MessageDispatcher.class).in(Singleton.class);
+				bind(EntityManager.class).in(Singleton.class);
 				bind(BuilderUtils.class).in(Singleton.class);
 				bind(Entity.class).annotatedWith(Root.class).toInstance(rootEntity);
 
@@ -128,9 +133,15 @@ public class GemserkGameState extends BasicGameState {
 		DelayedMessagesComponent delayedMessagesComponent = new DelayedMessagesComponent("delayedMessagesComponent");
 		injector.injectMembers(delayedMessagesComponent);
 		rootEntity.addComponent(delayedMessagesComponent);
-		InputMonitorUpdaterComponent inputMonitorUpdaterComponent = new InputMonitorUpdaterComponent("inputMonitorUpdaterComponent");
-		injector.injectMembers(inputMonitorUpdaterComponent);
-		rootEntity.addComponent(inputMonitorUpdaterComponent);
+//		InputMonitorUpdaterComponent inputMonitorUpdaterComponent = new InputMonitorUpdaterComponent("inputMonitorUpdaterComponent");
+//		injector.injectMembers(inputMonitorUpdaterComponent);
+//		rootEntity.addComponent(inputMonitorUpdaterComponent);
+		
+		monitorUpdater = injector.getInstance(MonitorUpdater.class);
+		
+		EntityManager entityManager = injector.getInstance(EntityManager.class);
+		entityManager.addEntity(rootEntity, null);
+		
 		
 		messageQueue = injector.getInstance(MessageQueue.class);
 		game = injector.getInstance(Game.class);
@@ -195,6 +206,7 @@ public class GemserkGameState extends BasicGameState {
 
 	@Override
 	public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
+		monitorUpdater.update();
 		Message message = new Message("update");
 		message.addProperty("delta", new SimpleProperty<Object>(delta));
 		messageQueue.enqueue(message);

@@ -1,5 +1,7 @@
 package com.gemserk.componentsengine.components;
 
+import java.util.Set;
+
 import com.gemserk.componentsengine.entities.Entity;
 import com.gemserk.componentsengine.messages.Message;
 
@@ -26,5 +28,9 @@ public class Component implements MessageHandler {
 	}
 	
 	public void handleMessage(Message message) {
+	}
+	
+	public Set<String> getMessageIds(){
+		return null;
 	}
 }

@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 
 import org.newdawn.slick.AngelCodeFont;
 import org.newdawn.slick.Animation;
@@ -29,12 +30,13 @@ import com.gemserk.componentsengine.resources.SoundsManager;
 import com.gemserk.componentsengine.sounds.Sound;
 import com.gemserk.componentsengine.utils.Container;
 import com.gemserk.componentsengine.utils.Interval;
+import com.google.common.collect.Sets;
 import com.google.inject.Inject;
 import com.google.inject.internal.Lists;
 
 public class BuilderUtils {
 
-	Map<String, Object> custom = new HashMap<String, Object>();
+	public Map<String, Object> custom = new HashMap<String, Object>();
 
 	@Inject
 	ImageManager imageManager;
@@ -186,14 +188,15 @@ public class BuilderUtils {
 
 		public Component genericComponent(final Map<String, Object> parameters, final Closure closure) {
 			Object messageIdsCandidates = parameters.get("messageId");
-			final Collection messageIds;
+			final Set<String> messageIds;
 			if (messageIdsCandidates == null)
-				throw new RuntimeException("messageId cant be null");
-
-			if (messageIdsCandidates instanceof Collection) {
-				messageIds = (Collection) messageIdsCandidates;
-			} else {
-				messageIds = Lists.newArrayList(messageIdsCandidates.toString());
+				messageIds = null;
+			else {
+				if (messageIdsCandidates instanceof Collection) {
+					messageIds = Sets.newLinkedHashSet((Collection) messageIdsCandidates);
+				} else {
+					messageIds = Sets.newHashSet(messageIdsCandidates.toString());
+				}
 			}
 
 			return new Component((String) parameters.get("id")) {
@@ -208,11 +211,16 @@ public class BuilderUtils {
 				@Override
 				public void handleMessage(Message message) {
 
-					if (!messageIds.contains(message.getId()))
+					if (messageIds !=null && !messageIds.contains(message.getId()))
 						return;
 
 					closure.setDelegate(this);
 					closure.call(message);
+				}
+
+				@Override
+				public Set<String> getMessageIds() {
+					return messageIds;
 				}
 
 			};

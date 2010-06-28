@@ -23,20 +23,20 @@ public class ReflectionComponentTest {
 		}
 	};
 	private ElMock elmock;
-	
+
 	public static interface ElMock {
 		void update();
+
 		void hitdetected();
+
 		void both();
-		
+
 	}
-	
-	
+
 	@Before
-	public void setup(){
+	public void setup() {
 		elmock = mockery.mock(ElMock.class);
 	}
-	
 
 	public static class TestComponent extends ReflectionComponent {
 
@@ -55,46 +55,28 @@ public class ReflectionComponentTest {
 		public void update(Message message) {
 			elmock.update();
 		}
-		
-		@Handles(ids={"hitdetected"})
-		public void handler1(Message message){
+
+		@Handles(ids = { "hitdetected" })
+		public void handler1(Message message) {
 			elmock.hitdetected();
 		}
-		
-		@Handles(ids={"both1","both2"})
-		public void both(Message message){
+
+		@Handles(ids = { "both1", "both2" })
+		public void both(Message message) {
 			elmock.both();
 		}
-		
 
-	}
-
-	public static class FailedTestComponent extends ReflectionComponent {
-
-		public FailedTestComponent() {
-			super("FailedTestComponent");
-		}
-
-		@Handles
-		public void update() {
-			fail("Missing parameter");
-		}
-
-		@Handles
-		public void updateTwoParameters(int a, int b) {
-			fail("Missing parameter");
-		}
-
-		@Handles
-		public void updateWrongType(int a) {
-			fail("Missing parameter");
-		}
 	}
 
 	@Test(expected = RuntimeException.class)
 	public void youtCantDefineAHandlerWithoutMessageParameter() {
 		Entity entity = new Entity("hola");
-		Component shouldFailComponent = new FailedTestComponent();
+		Component shouldFailComponent = new ReflectionComponent("hola") {
+			@Handles
+			public void update() {
+				fail("Missing parameter");
+			}
+		};
 		entity.addComponent(shouldFailComponent);
 		shouldFailComponent.handleMessage(new Message("update"));
 	}
@@ -102,7 +84,12 @@ public class ReflectionComponentTest {
 	@Test(expected = RuntimeException.class)
 	public void youtCantDefineAHandlerWithTwoParameters() {
 		Entity entity = new Entity("hola");
-		Component shouldFailComponent = new FailedTestComponent();
+		Component shouldFailComponent = new ReflectionComponent("hola") {
+			@Handles
+			public void updateTwoParameters(Message a, int b) {
+				fail("Missing parameter");
+			}
+		};
 		entity.addComponent(shouldFailComponent);
 		shouldFailComponent.handleMessage(new Message("updateTwoParameters"));
 	}
@@ -110,10 +97,54 @@ public class ReflectionComponentTest {
 	@Test(expected = RuntimeException.class)
 	public void youtCantDefineAHandlerWithParameterNotMessage() {
 		Entity entity = new Entity("hola");
-		Component shouldFailComponent = new FailedTestComponent();
+		Component shouldFailComponent = new ReflectionComponent("hola") {
+			@Handles
+			public void updateTwoParameters(int a) {
+				fail("Missing parameter");
+			}
+		};
 		entity.addComponent(shouldFailComponent);
 		shouldFailComponent.handleMessage(new Message("updateWrongType"));
 	}
+	
+	
+	@Test(expected = RuntimeException.class)
+	public void youCantDefineSameIdInTwoParametersOneIsMethodName() {
+		Entity entity = new Entity("hola");
+		Component shouldFailComponent = new ReflectionComponent("hola") {
+
+			@Handles(ids = { "update" })
+			public void handler1(Message message) {
+				elmock.hitdetected();
+			}
+			@Handles
+			public void update(Message message) {
+				elmock.update();
+			}
+		};
+		entity.addComponent(shouldFailComponent);
+		shouldFailComponent.handleMessage(new Message("update"));
+	}
+	
+	@Test(expected = RuntimeException.class)
+	public void youCantDefineSameIdInTwoParametersBothInListOfIds() {
+		Entity entity = new Entity("hola");
+		Component shouldFailComponent = new ReflectionComponent("hola") {
+			@Handles(ids = {"realupdate"})
+			public void update(Message message) {
+				elmock.update();
+			}
+
+			@Handles(ids = {"realupdate"})
+			public void handler1(Message message) {
+				elmock.hitdetected();
+			}
+		};
+		entity.addComponent(shouldFailComponent);
+		shouldFailComponent.handleMessage(new Message("realupdate"));
+	}
+	
+	
 
 	@Test
 	public void ifTheMessageIdIsNotInTheComponentNoMethodIsCalled() {
@@ -122,19 +153,18 @@ public class ReflectionComponentTest {
 		entity.addComponent(component);
 		component.handleMessage(new Message("isnotincomponetnt"));
 	}
-	
+
 	@Test
 	public void ifTheMessageIdIsNotInTheAnnotationTheMethodNamedAsTheIdIsCalled() {
 		Entity entity = new Entity("hola");
 		Component component = new TestComponent(elmock);
-		
 
 		mockery.checking(new Expectations() {
 			{
 				oneOf(elmock).update();
 			}
 		});
-		
+
 		entity.addComponent(component);
 		component.handleMessage(new Message("update"));
 	}
@@ -143,30 +173,28 @@ public class ReflectionComponentTest {
 	public void ifTheMessageIdIsInTheAnnotationTheMethodIsCalled() {
 		Entity entity = new Entity("hola");
 		Component component = new TestComponent(elmock);
-		
 
 		mockery.checking(new Expectations() {
 			{
 				oneOf(elmock).hitdetected();
 			}
 		});
-		
+
 		entity.addComponent(component);
 		component.handleMessage(new Message("hitdetected"));
 	}
-	
+
 	@Test
 	public void ifAMethodHasTwoMEssageIdItIsCalledForEachOne() {
 		Entity entity = new Entity("hola");
 		Component component = new TestComponent(elmock);
-		
 
 		mockery.checking(new Expectations() {
 			{
 				exactly(2).of(elmock).both();
 			}
 		});
-		
+
 		entity.addComponent(component);
 		component.handleMessage(new Message("both1"));
 		component.handleMessage(new Message("both2"));
