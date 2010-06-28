@@ -3,7 +3,7 @@
 	<groupId>com.gemserk.componentsengine</groupId>
 	<artifactId>componentsengine</artifactId>
 	<name>Components Engine</name>
-	<version>0.0.5-SNAPSHOT</version>
+	<version>0.0.5</version>
 	<packaging>pom</packaging>
 	<organization>
 		<name>Gemserk</name>
@@ -19,9 +19,9 @@
 		<url>https://ci.gemserk.com/hudson/job/componentsengine/</url>
 	</ciManagement>
 	<scm>
-		<url>https://svn.gemserk.com/componentsengine/trunk/componentsengine</url>
-		<connection>scm:https://svn.gemserk.com/componentsengine/trunk/componentsengine</connection>
-		<developerConnection>scm:svn:https://svn.gemserk.com/componentsengine/trunk/componentsengine</developerConnection>
+		<url>https://svn.gemserk.com/componentsengine/tags/componentsengine-0.0.5</url>
+		<connection>scm:https://svn.gemserk.com/componentsengine/tags/componentsengine-0.0.5</connection>
+		<developerConnection>scm:svn:https://svn.gemserk.com/componentsengine/tags/componentsengine-0.0.5</developerConnection>
 	</scm>
 	<distributionManagement>
 		<repository>
