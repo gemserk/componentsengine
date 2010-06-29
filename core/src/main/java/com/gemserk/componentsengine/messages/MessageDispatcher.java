@@ -18,11 +18,8 @@ public class MessageDispatcher implements MessageQueue {
 	
 	Multimap<String, Component> componentsByMessageId = HashMultimap.create();
 	
-	
-	
 	public void registerComponent(Component component){
 		Set<String> messageIds = component.getMessageIds();
-		//Set<String> messageIds = null;//component.getMessageIds();
 		if(messageIds==null){
 			components.add(component);
 		}else{
@@ -34,7 +31,6 @@ public class MessageDispatcher implements MessageQueue {
 	
 	public void unregisterComponent(Component component){
 		Set<String> messageIds = component.getMessageIds();
-		//Set<String> messageIds = null;//component.getMessageIds();
 		if(messageIds==null){
 			components.remove(component);
 		}else{
@@ -52,11 +48,10 @@ public class MessageDispatcher implements MessageQueue {
 		List<Component> handlers = new ArrayList<Component>(componentsWithId.size() + components.size());
 		handlers.addAll(componentsWithId);
 		handlers.addAll(components);
-		//List<Component> handlers = new ArrayList<Component>(components);
+
 		for (Component component : handlers) {
 			component.handleMessage(message);
 		}
-
 	}
 
 	@Override

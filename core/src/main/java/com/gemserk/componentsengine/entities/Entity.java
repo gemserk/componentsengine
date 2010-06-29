@@ -9,7 +9,7 @@ import com.gemserk.componentsengine.properties.*;
 import com.google.common.base.Predicate;
 import com.google.common.collect.*;
 
-public class Entity implements PropertiesHolder, MessageHandler, ComponentsHolder {
+public class Entity implements PropertiesHolder, ComponentsHolder {
 
 	private final String id;
 
@@ -62,30 +62,6 @@ public class Entity implements PropertiesHolder, MessageHandler, ComponentsHolde
 
 	public Property<Object> getProperty(String key) {
 		return propertiesHolder.getProperty(key);
-	}
-
-	public void handleMessage(Message message) {
-
-		for (Entry<String, Component> entry : componentsHolder.getComponents().entrySet()) {
-			if(!message.shouldProcess())
-				break;
-			
-			Component component = entry.getValue();
-			long iniTime = System.currentTimeMillis();
-			component.handleMessage(message);
-			long endTime = System.currentTimeMillis() - iniTime;
-			times.add(component.getId(), (int) endTime);
-		}
-		
-		if (message.shouldPropagate()) {
-			
-			for (Entity child : new LinkedList<Entity>(children.values())) {
-				child.handleMessage(message);
-			}
-		}
-		
-		message.enablePropagation();
-		message.enableProcessing();
 	}
 
 	public boolean hasTag(String tag) {

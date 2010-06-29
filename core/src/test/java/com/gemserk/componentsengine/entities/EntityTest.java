@@ -71,42 +71,6 @@ public class EntityTest {
 	}
 
 	@Test
-	public void whenReceivingAMessageItIsPassedToTheComponentsForHandling() {
-
-		final Entity entity = new Entity("id");
-
-		final String component1name = "component1";
-		final String component2name = "component2";
-		final Component component1 = context.mock(Component.class, "component1");
-		final Component component2 = context.mock(Component.class, "component2");
-
-		final Message message = context.mock(Message.class);
-
-		ComponentsHolderImpl componentsHolderImpl = new ComponentsHolderImpl();
-		componentsHolderImpl.getComponents().put(component1name, component1);
-		componentsHolderImpl.getComponents().put(component2name, component2);
-
-		entity.componentsHolder = componentsHolderImpl;
-
-		context.checking(new Expectations() {
-			{
-				ignoring(message).shouldProcess();will(returnValue(true));
-				oneOf(message).shouldPropagate();will(returnValue(true));
-				will(returnValue(true));
-				ignoring(message).enableProcessing();
-				oneOf(message).enablePropagation();
-				ignoring(component1).getId();
-				ignoring(component2).getId();
-				
-				oneOf(component1).handleMessage(message);
-				oneOf(component2).handleMessage(message);
-			}
-		});
-
-		entity.handleMessage(message);
-	}
-	
-	@Test
 	public void shouldNotRemoveFromParentIfRootNode() {
 		Entity entity = new Entity("");
 		entity.parent = null;

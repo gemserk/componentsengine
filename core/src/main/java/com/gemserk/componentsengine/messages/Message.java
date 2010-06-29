@@ -10,9 +10,8 @@ import com.gemserk.componentsengine.properties.Property;
 
 public class Message implements PropertiesHolder {
 	
-	boolean propagate = true;
-	boolean process = true;
 	protected String id;
+	
 	protected PropertiesHolder propertiesHolder = new PropertiesHolderImpl();
 	
 	public Message(String id) {
@@ -28,29 +27,6 @@ public class Message implements PropertiesHolder {
 		this(Message.class.getName());
 	}
 	
-	
-	public void suspendPropagation(){
-		propagate = false;
-	}
-	
-	public void enablePropagation(){
-		propagate = true;
-	}
-	public boolean shouldPropagate() {
-		return process && propagate;
-	}
-	
-	public void suspendProcessing(){
-		process = false;
-	}
-	
-	public void enableProcessing(){
-		process = true;
-	}
-	public boolean shouldProcess() {
-		return process;
-	}
-
 	public String getId() {
 		return id;
 	}
