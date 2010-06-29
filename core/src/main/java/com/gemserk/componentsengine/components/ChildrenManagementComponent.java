@@ -13,38 +13,30 @@ public class ChildrenManagementComponent extends ReflectionComponent {
 
 	@Inject
 	EntityManager entityManager;
-	
+
 	private PropertyLocator<Entity> entityProperty = Properties.property(ChildrenManagementMessageFactory.PARAMETER_ENTITY);
 	private PropertyLocator<String> removeEntityIdProperty = Properties.property(ChildrenManagementMessageFactory.PARAMETER_REMOVE_ENTITY_ID);
 	private PropertyLocator<String> whereEntityIdProperty = Properties.property(ChildrenManagementMessageFactory.PARAMETER_WHERE_ENTITY_ID);
-	
+
 	public ChildrenManagementComponent(String id) {
 		super(id);
 	}
 
-	@Handles(ids={ChildrenManagementMessageFactory.ADD_MESSAGE_ID})
+	@Handles(ids = { ChildrenManagementMessageFactory.ADD_MESSAGE_ID })
 	public void addEntity(Message message) {
 		Entity entityToAdd = entityProperty.getValue(message);
-		
-		String whereEntityId = whereEntityIdProperty.getValue(message);
-		
-		Entity newParentEntity = null;
 
-		
-		if (entity.getId().equals(whereEntityId))
-			newParentEntity = entity;
-		else
-			newParentEntity = entity.getEntityById(whereEntityId);
-		
-		if (newParentEntity != null)
-			entityManager.addEntity(entityToAdd, newParentEntity);
+		String whereEntityId = whereEntityIdProperty.getValue(message);
+
+		if (whereEntityId == null)
+			throw new RuntimeException("parent id must be not null");
+
+		entityManager.addEntity(entityToAdd, whereEntityId);
 	}
 
-	@Handles(ids={ChildrenManagementMessageFactory.REMOVE_MESSAGE_ID})
+	@Handles(ids = { ChildrenManagementMessageFactory.REMOVE_MESSAGE_ID })
 	public void removeEntity(Message message) {
-		String entityToRemove = removeEntityIdProperty.getValue(message);
-		Entity childEntity = entity.getEntityById(entityToRemove);
-		if (childEntity != null)
-			entityManager.removeEntity(childEntity);
+		String entityName = removeEntityIdProperty.getValue(message);
+		entityManager.removeEntity(entityName);
 	}
 }
