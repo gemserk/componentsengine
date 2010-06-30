@@ -40,6 +40,9 @@ public class LabelComponent extends FieldsReflectionComponent {
 	@EntityProperty(readOnly = true, required = false)
 	int layer = 0;
 	
+	@EntityProperty(readOnly = true, required = false)
+	Vector2f size = new Vector2f(1,1);
+	
 	public LabelComponent(String id) {
 		super(id);
 	}
@@ -82,6 +85,7 @@ public class LabelComponent extends FieldsReflectionComponent {
 				{
 					g.setColor(color);
 					g.translate(position.x, position.y);
+					g.scale(size.x, size.y);
 					g.drawString(text, finalLeft, finalTop);
 				}
 				g.popTransform();

@@ -7,6 +7,7 @@ builder.entity {
 	tags("label")
 	
 	property("position", parameters.position)
+	property("size", parameters.size ?: utils.vector(1,1))
 	property("message", parameters.message)
 	property("value", parameters.value)
 	property("font", parameters.font ?: utils.resources.fonts.defaultFont)
@@ -20,14 +21,14 @@ builder.entity {
 	else if (align == "right") 
 		property("left", {(float)(entity.position.x + entity.bounds.maxX)})
 	else // center 
-		property("left", {(float)(entity.position.x)})
+	property("left", {(float)(entity.position.x)})
 	
 	if (valign == "top") 
 		property("top", {(float)(entity.position.y + entity.bounds.minY)})
 	else if (valign == "bottom") 
 		property("top", {(float)(entity.position.y + entity.bounds.maxY)})
 	else // center
-		property("top", {(float)(entity.position.y)})
+	property("top", {(float)(entity.position.y)})
 	
 	
 	property("textPosition", {
@@ -43,6 +44,7 @@ builder.entity {
 	
 	component(new LabelComponent("textRenderComponent")) {
 		propertyRef("position","textPosition")
+		propertyRef("size", "size")
 		propertyRef("message","message")
 		propertyRef("value", "value")
 		propertyRef("font", "font")
