@@ -12,7 +12,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import com.gemserk.componentsengine.components.Component;
-import com.gemserk.componentsengine.components.ComponentsHolderImpl;
 import com.gemserk.componentsengine.messages.Message;
 
 @RunWith(JMock.class)

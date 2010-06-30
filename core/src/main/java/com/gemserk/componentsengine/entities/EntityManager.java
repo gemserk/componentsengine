@@ -12,8 +12,12 @@ import com.google.inject.Inject;
 
 public class EntityManager {
 
-	@Inject
 	MessageDispatcher messageDispatcher;
+	
+	@Inject
+	public void setMessageDispatcher(MessageDispatcher messageDispatcher) {
+		this.messageDispatcher = messageDispatcher;
+	}
 
 	class EntityRegistrator {
 
