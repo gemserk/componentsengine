@@ -52,7 +52,8 @@ public class CachedMonitorFactory implements MonitorFactory, MonitorUpdater {
 			entry.getValue().update();
 		}
 		
-		coordinatesMonitor.update();
+		if(coordinatesMonitor != null)
+			coordinatesMonitor.update();
 	}
 
 }
