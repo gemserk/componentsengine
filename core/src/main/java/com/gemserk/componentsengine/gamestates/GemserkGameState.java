@@ -17,7 +17,6 @@ import org.newdawn.slick.state.StateBasedGame;
 import com.gemserk.componentsengine.builders.BuilderUtils;
 import com.gemserk.componentsengine.components.ChildrenManagementComponent;
 import com.gemserk.componentsengine.components.DelayedMessagesComponent;
-import com.gemserk.componentsengine.components.MessageHandler;
 import com.gemserk.componentsengine.entities.Entity;
 import com.gemserk.componentsengine.entities.EntityManager;
 import com.gemserk.componentsengine.entities.Root;
@@ -25,14 +24,12 @@ import com.gemserk.componentsengine.game.Game;
 import com.gemserk.componentsengine.genericproviders.GenericProvider;
 import com.gemserk.componentsengine.genericproviders.ValueFromClosure;
 import com.gemserk.componentsengine.input.CachedMonitorFactory;
-import com.gemserk.componentsengine.input.InputMonitorUpdaterComponent;
 import com.gemserk.componentsengine.input.MonitorFactory;
 import com.gemserk.componentsengine.input.MonitorUpdater;
 import com.gemserk.componentsengine.input.SlickMonitorFactory;
 import com.gemserk.componentsengine.messages.Message;
 import com.gemserk.componentsengine.messages.MessageDispatcher;
 import com.gemserk.componentsengine.messages.MessageQueue;
-import com.gemserk.componentsengine.messages.MessageQueueImpl;
 import com.gemserk.componentsengine.properties.SimpleProperty;
 import com.gemserk.componentsengine.render.Renderer;
 import com.gemserk.componentsengine.resources.AnimationManager;
@@ -50,6 +47,7 @@ import com.gemserk.componentsengine.templates.GroovyTemplateProvider;
 import com.gemserk.componentsengine.templates.TemplateProvider;
 import com.gemserk.componentsengine.triggers.ClosureTrigger;
 import com.gemserk.componentsengine.triggers.GroovySingleGenericMessageTrigger;
+import com.gemserk.componentsengine.triggers.NullTrigger;
 import com.gemserk.componentsengine.triggers.Trigger;
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
@@ -167,6 +165,10 @@ public class GemserkGameState extends BasicGameState {
 			public Trigger closureTrigger(Closure closure){
 				closure.setProperty("messageQueue", messageQueue);
 				return new ClosureTrigger(closure);
+			}
+			
+			public Trigger nullTrigger() {
+				return new NullTrigger();
 			}
 		});
 
