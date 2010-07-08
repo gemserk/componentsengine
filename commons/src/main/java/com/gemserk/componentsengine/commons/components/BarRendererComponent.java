@@ -8,27 +8,32 @@ import com.gemserk.componentsengine.annotations.EntityProperty;
 import com.gemserk.componentsengine.components.annotations.Handles;
 import com.gemserk.componentsengine.messages.Message;
 import com.gemserk.componentsengine.properties.Properties;
+import com.gemserk.componentsengine.render.Renderer;
+import com.gemserk.componentsengine.render.SlickCallableRenderObject;
 import com.gemserk.componentsengine.utils.Container;
 
 public class BarRendererComponent extends FieldsReflectionComponent {
 
-	@EntityProperty(readOnly=true)
+	@EntityProperty(readOnly = true)
 	Vector2f position;
-	
-	@EntityProperty(readOnly=true)
+
+	@EntityProperty(readOnly = true)
 	Container container;
-	
-	@EntityProperty(readOnly=true, required=false)
+
+	@EntityProperty(readOnly = true, required = false)
 	Float width = 15.0f;
 
-	@EntityProperty(readOnly=true, required=false)
+	@EntityProperty(readOnly = true, required = false)
 	Float height = 3.0f;
 
-	@EntityProperty(readOnly=true, required=false)
+	@EntityProperty(readOnly = true, required = false)
 	Color emptyColor = Color.red;
 
-	@EntityProperty(readOnly=true, required=false)
+	@EntityProperty(readOnly = true, required = false)
 	Color fullColor = Color.green;
+	
+	@EntityProperty(readOnly = true, required = false)
+	Integer layer = 0;
 
 	public BarRendererComponent(String id) {
 		super(id);
@@ -36,20 +41,25 @@ public class BarRendererComponent extends FieldsReflectionComponent {
 
 	@Handles
 	public void render(Message message) {
-		Graphics g = Properties.getValue(message, "graphics");
-		
-		g.pushTransform();
-		{
-			g.translate(position.x, position.y);
-			g.scale(width, height);
-		
-			g.setColor(emptyColor);
-			g.fillRect(0, 0, 1, 1);
-		
-			g.setColor(fullColor);
-			g.fillRect(0, 0, container.getCurrent() / container.getTotal(), 1);
-		}
-		g.popTransform();
-	}
+		Renderer renderer = Properties.getValue(message, "renderer");
 
+		renderer.enqueue(new SlickCallableRenderObject(layer) {
+			@Override
+			public void execute(Graphics g) {
+				g.pushTransform();
+				{
+					g.translate(position.x, position.y);
+					g.scale(width, height);
+
+					g.setColor(emptyColor);
+					g.fillRect(0, 0, 1, 1);
+
+					g.setColor(fullColor);
+					g.fillRect(0, 0, container.getCurrent() / container.getTotal(), 1);
+				}
+				g.popTransform();
+			}
+		});
+
+	}
 }
