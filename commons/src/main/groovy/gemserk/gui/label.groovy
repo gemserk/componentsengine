@@ -12,6 +12,7 @@ builder.entity {
 	property("value", parameters.value)
 	property("font", parameters.font ?: utils.resources.fonts.defaultFont)
 	property("bounds", parameters.bounds)
+	property("color", parameters.fontColor ?: utils.color(1,1,1,1))
 	
 	def align = parameters.align ?: "left"
 	def valign = parameters.valign ?: "top"
@@ -48,7 +49,7 @@ builder.entity {
 		propertyRef("message","message")
 		propertyRef("value", "value")
 		propertyRef("font", "font")
-		property("color", parameters.fontColor ?: utils.color(1,1,1,1))
+		propertyRef("color", "color")
 		property("align", align)
 		property("valign", valign)
 		property("layer",parameters.layer ?:0)
