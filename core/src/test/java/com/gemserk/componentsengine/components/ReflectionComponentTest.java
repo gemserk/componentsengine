@@ -11,6 +11,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import com.gemserk.componentsengine.components.annotations.Handles;
+import com.gemserk.componentsengine.components.reflectioncomponenttesthelper.ReflectionComponentTestHelper;
 import com.gemserk.componentsengine.entities.Entity;
 import com.gemserk.componentsengine.messages.Message;
 
@@ -198,6 +199,21 @@ public class ReflectionComponentTest {
 		entity.addComponent(component);
 		component.handleMessage(new Message("both1"));
 		component.handleMessage(new Message("both2"));
+	}
+	
+	@Test
+	public void shouldAllowComponentsDefinedAsAnnonimousInnerClass() {
+		Entity entity = new Entity("hola");
+		Component component = new ReflectionComponentTestHelper().getComponentAsAnnonimousInnerClass("test", elmock);
+
+		mockery.checking(new Expectations() {
+			{
+				oneOf(elmock).update();
+			}
+		});
+
+		entity.addComponent(component);
+		component.handleMessage(new Message("update"));
 	}
 
 }

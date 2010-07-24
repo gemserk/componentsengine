@@ -55,21 +55,16 @@ public abstract class ReflectionComponent extends Component {
 				throw new RuntimeException("Error in component configuration (wrong parameters: "+Arrays.asList(methodParametersTypes)+")");
 
 			
+			method.setAccessible(true);
 			List<String> messageIds = Arrays.asList(annotation.ids());
-			if (messageIds.isEmpty()) {
-				
-				String name = method.getName();
-				if(cachedMethods.containsKey(name))
-					throw new RuntimeException("Error in component configuration, multiple methods handle same  message.id:" + name);
-				
-				cachedMethods.put(name, method);
-			} else {
-				for (String messageId : messageIds) {
-					if(cachedMethods.containsKey(messageId))
-						throw new RuntimeException("Error in component configuration, multiple methods handle same  message.id:" + messageId);
-					
-					cachedMethods.put(messageId, method);
-				}
+			
+			
+			List<String> finalMessageIds = messageIds.isEmpty() ? Arrays.asList(method.getName()) : messageIds;
+			
+			for (String messageId : finalMessageIds) {
+				if(cachedMethods.containsKey(messageId))
+					throw new RuntimeException("Error in component configuration, multiple methods handle same  message.id:" + messageId);
+				cachedMethods.put(messageId, method);
 			}
 		}
 		
