@@ -78,7 +78,7 @@ public class GroovyInputMappingBuilder {
 
 			final ButtonMonitor buttonMonitor = getButtonMonitor(button);
 
-			inputMapping.addAction(new GroovyInputAction(button, eventId, closure) {
+			inputMapping.addAction(new GroovyInputAction(eventId, closure) {
 
 				@Override
 				public boolean shouldRun() {
@@ -163,7 +163,7 @@ public class GroovyInputMappingBuilder {
 
 			final ButtonMonitor buttonMonitor = getButtonMonitor(button);
 
-			inputMapping.addAction(new GroovyInputAction(button, eventId, closure) {
+			inputMapping.addAction(new GroovyInputAction(eventId, closure) {
 
 				@Override
 				public boolean shouldRun() {
@@ -185,7 +185,32 @@ public class GroovyInputMappingBuilder {
 
 			closure.setProperty("position", cordinatesMonitor);
 
-			inputMapping.addAction(new GroovyInputAction("mouse.move", eventId, closure) {
+			inputMapping.addAction(new GroovyInputAction(eventId, closure) {
+
+				@Override
+				public boolean shouldRun() {
+					return cordinatesMonitor.hasChanged();
+				}
+			});
+		}
+		
+		public void wheel(Map<String, String> parameters) {
+			wheel(parameters, null);
+		}
+
+		public void wheel(Map<String, String> parameters, Closure closure) {
+
+			final CoordinatesMonitor cordinatesMonitor = monitorFactory.mouseWheelMonitor();
+
+			String eventId = parameters.get("eventId");
+
+			closure.setProperty("wheel", new Object() {
+				public float getChange() {
+					return cordinatesMonitor.getY();
+				}
+			});
+
+			inputMapping.addAction(new GroovyInputAction(eventId, closure) {
 
 				@Override
 				public boolean shouldRun() {
