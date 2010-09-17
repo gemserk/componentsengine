@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.util.Map;
 
 import org.newdawn.slick.Color;
+import org.newdawn.slick.Game;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
@@ -20,13 +21,13 @@ import com.gemserk.componentsengine.components.DelayedMessagesComponent;
 import com.gemserk.componentsengine.entities.Entity;
 import com.gemserk.componentsengine.entities.EntityManager;
 import com.gemserk.componentsengine.entities.Root;
-import com.gemserk.componentsengine.game.Game;
 import com.gemserk.componentsengine.genericproviders.GenericProvider;
 import com.gemserk.componentsengine.genericproviders.ValueFromClosure;
 import com.gemserk.componentsengine.input.CachedMonitorFactory;
 import com.gemserk.componentsengine.input.MonitorFactory;
 import com.gemserk.componentsengine.input.MonitorUpdater;
 import com.gemserk.componentsengine.input.SlickMonitorFactory;
+import com.gemserk.componentsengine.messages.ChildrenManagementMessageFactory;
 import com.gemserk.componentsengine.messages.Message;
 import com.gemserk.componentsengine.messages.MessageDispatcher;
 import com.gemserk.componentsengine.messages.MessageQueue;
@@ -60,8 +61,6 @@ public class GemserkGameState extends BasicGameState {
 
 	protected MessageQueue messageQueue;
 
-	protected Game game;
-
 	private final int id;
 
 	protected final String iniScene;
@@ -71,6 +70,10 @@ public class GemserkGameState extends BasicGameState {
 	private Renderer renderer;
 
 	private MonitorUpdater monitorUpdater;
+
+	private TemplateProvider templateProvider;
+
+	private Entity rootEntity;
 
 	public GemserkGameState(int id) {
 		this(id,null);
@@ -92,7 +95,7 @@ public class GemserkGameState extends BasicGameState {
 
 		this.stateBasedGame = stateBasedGame;
 
-		final Entity rootEntity = new Entity("root");
+		rootEntity = new Entity("root");
 		
 		
 		injector = Guice.createInjector(new AbstractModule() {
@@ -101,7 +104,6 @@ public class GemserkGameState extends BasicGameState {
 			@Override
 			protected void configure() {
 				bind(Input.class).toInstance(container.getInput());
-				bind(Game.class).in(Singleton.class);
 				bind(GameContainer.class).toInstance(container);
 				bind(Graphics.class).toInstance(container.getGraphics());
 				bind(Renderer.class).in(Singleton.class);
@@ -142,14 +144,14 @@ public class GemserkGameState extends BasicGameState {
 		
 		
 		messageQueue = injector.getInstance(MessageQueue.class);
-		game = injector.getInstance(Game.class);
 		
 		renderer = injector.getInstance(Renderer.class);
 		
 		
 		final BuilderUtils builderUtils = injector.getInstance(BuilderUtils.class);
 
-		builderUtils.addCustomUtil("templateProvider", injector.getInstance(TemplateProvider.class));
+		templateProvider = injector.getInstance(TemplateProvider.class);
+		builderUtils.addCustomUtil("templateProvider", templateProvider);
 		builderUtils.addCustomUtil("game", injector.getInstance(Game.class));
 		builderUtils.addCustomUtil("messageQueue", messageQueue);
 		// slick utils
@@ -255,9 +257,7 @@ public class GemserkGameState extends BasicGameState {
 	}
 	
 	public void loadScene(String sceneName){
-		game.loadScene(sceneName);
+		Entity entity = templateProvider.getTemplate(sceneName).instantiate("scene");
+		messageQueue.enqueue(ChildrenManagementMessageFactory.addEntity(entity, rootEntity));	
 	}
-	
-	
-
 }
