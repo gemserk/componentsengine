@@ -8,7 +8,7 @@ import com.gemserk.componentsengine.annotations.EntityProperty;
 import com.gemserk.componentsengine.components.annotations.Handles;
 import com.gemserk.componentsengine.messages.Message;
 import com.gemserk.componentsengine.properties.Properties;
-import com.gemserk.componentsengine.render.Renderer;
+import com.gemserk.componentsengine.render.RenderQueue;
 import com.gemserk.componentsengine.render.SlickCallableRenderObject;
 import com.gemserk.componentsengine.utils.Container;
 
@@ -41,9 +41,9 @@ public class BarRendererComponent extends FieldsReflectionComponent {
 
 	@Handles
 	public void render(Message message) {
-		Renderer renderer = Properties.getValue(message, "renderer");
+		RenderQueue renderQueue = Properties.getValue(message, "renderer");
 
-		renderer.enqueue(new SlickCallableRenderObject(layer) {
+		renderQueue.enqueue(new SlickCallableRenderObject(layer) {
 			@Override
 			public void execute(Graphics g) {
 				g.pushTransform();

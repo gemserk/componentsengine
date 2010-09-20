@@ -32,7 +32,7 @@ import com.gemserk.componentsengine.messages.Message;
 import com.gemserk.componentsengine.messages.MessageDispatcher;
 import com.gemserk.componentsengine.messages.MessageQueue;
 import com.gemserk.componentsengine.properties.SimpleProperty;
-import com.gemserk.componentsengine.render.Renderer;
+import com.gemserk.componentsengine.render.RenderQueueImpl;
 import com.gemserk.componentsengine.resources.AnimationManager;
 import com.gemserk.componentsengine.resources.AnimationManagerImpl;
 import com.gemserk.componentsengine.resources.ImageManager;
@@ -67,7 +67,7 @@ public class GemserkGameState extends BasicGameState {
 
 	protected Injector injector;
 
-	private Renderer renderer;
+	private RenderQueueImpl renderQueueImpl;
 
 	private MonitorUpdater monitorUpdater;
 
@@ -106,7 +106,7 @@ public class GemserkGameState extends BasicGameState {
 				bind(Input.class).toInstance(container.getInput());
 				bind(GameContainer.class).toInstance(container);
 				bind(Graphics.class).toInstance(container.getGraphics());
-				bind(Renderer.class).in(Singleton.class);
+				bind(RenderQueueImpl.class).in(Singleton.class);
 				bind(GroovyScriptProvider.class).toInstance(new CachedScriptProvider(new GroovyScriptProviderImpl()));
 				MonitorFactory realMonitorFactory = new SlickMonitorFactory();
 				requestInjection(realMonitorFactory);
@@ -145,7 +145,7 @@ public class GemserkGameState extends BasicGameState {
 		
 		messageQueue = injector.getInstance(MessageQueue.class);
 		
-		renderer = injector.getInstance(Renderer.class);
+		renderQueueImpl = injector.getInstance(RenderQueueImpl.class);
 		
 		
 		final BuilderUtils builderUtils = injector.getInstance(BuilderUtils.class);
@@ -201,11 +201,11 @@ public class GemserkGameState extends BasicGameState {
 		g.setBackground(new Color(0.15f, 0.15f, 0.15f));
 		Message message = new Message("render");
 		message.addProperty("graphics", new SimpleProperty<Object>(g));
-		message.addProperty("renderer", new SimpleProperty<Object>(renderer));
+		message.addProperty("renderer", new SimpleProperty<Object>(renderQueueImpl));
 		messageQueue.enqueue(message);
 		messageQueue.processMessages();
 		
-		renderer.render();
+		renderQueueImpl.render();
 	}
 
 	@Override

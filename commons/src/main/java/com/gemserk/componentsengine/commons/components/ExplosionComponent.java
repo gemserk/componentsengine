@@ -12,7 +12,7 @@ import com.gemserk.componentsengine.components.annotations.Handles;
 import com.gemserk.componentsengine.effects.ExplosionEffect;
 import com.gemserk.componentsengine.messages.Message;
 import com.gemserk.componentsengine.properties.Properties;
-import com.gemserk.componentsengine.render.Renderer;
+import com.gemserk.componentsengine.render.RenderQueue;
 import com.gemserk.componentsengine.render.SlickCallableRenderObject;
 
 public class ExplosionComponent extends FieldsReflectionComponent {
@@ -54,11 +54,11 @@ public class ExplosionComponent extends FieldsReflectionComponent {
 
 	@Handles
 	public void render(Message message) {
-		Renderer renderer = Properties.getValue(message, "renderer");
+		RenderQueue renderQueue = Properties.getValue(message, "renderer");
 
 		for (Effect effect : explosions) {
 			final ExplosionEffect explosionEffect = effect.explosionEffect;
-			renderer.enqueue(new SlickCallableRenderObject(effect.layer) {
+			renderQueue.enqueue(new SlickCallableRenderObject(effect.layer) {
 
 				@Override
 				public void execute(Graphics g) {

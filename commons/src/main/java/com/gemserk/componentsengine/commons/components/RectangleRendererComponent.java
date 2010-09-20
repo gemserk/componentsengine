@@ -9,7 +9,7 @@ import com.gemserk.componentsengine.annotations.EntityProperty;
 import com.gemserk.componentsengine.components.annotations.Handles;
 import com.gemserk.componentsengine.messages.Message;
 import com.gemserk.componentsengine.properties.Properties;
-import com.gemserk.componentsengine.render.Renderer;
+import com.gemserk.componentsengine.render.RenderQueue;
 import com.gemserk.componentsengine.render.SlickCallableRenderObject;
 
 public class RectangleRendererComponent extends FieldsReflectionComponent {
@@ -38,8 +38,8 @@ public class RectangleRendererComponent extends FieldsReflectionComponent {
 
 	@Handles
 	public void render(Message message) {
-		Renderer renderer = Properties.getValue(message, "renderer");
-		renderer.enqueue(new SlickCallableRenderObject(layer) {
+		RenderQueue renderQueue = Properties.getValue(message, "renderer");
+		renderQueue.enqueue(new SlickCallableRenderObject(layer) {
 
 			@Override
 			public void execute(Graphics g) {

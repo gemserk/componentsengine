@@ -11,7 +11,7 @@ import com.gemserk.componentsengine.annotations.EntityProperty;
 import com.gemserk.componentsengine.components.annotations.Handles;
 import com.gemserk.componentsengine.messages.Message;
 import com.gemserk.componentsengine.properties.Properties;
-import com.gemserk.componentsengine.render.Renderer;
+import com.gemserk.componentsengine.render.RenderQueue;
 import com.gemserk.componentsengine.render.SlickCallableRenderObject;
 
 public class LabelComponent extends FieldsReflectionComponent {
@@ -49,7 +49,7 @@ public class LabelComponent extends FieldsReflectionComponent {
 
 	@Handles
 	public void render(Message message) {
-		Renderer renderer = Properties.getValue(message, "renderer");
+		RenderQueue renderQueue = Properties.getValue(message, "renderer");
 		final String text = MessageFormat.format(this.message, value);
 		
 		int textWidth = font.getWidth(text);
@@ -72,7 +72,7 @@ public class LabelComponent extends FieldsReflectionComponent {
 		final float finalLeft = left;
 		final float finalTop = top;
 		
-		renderer.enqueue(new SlickCallableRenderObject(layer) {
+		renderQueue.enqueue(new SlickCallableRenderObject(layer) {
 
 			@Override
 			public void execute(Graphics g) {
