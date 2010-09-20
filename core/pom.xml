@@ -3,12 +3,12 @@
 	<parent>
 		<artifactId>componentsengine</artifactId>
 		<groupId>com.gemserk.componentsengine</groupId>
-		<version>0.0.7-SNAPSHOT</version>
+		<version>0.0.7</version>
 	</parent>
 	<groupId>com.gemserk.componentsengine</groupId>
 	<artifactId>core</artifactId>
 	<name>Components Engine - Core</name>
-	<version>0.0.7-SNAPSHOT</version>
+	<version>0.0.7</version>
 	<packaging>jar</packaging>
 
 
