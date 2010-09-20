@@ -3,17 +3,16 @@ package com.gemserk.componentsengine.resources;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.newdawn.slick.Image;
-
-public class ImageManagerImpl implements ImageManager {
+public class ImageManagerImpl<T> implements ImageManager<T> {
 	
-	Map<String, Image> images = new HashMap<String, Image>();
+	Map<String, Resource<T>> images = new HashMap<String, Resource<T>>();
 	
-	public void addImage(String key, Image image){
-		images.put(key, image);
+	public void addImage(String key, T image){
+		images.put(key, new Resource<T>(image));
 	}
 	
-	public Image getImage(String key){
+	public Resource<T> getImage(String key){
 		return images.get(key);
 	}
+
 }

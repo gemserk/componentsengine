@@ -1,11 +1,10 @@
 package com.gemserk.componentsengine.resources;
 
-import org.newdawn.slick.Image;
 
-public interface ImageManager {
+public interface ImageManager<T> {
 
-	Image getImage(String key);
+	Resource<T> getImage(String key);
 
-	void addImage(String key, Image image);
+	void addImage(String key, T image);
 
 }

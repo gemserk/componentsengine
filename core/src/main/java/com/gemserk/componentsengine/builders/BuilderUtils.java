@@ -100,7 +100,7 @@ public class BuilderUtils {
 	public class ResourceUtils {
 
 		public Image image(String key) {
-			return imageManager.getImage(key);
+			return (Image) imageManager.getImage(key).get();
 		}
 
 		public Animation animation(String key) {
