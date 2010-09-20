@@ -1,6 +1,5 @@
 package com.gemserk.componentsengine.gamestates;
 
-import com.gemserk.componentsengine.builders.BuilderUtils;
 import com.gemserk.componentsengine.entities.Entity;
 import com.gemserk.componentsengine.entities.EntityManager;
 import com.gemserk.componentsengine.entities.Root;
@@ -19,7 +18,7 @@ public class BasicModule extends AbstractModule {
 		bind(MessageQueue.class).to(MessageDispatcher.class).in(Singleton.class);
 		bind(GameLoop.class).to(GameLoopImpl.class).in(Singleton.class);
 		bind(EntityManager.class).in(Singleton.class);
-		bind(BuilderUtils.class).in(Singleton.class);
+		
 		Entity rootEntity = new Entity("root");
 		bind(Entity.class).annotatedWith(Root.class).toInstance(rootEntity);
 	}

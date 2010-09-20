@@ -5,6 +5,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.state.StateBasedGame;
 
+import com.gemserk.componentsengine.builders.BuilderUtils;
 import com.gemserk.componentsengine.input.CachedMonitorFactory;
 import com.gemserk.componentsengine.input.MonitorFactory;
 import com.gemserk.componentsengine.input.MonitorUpdater;
@@ -42,5 +43,7 @@ public final class SlickModule extends AbstractModule {
 		bind(ImageManager.class).to(ImageManagerImpl.class).in(Singleton.class);// SLICK
 		bind(AnimationManager.class).to(AnimationManagerImpl.class).in(Singleton.class);// SLICK
 		bind(SoundsManager.class).to(PaulsSoundSystemSoundsManager.class).in(Singleton.class);// SLICK
+		
+		bind(BuilderUtils.class).in(Singleton.class);
 	}
 }
