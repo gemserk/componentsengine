@@ -7,6 +7,8 @@ import com.gemserk.componentsengine.messages.MessageDispatcher;
 import com.gemserk.componentsengine.messages.MessageQueue;
 import com.gemserk.componentsengine.render.RenderQueue;
 import com.gemserk.componentsengine.render.RenderQueueImpl;
+import com.gemserk.componentsengine.resources.ImageManager;
+import com.gemserk.componentsengine.resources.ImageManagerImpl;
 import com.google.inject.AbstractModule;
 import com.google.inject.Singleton;
 
@@ -24,5 +26,7 @@ public class BasicModule extends AbstractModule {
 		
 		Entity rootEntity = new Entity("root");
 		bind(Entity.class).annotatedWith(Root.class).toInstance(rootEntity);
+		
+		bind(ImageManager.class).to(ImageManagerImpl.class).in(Singleton.class);
 	}
 }
