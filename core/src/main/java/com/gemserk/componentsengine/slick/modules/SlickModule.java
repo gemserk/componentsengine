@@ -9,13 +9,13 @@ import com.gemserk.componentsengine.builders.BuilderUtils;
 import com.gemserk.componentsengine.input.CachedMonitorFactory;
 import com.gemserk.componentsengine.input.MonitorFactory;
 import com.gemserk.componentsengine.input.MonitorUpdater;
-import com.gemserk.componentsengine.input.SlickMonitorFactory;
 import com.gemserk.componentsengine.resources.AnimationManager;
 import com.gemserk.componentsengine.resources.AnimationManagerImpl;
 import com.gemserk.componentsengine.resources.ImageLoader;
 import com.gemserk.componentsengine.resources.PaulsSoundSystemSoundsManager;
 import com.gemserk.componentsengine.resources.SlickImageLoader;
 import com.gemserk.componentsengine.resources.SoundsManager;
+import com.gemserk.componentsengine.slick.input.SlickMonitorFactory;
 import com.google.inject.AbstractModule;
 import com.google.inject.Singleton;
 

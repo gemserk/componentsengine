@@ -1,4 +1,4 @@
-package com.gemserk.componentsengine.input;
+package com.gemserk.componentsengine.slick.input;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -7,6 +7,9 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.newdawn.slick.Input;
 
+import com.gemserk.componentsengine.input.ButtonMonitor;
+import com.gemserk.componentsengine.input.CoordinatesMonitor;
+import com.gemserk.componentsengine.input.MonitorFactory;
 import com.google.inject.Inject;
 
 public class SlickMonitorFactory implements MonitorFactory{

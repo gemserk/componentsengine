@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.gemserk.componentsengine.input;
 
 import com.gemserk.componentsengine.components.Component;

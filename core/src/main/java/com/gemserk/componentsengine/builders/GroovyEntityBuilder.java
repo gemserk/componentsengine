@@ -9,7 +9,7 @@ import java.util.Map;
 
 import com.gemserk.componentsengine.components.Component;
 import com.gemserk.componentsengine.entities.Entity;
-import com.gemserk.componentsengine.input.GroovyInputMappingBuilder;
+import com.gemserk.componentsengine.groovy.input.GroovyInputMappingBuilder;
 import com.gemserk.componentsengine.properties.ClosureProperty;
 import com.gemserk.componentsengine.properties.ReferenceProperty;
 import com.gemserk.componentsengine.properties.SimpleProperty;

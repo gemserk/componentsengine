@@ -1,7 +1,8 @@
-package com.gemserk.componentsengine.input;
+package com.gemserk.componentsengine.groovy.input;
 
 import groovy.lang.Closure;
 
+import com.gemserk.componentsengine.input.InputAction;
 import com.gemserk.componentsengine.messages.Message;
 
 public abstract class GroovyInputAction implements InputAction {
