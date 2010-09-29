@@ -7,7 +7,6 @@ import java.io.InputStream;
 import java.util.Map;
 
 import org.newdawn.slick.Color;
-import org.newdawn.slick.Game;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
@@ -152,7 +151,6 @@ public class GemserkGameState extends BasicGameState {
 
 		templateProvider = injector.getInstance(TemplateProvider.class);
 		builderUtils.addCustomUtil("templateProvider", templateProvider);
-		builderUtils.addCustomUtil("game", injector.getInstance(Game.class));
 		builderUtils.addCustomUtil("messageQueue", messageQueue);
 		// slick utils
 		builderUtils.addCustomUtil("gameStateManager", stateBasedGame);

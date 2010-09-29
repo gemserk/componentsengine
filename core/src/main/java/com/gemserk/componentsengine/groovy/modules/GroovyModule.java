@@ -1,4 +1,4 @@
-package com.gemserk.componentsengine.gamestates;
+package com.gemserk.componentsengine.groovy.modules;
 
 import com.gemserk.componentsengine.templates.CachedScriptProvider;
 import com.gemserk.componentsengine.templates.GroovyScriptProvider;

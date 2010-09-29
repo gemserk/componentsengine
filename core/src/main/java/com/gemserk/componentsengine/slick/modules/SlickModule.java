@@ -1,4 +1,4 @@
-package com.gemserk.componentsengine.gamestates;
+package com.gemserk.componentsengine.slick.modules;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;

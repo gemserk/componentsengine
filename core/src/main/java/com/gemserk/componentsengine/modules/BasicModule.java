@@ -1,8 +1,10 @@
-package com.gemserk.componentsengine.gamestates;
+package com.gemserk.componentsengine.modules;
 
 import com.gemserk.componentsengine.entities.Entity;
 import com.gemserk.componentsengine.entities.EntityManager;
 import com.gemserk.componentsengine.entities.Root;
+import com.gemserk.componentsengine.gamestates.GameLoop;
+import com.gemserk.componentsengine.gamestates.GameLoopImpl;
 import com.gemserk.componentsengine.messages.MessageDispatcher;
 import com.gemserk.componentsengine.messages.MessageQueue;
 import com.gemserk.componentsengine.render.RenderQueue;
