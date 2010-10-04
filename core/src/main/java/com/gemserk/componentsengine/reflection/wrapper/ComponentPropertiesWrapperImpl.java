@@ -13,8 +13,8 @@ import net.sf.cglib.reflect.FastMethod;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.gemserk.componentsengine.annotations.EntityProperty;
 import com.gemserk.componentsengine.components.Component;
+import com.gemserk.componentsengine.components.annotations.EntityProperty;
 import com.gemserk.componentsengine.entities.Entity;
 import com.gemserk.componentsengine.properties.Property;
 import com.gemserk.componentsengine.reflection.RequiredPropertyNotFoundException;

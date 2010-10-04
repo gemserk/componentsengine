@@ -9,8 +9,8 @@ import com.gemserk.componentsengine.messages.MessageDispatcher;
 import com.gemserk.componentsengine.messages.MessageQueue;
 import com.gemserk.componentsengine.render.RenderQueue;
 import com.gemserk.componentsengine.render.RenderQueueImpl;
-import com.gemserk.componentsengine.resources.ImageManager;
-import com.gemserk.componentsengine.resources.ImageManagerImpl;
+import com.gemserk.componentsengine.resources.images.ImageManager;
+import com.gemserk.componentsengine.resources.images.ImageManagerImpl;
 import com.google.inject.AbstractModule;
 import com.google.inject.Singleton;
 

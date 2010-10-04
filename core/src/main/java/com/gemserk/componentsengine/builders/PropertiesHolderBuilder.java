@@ -2,7 +2,7 @@ package com.gemserk.componentsengine.builders;
 
 import groovy.lang.Closure;
 
-import com.gemserk.componentsengine.properties.ClosureProperty;
+import com.gemserk.componentsengine.groovy.properties.ClosureProperty;
 import com.gemserk.componentsengine.properties.PropertiesHolder;
 import com.gemserk.componentsengine.properties.ReferenceProperty;
 import com.gemserk.componentsengine.properties.SimpleProperty;

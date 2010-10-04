@@ -7,12 +7,12 @@ import org.newdawn.slick.Font;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Vector2f;
 
-import com.gemserk.componentsengine.annotations.EntityProperty;
+import com.gemserk.componentsengine.components.annotations.EntityProperty;
 import com.gemserk.componentsengine.components.annotations.Handles;
 import com.gemserk.componentsengine.messages.Message;
 import com.gemserk.componentsengine.properties.Properties;
 import com.gemserk.componentsengine.render.RenderQueue;
-import com.gemserk.componentsengine.render.SlickCallableRenderObject;
+import com.gemserk.componentsengine.slick.render.SlickCallableRenderObject;
 
 public class LabelComponent extends FieldsReflectionComponent {
 

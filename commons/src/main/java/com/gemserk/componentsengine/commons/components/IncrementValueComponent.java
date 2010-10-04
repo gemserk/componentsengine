@@ -1,6 +1,6 @@
 package com.gemserk.componentsengine.commons.components;
 
-import com.gemserk.componentsengine.annotations.EntityProperty;
+import com.gemserk.componentsengine.components.annotations.EntityProperty;
 import com.gemserk.componentsengine.components.annotations.Handles;
 import com.gemserk.componentsengine.messages.Message;
 import com.gemserk.componentsengine.properties.Properties;

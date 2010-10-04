@@ -4,6 +4,7 @@ import java.util.Set;
 
 import com.gemserk.componentsengine.entities.Entity;
 import com.gemserk.componentsengine.messages.Message;
+import com.gemserk.componentsengine.messages.MessageHandler;
 
 public class Component implements MessageHandler {
 	

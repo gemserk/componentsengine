@@ -12,6 +12,7 @@ import com.gemserk.componentsengine.messages.Message;
 import com.gemserk.componentsengine.predicates.EntityPredicates;
 import com.gemserk.componentsengine.properties.Properties;
 import com.gemserk.componentsengine.properties.PropertyLocator;
+import com.gemserk.componentsengine.slick.predicates.SlickEntityPredicates;
 import com.google.common.base.Predicates;
 import com.google.inject.Inject;
 
@@ -44,7 +45,7 @@ public class SelectTargetWithinRangeComponent extends ReflectionComponent {
 
 		float radius = radiusProperty.getValue(entity);
 
-		Collection<Entity> targetEntities = rootEntity.getEntities(Predicates.and(EntityPredicates.withAllTags(targetTag), EntityPredicates.isNear(position, radius)));
+		Collection<Entity> targetEntities = rootEntity.getEntities(Predicates.and(EntityPredicates.withAllTags(targetTag), SlickEntityPredicates.isNear(position, radius)));
 
 		if (targetEntities.size() == 0) {
 			targetEntityProperty.setValue(entity, null);

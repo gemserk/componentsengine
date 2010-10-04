@@ -4,10 +4,10 @@ import groovy.lang.Closure;
 
 import com.gemserk.componentsengine.builders.BuilderUtils;
 import com.gemserk.componentsengine.genericproviders.GenericProvider;
-import com.gemserk.componentsengine.genericproviders.ValueFromClosure;
+import com.gemserk.componentsengine.groovy.genericproviders.ValueFromClosure;
+import com.gemserk.componentsengine.groovy.triggers.ClosureTrigger;
+import com.gemserk.componentsengine.groovy.triggers.GroovySingleGenericMessageTrigger;
 import com.gemserk.componentsengine.messages.MessageQueue;
-import com.gemserk.componentsengine.triggers.ClosureTrigger;
-import com.gemserk.componentsengine.triggers.GroovySingleGenericMessageTrigger;
 import com.gemserk.componentsengine.triggers.NullTrigger;
 import com.gemserk.componentsengine.triggers.Trigger;
 import com.google.inject.Inject;

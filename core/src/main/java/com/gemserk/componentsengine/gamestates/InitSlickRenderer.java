@@ -1,7 +1,7 @@
 package com.gemserk.componentsengine.gamestates;
 
 import com.gemserk.componentsengine.render.RenderQueueImpl;
-import com.gemserk.componentsengine.render.SlickRenderer;
+import com.gemserk.componentsengine.slick.render.SlickRenderer;
 import com.google.inject.Inject;
 
 public class InitSlickRenderer {

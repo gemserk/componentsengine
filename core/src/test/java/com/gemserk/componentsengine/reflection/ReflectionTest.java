@@ -5,8 +5,8 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 import org.slf4j.*;
 
-import com.gemserk.componentsengine.annotations.EntityProperty;
 import com.gemserk.componentsengine.components.Component;
+import com.gemserk.componentsengine.components.annotations.EntityProperty;
 import com.gemserk.componentsengine.entities.Entity;
 import com.gemserk.componentsengine.properties.*;
 import com.gemserk.componentsengine.reflection.wrapper.*;

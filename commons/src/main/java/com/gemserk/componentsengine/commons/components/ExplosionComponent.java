@@ -7,13 +7,13 @@ import java.util.Iterator;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.opengl.SlickCallable;
 
-import com.gemserk.componentsengine.annotations.EntityProperty;
+import com.gemserk.componentsengine.components.annotations.EntityProperty;
 import com.gemserk.componentsengine.components.annotations.Handles;
-import com.gemserk.componentsengine.effects.ExplosionEffect;
 import com.gemserk.componentsengine.messages.Message;
 import com.gemserk.componentsengine.properties.Properties;
 import com.gemserk.componentsengine.render.RenderQueue;
-import com.gemserk.componentsengine.render.SlickCallableRenderObject;
+import com.gemserk.componentsengine.slick.effects.ExplosionEffect;
+import com.gemserk.componentsengine.slick.render.SlickCallableRenderObject;
 
 public class ExplosionComponent extends FieldsReflectionComponent {
 

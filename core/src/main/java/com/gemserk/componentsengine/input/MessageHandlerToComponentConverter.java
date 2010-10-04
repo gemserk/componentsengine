@@ -1,8 +1,8 @@
 package com.gemserk.componentsengine.input;
 
 import com.gemserk.componentsengine.components.Component;
-import com.gemserk.componentsengine.components.MessageHandler;
 import com.gemserk.componentsengine.messages.Message;
+import com.gemserk.componentsengine.messages.MessageHandler;
 
 public class MessageHandlerToComponentConverter extends Component{
 	

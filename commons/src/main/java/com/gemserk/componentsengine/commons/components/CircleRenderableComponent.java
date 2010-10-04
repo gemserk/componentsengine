@@ -10,7 +10,7 @@ import com.gemserk.componentsengine.messages.Message;
 import com.gemserk.componentsengine.properties.Properties;
 import com.gemserk.componentsengine.properties.PropertyLocator;
 import com.gemserk.componentsengine.render.RenderQueue;
-import com.gemserk.componentsengine.render.SlickCallableRenderObject;
+import com.gemserk.componentsengine.slick.render.SlickCallableRenderObject;
 
 public class CircleRenderableComponent extends ReflectionComponent {
 

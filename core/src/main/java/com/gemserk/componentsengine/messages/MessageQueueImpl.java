@@ -6,7 +6,6 @@ package com.gemserk.componentsengine.messages;
 import java.util.LinkedList;
 import java.util.Queue;
 
-import com.gemserk.componentsengine.components.MessageHandler;
 import com.google.inject.Inject;
 
 public class MessageQueueImpl implements MessageQueue {

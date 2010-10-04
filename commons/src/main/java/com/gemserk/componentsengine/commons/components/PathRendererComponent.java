@@ -9,10 +9,10 @@ import org.newdawn.slick.opengl.SlickCallable;
 
 import com.gemserk.componentsengine.components.ReflectionComponent;
 import com.gemserk.componentsengine.components.annotations.Handles;
+import com.gemserk.componentsengine.lwjgl.OpenGlUtils;
 import com.gemserk.componentsengine.messages.Message;
 import com.gemserk.componentsengine.properties.Properties;
 import com.gemserk.componentsengine.properties.PropertyLocator;
-import com.gemserk.componentsengine.utils.OpenGlUtils;
 
 public class PathRendererComponent extends ReflectionComponent {
 
