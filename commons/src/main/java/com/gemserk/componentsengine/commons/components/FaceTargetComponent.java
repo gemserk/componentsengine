@@ -2,6 +2,7 @@ package com.gemserk.componentsengine.commons.components;
 
 import org.newdawn.slick.geom.Vector2f;
 
+import com.gemserk.componentsengine.components.FieldsReflectionComponent;
 import com.gemserk.componentsengine.components.annotations.EntityProperty;
 import com.gemserk.componentsengine.components.annotations.Handles;
 import com.gemserk.componentsengine.entities.Entity;

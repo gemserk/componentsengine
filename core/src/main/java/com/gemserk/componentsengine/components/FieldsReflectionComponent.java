@@ -1,10 +1,8 @@
-package com.gemserk.componentsengine.commons.components;
+package com.gemserk.componentsengine.components;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import com.gemserk.componentsengine.components.Component;
-import com.gemserk.componentsengine.components.ReflectionComponent;
 import com.gemserk.componentsengine.messages.Message;
 import com.gemserk.componentsengine.reflection.wrapper.ComponentPropertiesWrapper;
 import com.gemserk.componentsengine.reflection.wrapper.ComponentPropertiesWrapperImpl;

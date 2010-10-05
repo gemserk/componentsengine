@@ -7,6 +7,7 @@ import java.util.Iterator;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.opengl.SlickCallable;
 
+import com.gemserk.componentsengine.components.FieldsReflectionComponent;
 import com.gemserk.componentsengine.components.annotations.EntityProperty;
 import com.gemserk.componentsengine.components.annotations.Handles;
 import com.gemserk.componentsengine.messages.Message;

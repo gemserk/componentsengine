@@ -3,7 +3,7 @@ package com.gemserk.componentsengine.commons.components.states;
 import java.util.List;
 import java.util.Map;
 
-import com.gemserk.componentsengine.commons.components.FieldsReflectionComponent;
+import com.gemserk.componentsengine.components.FieldsReflectionComponent;
 import com.gemserk.componentsengine.components.annotations.EntityProperty;
 import com.gemserk.componentsengine.messages.Message;
 import com.gemserk.componentsengine.messages.MessageQueue;
