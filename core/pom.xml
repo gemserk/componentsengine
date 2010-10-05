@@ -75,21 +75,6 @@
 
 		<!-- SHOULD BE TAKEN TO ANOTHER MODULE -->
 		<dependency>
-			<groupId>slick</groupId>
-			<artifactId>slick</artifactId>
-			<version>262</version>
-		</dependency>
-		<dependency>
-			<groupId>lwjgl</groupId>
-			<artifactId>lwjgl</artifactId>
-			<version>2.5.0-GEMSERK</version>
-		</dependency>
-		<dependency>
-			<groupId>lwjgl</groupId>
-			<artifactId>jinput</artifactId>
-			<version>2.5.0-GEMSERK</version>
-		</dependency>
-		<dependency>
 			<groupId>com.paulscode.soundsystem</groupId>
 			<artifactId>soundsystem</artifactId>
 		</dependency>
