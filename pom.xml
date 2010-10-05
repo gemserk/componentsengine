@@ -46,6 +46,7 @@
 		<module>core</module>
 		<module>commons</module>
 		<module>slickmodule</module>
+		<module>groovymodule</module>
 	</modules>
 
 	<build>
@@ -126,7 +127,11 @@
 				<artifactId>commons</artifactId>
 				<version>${project.version}</version>
 			</dependency>
-
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>groovymodule</artifactId>
+				<version>${project.version}</version>
+			</dependency>
 			<dependency>
 				<groupId>junit</groupId>
 				<artifactId>junit</artifactId>

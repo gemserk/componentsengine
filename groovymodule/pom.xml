@@ -7,10 +7,10 @@
 		<version>0.0.8-SNAPSHOT</version>
 	</parent>
 	<groupId>com.gemserk.componentsengine</groupId>
-	<artifactId>slickmodule</artifactId>
+	<artifactId>groovymodule</artifactId>
 	<version>0.0.8-SNAPSHOT</version>
-	<name>Slick Module</name>
-	<description>Slick Module</description>
+	<name>Groovy module</name>
+	<description>Groovy module</description>
 
 	<dependencies>
 		<dependency>
@@ -32,22 +32,27 @@
 			<artifactId>jmock-legacy</artifactId>
 			<scope>test</scope>
 		</dependency>
-		<!-- SHOULD BE TAKEN TO ANOTHER MODULE -->
 		<dependency>
-			<groupId>slick</groupId>
-			<artifactId>slick</artifactId>
-			<version>262</version>
-		</dependency>
-		<dependency>
-			<groupId>lwjgl</groupId>
-			<artifactId>lwjgl</artifactId>
-			<version>2.5.0-GEMSERK</version>
-		</dependency>
-		<dependency>
-			<groupId>lwjgl</groupId>
-			<artifactId>jinput</artifactId>
-			<version>2.5.0-GEMSERK</version>
+			<groupId>org.codehaus.groovy</groupId>
+			<artifactId>groovy-all</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>junit</groupId>
+					<artifactId>junit</artifactId>
+				</exclusion>
+				<!-- <exclusion> -->
+				<!-- <groupId>jline</groupId> -->
+				<!-- <artifactId>jline</artifactId> -->
+				<!-- </exclusion> -->
+				<exclusion>
+					<groupId>org.apache.ant</groupId>
+					<artifactId>ant</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.apache.ant</groupId>
+					<artifactId>ant-launcher</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 	</dependencies>
-
 </project>
