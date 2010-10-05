@@ -185,8 +185,8 @@ public class GroovyEntityBuilder {
 
 	}
 
-	@Inject @BuilderUtils
-	public void setUtils(Map<String,Object> utils) {
+	@Inject 
+	public void setUtils(@BuilderUtils Map<String,Object> utils) {
 		this.utils = utils;
 	}
 

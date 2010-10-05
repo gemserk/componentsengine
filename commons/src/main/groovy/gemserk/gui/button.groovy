@@ -12,7 +12,7 @@ builder.entity {
 	property("enabled", parameters.enabled ?: true)
 	
 	property("position", parameters.position)
-	property("direction", utils.vector(1f,0f))
+	property("direction", utils.slick.vector(1f,0f))
 	
 	property("text", parameters.label)
 	property("font", parameters.font)

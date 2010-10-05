@@ -1,5 +1,6 @@
 package com.gemserk.componentsengine.modules;
 
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,6 +18,7 @@ import com.gemserk.componentsengine.resources.images.ImageManagerImpl;
 import com.gemserk.componentsengine.utils.annotations.BuilderUtils;
 import com.google.inject.AbstractModule;
 import com.google.inject.Singleton;
+import com.google.inject.TypeLiteral;
 
 public class BasicModule extends AbstractModule {
 	@Override
@@ -32,8 +34,8 @@ public class BasicModule extends AbstractModule {
 		
 		Entity rootEntity = new Entity("root");
 		bind(Entity.class).annotatedWith(Root.class).toInstance(rootEntity);
-		
+
 		bind(ImageManager.class).to(ImageManagerImpl.class).in(Singleton.class);
-		bind(Map.class).annotatedWith(BuilderUtils.class).toInstance(new HashMap<String, Object>());
+		bind(new TypeLiteral<Map<String, Object>>(){}).annotatedWith(BuilderUtils.class).toInstance(new HashMap<String, Object>());
 	}
 }

@@ -7,12 +7,12 @@ builder.entity {
 	tags("label")
 	
 	property("position", parameters.position)
-	property("size", parameters.size ?: utils.vector(1,1))
+	property("size", parameters.size ?: utils.slick.vector(1,1))
 	property("message", parameters.message)
 	property("value", parameters.value)
-	property("font", parameters.font ?: utils.resources.fonts.defaultFont)
+	property("font", parameters.font ?: utils.slick.resources.fonts.defaultFont)
 	property("bounds", parameters.bounds)
-	property("color", parameters.fontColor ?: utils.color(1,1,1,1))
+	property("color", parameters.fontColor ?: utils.slick.color(1,1,1,1))
 	
 	def align = parameters.align ?: "left"
 	def valign = parameters.valign ?: "top"
@@ -33,7 +33,7 @@ builder.entity {
 	
 	
 	property("textPosition", {
-		utils.vector(entity.left, entity.top)
+		utils.slick.vector(entity.left, entity.top)
 	})
 	
 	// for debug
