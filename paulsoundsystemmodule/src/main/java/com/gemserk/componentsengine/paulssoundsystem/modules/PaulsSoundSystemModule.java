@@ -9,6 +9,7 @@ public final class PaulsSoundSystemModule extends AbstractModule {
 
 	@Override
 	protected void configure() {
+		bind(PaulsSoundSystemSoundsManager.class).in(Singleton.class);
 		bind(SoundsManager.class).to(PaulsSoundSystemSoundsManager.class).in(Singleton.class);
 	}
 }
