@@ -7,6 +7,9 @@ import groovy.lang.GroovyClassLoader;
 import java.io.IOException;
 
 import com.gemserk.componentsengine.entities.Entity;
+import com.gemserk.componentsengine.groovy.templates.GroovyTemplateProvider;
+import com.gemserk.componentsengine.groovy.utils.scripts.GroovyScriptProvider;
+import com.gemserk.componentsengine.groovy.utils.scripts.GroovyScriptProviderImpl;
 
 public class TemplatePerformanceExperiment {
 

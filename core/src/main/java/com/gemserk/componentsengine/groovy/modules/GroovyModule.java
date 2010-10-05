@@ -1,9 +1,9 @@
 package com.gemserk.componentsengine.groovy.modules;
 
-import com.gemserk.componentsengine.templates.CachedScriptProvider;
-import com.gemserk.componentsengine.templates.GroovyScriptProvider;
-import com.gemserk.componentsengine.templates.GroovyScriptProviderImpl;
-import com.gemserk.componentsengine.templates.GroovyTemplateProvider;
+import com.gemserk.componentsengine.groovy.templates.GroovyTemplateProvider;
+import com.gemserk.componentsengine.groovy.utils.scripts.CachedScriptProvider;
+import com.gemserk.componentsengine.groovy.utils.scripts.GroovyScriptProvider;
+import com.gemserk.componentsengine.groovy.utils.scripts.GroovyScriptProviderImpl;
 import com.gemserk.componentsengine.templates.TemplateProvider;
 import com.google.inject.AbstractModule;
 

@@ -10,13 +10,13 @@ import java.util.Map;
 import org.lwjgl.input.Mouse;
 
 import com.gemserk.componentsengine.components.Component;
+import com.gemserk.componentsengine.groovy.utils.scripts.GroovyScriptProvider;
 import com.gemserk.componentsengine.input.ButtonMonitor;
 import com.gemserk.componentsengine.input.CoordinatesMonitor;
 import com.gemserk.componentsengine.input.InputMapping;
 import com.gemserk.componentsengine.input.InputMappingComponent;
 import com.gemserk.componentsengine.input.MonitorFactory;
 import com.gemserk.componentsengine.input.ButtonMonitor.Status;
-import com.gemserk.componentsengine.templates.GroovyScriptProvider;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 

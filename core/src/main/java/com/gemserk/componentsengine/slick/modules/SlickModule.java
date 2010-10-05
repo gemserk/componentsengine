@@ -42,7 +42,6 @@ public final class SlickModule extends AbstractModule {
 		bind(MonitorUpdater.class).toInstance(cachedMonitorFactory);
 
 		bind(AnimationManager.class).to(AnimationManagerImpl.class).in(Singleton.class);
-		bind(SoundsManager.class).to(PaulsSoundSystemSoundsManager.class).in(Singleton.class);
 		
 		bind(ImageLoader.class).to(SlickImageLoader.class).in(Singleton.class);
 		bind(SlickUtils.class).in(Singleton.class);

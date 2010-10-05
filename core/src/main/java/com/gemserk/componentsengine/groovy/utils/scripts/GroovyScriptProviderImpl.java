@@ -1,4 +1,4 @@
-package com.gemserk.componentsengine.templates;
+package com.gemserk.componentsengine.groovy.utils.scripts;
 
 import groovy.lang.GroovyClassLoader;
 import groovy.lang.Script;

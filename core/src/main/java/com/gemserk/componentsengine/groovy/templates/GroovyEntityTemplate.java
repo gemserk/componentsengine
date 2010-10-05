@@ -1,4 +1,4 @@
-package com.gemserk.componentsengine.templates;
+package com.gemserk.componentsengine.groovy.templates;
 
 import groovy.lang.Binding;
 import groovy.lang.Script;
@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 
 import com.gemserk.componentsengine.entities.Entity;
 import com.gemserk.componentsengine.groovy.builders.GroovyEntityBuilder;
+import com.gemserk.componentsengine.templates.EntityTemplate;
 import com.google.inject.Injector;
 
 public class GroovyEntityTemplate implements EntityTemplate {

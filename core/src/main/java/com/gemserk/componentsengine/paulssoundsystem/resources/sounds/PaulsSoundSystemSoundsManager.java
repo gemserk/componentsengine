@@ -38,57 +38,6 @@ public class PaulsSoundSystemSoundsManager implements SoundsManager {
 
 	}
 
-	private class SoundPaulsSoundSystemImpl implements Sound {
-				
-		private final String key;
-		
-		private final boolean priority;
-		
-		private final boolean looped;
-
-		private String soundSourceName;
-		
-		private SoundPaulsSoundSystemImpl(String key, boolean priority, boolean looped) {
-			this.key = key;
-			this.priority = priority;
-			this.looped = looped;
-		}
-
-		@Override
-		public void play(float pitch, float volume) {
-			play();
-		}
-
-		@Override
-		public void play() {
-			internalPlay(looped);
-		}
-
-		public void internalPlay(boolean loop) {
-			soundSourceName = soundSystem.quickPlay(priority, soundsMapping.get(key), loop, 0, 0, 0, SoundSystemConfig.ATTENUATION_NONE, 0);
-		}
-
-		@Override
-		public void stop() {
-			if(soundSourceName == null)
-				return;
-			
-			soundSystem.stop(soundSourceName);
-		}
-
-		@Override
-		public boolean isPlaying() {
-			if(soundSourceName == null)
-				return false;
-			return soundSystem.playing(soundSourceName);
-		}
-
-		@Override
-		public void loop() {
-			internalPlay(true);
-		}
-	}
-
 	@Override
 	public Sound getSound(final String key) {
 		return getSound(key, false, false);
@@ -96,7 +45,7 @@ public class PaulsSoundSystemSoundsManager implements SoundsManager {
 
 	@Override
 	public Sound getSound(String key, boolean priority, boolean toLoop) {
-		return new SoundPaulsSoundSystemImpl(key, priority, toLoop);
+		return new SoundPaulsSoundSystemImpl(soundsMapping.get(key), priority, toLoop, soundSystem);
 	}
 	
 	@Override

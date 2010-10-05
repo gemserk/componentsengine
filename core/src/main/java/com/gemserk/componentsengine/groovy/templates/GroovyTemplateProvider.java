@@ -1,5 +1,9 @@
-package com.gemserk.componentsengine.templates;
+package com.gemserk.componentsengine.groovy.templates;
 
+import com.gemserk.componentsengine.groovy.utils.scripts.GroovyScriptProvider;
+import com.gemserk.componentsengine.templates.EntityTemplate;
+import com.gemserk.componentsengine.templates.TemplateNotFoundException;
+import com.gemserk.componentsengine.templates.TemplateProvider;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 

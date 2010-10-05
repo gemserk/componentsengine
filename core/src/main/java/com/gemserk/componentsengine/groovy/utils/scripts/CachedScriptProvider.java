@@ -1,9 +1,10 @@
-package com.gemserk.componentsengine.templates;
+package com.gemserk.componentsengine.groovy.utils.scripts;
 
 import groovy.lang.Script;
 
 import java.util.HashMap;
 import java.util.Map;
+
 
 public class CachedScriptProvider implements GroovyScriptProvider {
 
