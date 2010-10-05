@@ -47,6 +47,7 @@
 		<module>commons</module>
 		<module>slickmodule</module>
 		<module>groovymodule</module>
+		<module>paulsoundsystemmodule</module>
 	</modules>
 
 	<build>
@@ -130,6 +131,11 @@
 			<dependency>
 				<groupId>${project.groupId}</groupId>
 				<artifactId>groovymodule</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>paulsoundsystemmodule</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>

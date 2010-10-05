@@ -47,16 +47,6 @@
 			<groupId>cglib</groupId>
 			<artifactId>cglib</artifactId>
 		</dependency>
-
-		<!-- SHOULD BE TAKEN TO ANOTHER MODULE -->
-		<dependency>
-			<groupId>com.paulscode.soundsystem</groupId>
-			<artifactId>soundsystem</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.paulscode.soundsystem</groupId>
-			<artifactId>codecjorbis</artifactId>
-		</dependency>
 	</dependencies>
 
 </project>
