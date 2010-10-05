@@ -1,4 +1,4 @@
-package com.gemserk.componentsengine.gamestates;
+package com.gemserk.componentsengine.game;
 
 import com.gemserk.componentsengine.input.MonitorUpdater;
 import com.gemserk.componentsengine.messages.Message;

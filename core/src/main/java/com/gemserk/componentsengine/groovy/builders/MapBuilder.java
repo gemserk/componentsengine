@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.gemserk.componentsengine.builders;
+package com.gemserk.componentsengine.groovy.builders;
 
 import java.util.HashMap;
 import java.util.Map;

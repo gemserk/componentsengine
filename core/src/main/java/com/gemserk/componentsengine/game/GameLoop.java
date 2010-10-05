@@ -1,4 +1,4 @@
-package com.gemserk.componentsengine.gamestates;
+package com.gemserk.componentsengine.game;
 
 public interface GameLoop {
 

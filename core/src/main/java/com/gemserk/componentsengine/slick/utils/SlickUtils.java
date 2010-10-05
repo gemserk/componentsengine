@@ -1,42 +1,31 @@
-package com.gemserk.componentsengine.builders;
+package com.gemserk.componentsengine.slick.utils;
 
-import groovy.lang.Closure;
-
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
-import java.util.Set;
 
 import org.newdawn.slick.AngelCodeFont;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Font;
+import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Vector2f;
+import org.newdawn.slick.state.StateBasedGame;
 
-import com.gemserk.componentsengine.components.Component;
-import com.gemserk.componentsengine.entities.Entity;
-import com.gemserk.componentsengine.entities.Root;
-import com.gemserk.componentsengine.messages.Message;
-import com.gemserk.componentsengine.messages.MessageQueue;
-import com.gemserk.componentsengine.properties.PropertiesMapBuilder;
 import com.gemserk.componentsengine.resources.images.ImageManager;
 import com.gemserk.componentsengine.resources.sounds.Sound;
 import com.gemserk.componentsengine.resources.sounds.SoundsManager;
 import com.gemserk.componentsengine.slick.resources.animations.AnimationManager;
 import com.gemserk.componentsengine.utils.Container;
 import com.gemserk.componentsengine.utils.Interval;
-import com.google.common.collect.Sets;
 import com.google.inject.Inject;
 
-public class BuilderUtils {
-
-	public Map<String, Object> custom = new HashMap<String, Object>();
-
+public class SlickUtils {
+	
 	@Inject
 	ImageManager imageManager;
 
@@ -45,15 +34,24 @@ public class BuilderUtils {
 
 	@Inject
 	SoundsManager soundsManager;
+	
+	@Inject GameContainer gameContainer;
+	@Inject StateBasedGame stateBasedGame;
 
-	Random random = new Random();
-
-	ResourceUtils resourceUtils = new ResourceUtils();
-
-	public void addCustomUtil(String key, Object value) {
-		custom.put(key, value);
+	
+	public GameContainer getGameContainer() {
+		return gameContainer;
 	}
-
+	
+	public StateBasedGame getStateBasedGame() {
+		return stateBasedGame;
+	}
+	
+	
+	ResourceUtils resourceUtils = new ResourceUtils();
+	
+	Random random = new Random();
+	
 	public Vector2f vector(float x, float y) {
 		return new Vector2f(x, y);
 	}
@@ -64,6 +62,9 @@ public class BuilderUtils {
 
 	public Interval interval(int min, int max) {
 		return new Interval(min, max);
+	}
+	public Container container(float current, float total) {
+		return new Container(current, total);
 	}
 
 	public Rectangle rectangle(float x, float y, float width, float height) {
@@ -77,22 +78,9 @@ public class BuilderUtils {
 	public Color color(float r, float g, float b) {
 		return new Color(r, g, b);
 	}
+	
 
-	public Container container(float current, float total) {
-		return new Container(current, total);
-	}
-
-	public Message genericMessage(String id, Closure closure) {
-		Message message = new Message(id);
-		closure.call(message);
-		return message;
-	}
-
-	public Message delayedMessage(int delay, Message delayedMessage) {
-		Message message = new Message("delayedMessage", new PropertiesMapBuilder().property("delay", delay).property("message", delayedMessage).build());
-		return message;
-	}
-
+	
 	public ResourceUtils getResources() {
 		return resourceUtils;
 	}
@@ -168,7 +156,7 @@ public class BuilderUtils {
 		public SoundUtils getSounds() {
 			return soundUtils;
 		}
-
+		//we intended to remove this because it is generic
 		public class SoundUtils {
 
 			public Sound sound(String key) {
@@ -176,54 +164,5 @@ public class BuilderUtils {
 			}
 
 		}
-
 	}
-
-	public ComponentUtils getComponents() {
-		return new ComponentUtils();
-	}
-
-	public class ComponentUtils {
-
-		public Component genericComponent(final Map<String, Object> parameters, final Closure closure) {
-			Object messageIdsCandidates = parameters.get("messageId");
-			final Set<String> messageIds;
-			if (messageIdsCandidates == null)
-				messageIds = null;
-			else {
-				if (messageIdsCandidates instanceof Collection) {
-					messageIds = Sets.newLinkedHashSet((Collection) messageIdsCandidates);
-				} else {
-					messageIds = Sets.newHashSet(messageIdsCandidates.toString());
-				}
-			}
-
-			return new Component((String) parameters.get("id")) {
-
-				@Inject
-				@Root
-				Entity rootEntity;
-
-				@Inject
-				MessageQueue messageQueue;
-
-				@Override
-				public void handleMessage(Message message) {
-
-					if (messageIds !=null && !messageIds.contains(message.getId()))
-						return;
-
-					closure.setDelegate(this);
-					closure.call(message);
-				}
-
-				@Override
-				public Set<String> getMessageIds() {
-					return messageIds;
-				}
-
-			};
-		}
-	}
-
 }

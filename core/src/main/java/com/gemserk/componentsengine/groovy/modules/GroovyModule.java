@@ -12,5 +12,6 @@ public class GroovyModule extends AbstractModule {
 	protected void configure() {
 		bind(GroovyScriptProvider.class).toInstance(new CachedScriptProvider(new GroovyScriptProviderImpl()));// GROOVY
 		bind(TemplateProvider.class).toInstance(new GroovyTemplateProvider());// GROOVY
+		
 	}
 }

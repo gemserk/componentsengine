@@ -1,4 +1,4 @@
-package com.gemserk.componentsengine.gamestates;
+package com.gemserk.componentsengine.slick.modules;
 
 import com.gemserk.componentsengine.render.RenderQueueImpl;
 import com.gemserk.componentsengine.slick.render.SlickRenderer;

@@ -1,4 +1,4 @@
-package com.gemserk.componentsengine.gamestates;
+package com.gemserk.componentsengine.slick.gamestates;
 
 
 import java.io.IOException;
@@ -13,6 +13,7 @@ import org.newdawn.slick.state.StateBasedGame;
 
 import com.gemserk.componentsengine.entities.Entity;
 import com.gemserk.componentsengine.entities.Root;
+import com.gemserk.componentsengine.game.GameLoop;
 import com.gemserk.componentsengine.messages.ChildrenManagementMessageFactory;
 import com.gemserk.componentsengine.messages.Message;
 import com.gemserk.componentsengine.messages.MessageQueue;
@@ -23,7 +24,7 @@ import com.gemserk.componentsengine.templates.TemplateProvider;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 
-public class CleanGameState extends BasicGameState {
+public class GemserkGameState extends BasicGameState {
 
 	protected StateBasedGame stateBasedGame;
 
@@ -46,11 +47,11 @@ public class CleanGameState extends BasicGameState {
 	@Inject @Root
 	private Entity rootEntity;
 
-	public CleanGameState(int id) {
+	public GemserkGameState(int id) {
 		this(id, null);
 	}
 
-	public CleanGameState(int id, String iniScene) {
+	public GemserkGameState(int id, String iniScene) {
 		super();
 		this.id = id;
 		this.iniScene = iniScene;

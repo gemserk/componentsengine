@@ -9,8 +9,8 @@ import java.util.logging.Logger;
 
 import org.slf4j.LoggerFactory;
 
-import com.gemserk.componentsengine.builders.GroovyEntityBuilder;
 import com.gemserk.componentsengine.entities.Entity;
+import com.gemserk.componentsengine.groovy.builders.GroovyEntityBuilder;
 import com.google.inject.Injector;
 
 public class GroovyEntityTemplate implements EntityTemplate {

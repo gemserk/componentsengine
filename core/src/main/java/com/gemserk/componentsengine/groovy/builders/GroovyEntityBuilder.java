@@ -1,4 +1,4 @@
-package com.gemserk.componentsengine.builders;
+package com.gemserk.componentsengine.groovy.builders;
 
 import groovy.lang.Closure;
 
@@ -15,6 +15,7 @@ import com.gemserk.componentsengine.properties.ReferenceProperty;
 import com.gemserk.componentsengine.properties.SimpleProperty;
 import com.gemserk.componentsengine.templates.EntityTemplate;
 import com.gemserk.componentsengine.templates.TemplateProvider;
+import com.gemserk.componentsengine.utils.annotations.BuilderUtils;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 
@@ -22,7 +23,7 @@ public class GroovyEntityBuilder {
 
 	protected TemplateProvider templateProvider;
 	protected Injector injector;
-	BuilderUtils utils;
+	Map<String, Object> utils;
 
 	protected String defaultEntityName;
 
@@ -94,7 +95,7 @@ public class GroovyEntityBuilder {
 			entity.getTags().addAll(tags);
 		}
 
-		public BuilderUtils getUtils() {
+		public Map<String, Object> getUtils() {
 			return utils;
 		}
 
@@ -184,8 +185,8 @@ public class GroovyEntityBuilder {
 
 	}
 
-	@Inject
-	public void setUtils(BuilderUtils utils) {
+	@Inject @BuilderUtils
+	public void setUtils(Map<String,Object> utils) {
 		this.utils = utils;
 	}
 

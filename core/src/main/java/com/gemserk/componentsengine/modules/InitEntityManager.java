@@ -1,4 +1,4 @@
-package com.gemserk.componentsengine.gamestates;
+package com.gemserk.componentsengine.modules;
 
 import com.gemserk.componentsengine.components.ChildrenManagementComponent;
 import com.gemserk.componentsengine.components.DelayedMessagesComponent;
