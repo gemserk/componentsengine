@@ -2,13 +2,7 @@ package com.gemserk.componentsengine.predicates;
 
 import java.util.Set;
 
-import org.newdawn.slick.geom.Line;
-import org.newdawn.slick.geom.Rectangle;
-import org.newdawn.slick.geom.Vector2f;
-
 import com.gemserk.componentsengine.entities.Entity;
-import com.gemserk.componentsengine.properties.Properties;
-import com.gemserk.componentsengine.properties.PropertyLocator;
 import com.google.common.base.Predicate;
 
 public class EntityPredicates {

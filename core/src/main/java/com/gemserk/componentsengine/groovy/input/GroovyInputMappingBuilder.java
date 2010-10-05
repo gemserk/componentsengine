@@ -120,23 +120,6 @@ public class GroovyInputMappingBuilder {
 			return monitorFactory.mouseCoordinatesMonitor();
 		}
 
-		Map<String, String> mappingMouseKeys = new HashMap<String, String>() {
-			{
-				put("left", "BUTTON0");
-				put("right", "BUTTON1");
-				put("middle", "BUTTON2");
-			}
-		};
-
-		public int mapMouseKey(String key) {
-			String mappedKey = mappingMouseKeys.get(key);
-
-			if (mappedKey == null)
-				mappedKey = key;
-
-			return Mouse.getButtonIndex(mappedKey);
-		}
-
 		public void hold(Map<String, String> parameters) {
 			hold(parameters, null);
 		}

@@ -45,7 +45,7 @@
 	<modules>
 		<module>core</module>
 		<module>commons</module>
-		<module>slick</module>
+		<module>slickmodule</module>
 	</modules>
 
 	<build>
@@ -118,7 +118,7 @@
 			</dependency>
 			<dependency>
 				<groupId>${project.groupId}</groupId>
-				<artifactId>slick</artifactId>
+				<artifactId>slickmodule</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
