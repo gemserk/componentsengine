@@ -2,14 +2,19 @@ package com.gemserk.componentsengine.reflection;
 
 import static org.junit.Assert.assertEquals;
 
+import org.junit.Before;
 import org.junit.Test;
-import org.slf4j.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.gemserk.componentsengine.components.Component;
 import com.gemserk.componentsengine.components.annotations.EntityProperty;
 import com.gemserk.componentsengine.entities.Entity;
-import com.gemserk.componentsengine.properties.*;
-import com.gemserk.componentsengine.reflection.wrapper.*;
+import com.gemserk.componentsengine.properties.Property;
+import com.gemserk.componentsengine.properties.ReferenceProperty;
+import com.gemserk.componentsengine.properties.SimpleProperty;
+import com.gemserk.componentsengine.reflection.wrapper.ComponentPropertiesWrapper;
+import com.gemserk.componentsengine.reflection.wrapper.ComponentPropertiesWrapperImpl;
 
 public class ReflectionTest {
 
@@ -51,6 +56,11 @@ public class ReflectionTest {
 			super(id);
 		}
 
+	}
+	
+	@Before
+	public void configure() {
+//		ComponentPropertiesWrapperImpl.useFastClassIfPossible = false;
 	}
 
 	@Test
@@ -227,7 +237,8 @@ public class ReflectionTest {
 	}
 
 	@Test
-	public void testTimesPrivateFieldWithouyGetterSetterMethods() {
+	public void testTimesPrivateFieldWithoutGetterSetterMethods() {
+		
 		CheckWrapperTimeComponent2 component = new CheckWrapperTimeComponent2("another");
 		component.value = "internal";
 

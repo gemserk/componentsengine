@@ -2,6 +2,7 @@ package com.gemserk.componentsengine.reflection.wrapper;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
@@ -28,6 +29,8 @@ public class ComponentPropertiesWrapperImpl implements ComponentPropertiesWrappe
 
 	protected Collection<InternalField> internalFields = new LinkedList<InternalField>();
 
+	public static boolean useFastClassIfPossible = true;
+
 	public ComponentPropertiesWrapperImpl(Class<? extends Component> componentClass) {
 		this.componentClass = componentClass;
 
@@ -48,26 +51,73 @@ public class ComponentPropertiesWrapperImpl implements ComponentPropertiesWrappe
 	}
 
 	protected InternalField generateInternalField(Field field) {
-		String fieldName = field.getName();
 
-		FastClass componentFastClass = FastClass.create(componentClass);
+		// TODO: check first if field is public
 
-		try {
-			
-			// TODO: separate read access from write access, maybe we can have a setter but not a getter and vice versa.
-			
-			FastMethod setterFastMethod = componentFastClass.getMethod(getSetterName(fieldName), new Class[] { field.getType() });
-			FastMethod getterFastMethod = componentFastClass.getMethod(getGetterName(fieldName), new Class[] {});
+		if (ComponentPropertiesWrapperImpl.useFastClassIfPossible) {
+			try {
+				return buildInternalFieldFastClassImpl(field);
+			} catch (NoSuchMethodError e) {
+				return buildInternalFieldPublicImpl(field);
+			}
+		} else {
 
-			return new InternalFieldFastClassImpl(field, componentFastClass, // 
-					setterFastMethod.getIndex(), getterFastMethod.getIndex());
-		} catch (NoSuchMethodError e) {
-			if (logger.isDebugEnabled())
-				logger.debug("forcing field {} to be accesible because missing getter or setter", fieldName);
-			field.setAccessible(true);
-			return new InternalFieldPublicImpl(field);
+			try {
+				return buildInternalFieldMethodsImpl(field);
+			} catch (Exception e) {
+				logger.debug(e.getMessage());
+			}
+
+			// try before using methods but without fast class...
+			return buildInternalFieldPublicImpl(field);
 		}
 
+	}
+
+	private InternalField buildInternalFieldMethodsImpl(Field field) {
+
+		String fieldName = field.getName();
+
+		String setterName = getSetterName(fieldName);
+		String getterName = getGetterName(fieldName);
+
+		Method[] methods = componentClass.getMethods();
+
+		Method setterMethod = null;
+		Method getterMethod = null;
+
+		for (Method method : methods) {
+			if (method.getName().equals(setterName))
+				setterMethod = method;
+			else if (method.getName().equals(getterName))
+				getterMethod = method;
+		}
+
+		if (setterMethod == null || getterMethod == null)
+			throw new RuntimeException("failed to retrieve getter and setter methods for " + fieldName);
+
+		return new InternalFieldMethodsReflectionImpl(field, getterMethod, setterMethod);
+
+	}
+
+	private InternalField buildInternalFieldFastClassImpl(Field field) {
+		String fieldName = field.getName();
+		FastClass componentFastClass = FastClass.create(componentClass);
+
+		// TODO: separate read access from write access, maybe we can have a setter but not a getter and vice versa.
+
+		FastMethod setterFastMethod = componentFastClass.getMethod(getSetterName(fieldName), new Class[] { field.getType() });
+		FastMethod getterFastMethod = componentFastClass.getMethod(getGetterName(fieldName), new Class[] {});
+
+		return new InternalFieldFastClassImpl(field, componentFastClass, // 
+				setterFastMethod.getIndex(), getterFastMethod.getIndex());
+	}
+
+	private InternalField buildInternalFieldPublicImpl(Field field) {
+		if (logger.isDebugEnabled())
+			logger.debug("forcing field {} to be accesible because missing getter or setter", field.getName());
+		field.setAccessible(true);
+		return new InternalFieldPublicImpl(field);
 	}
 
 	public void importFrom(Component component, Entity entity) {
@@ -128,9 +178,9 @@ public class ComponentPropertiesWrapperImpl implements ComponentPropertiesWrappe
 	private String getGetterName(String fieldName) {
 		return "get" + Strings.capitalize(fieldName);
 	}
-	
+
 	abstract class InternalField {
-		
+
 		private final String fieldName;
 
 		private final boolean required;
@@ -144,24 +194,56 @@ public class ComponentPropertiesWrapperImpl implements ComponentPropertiesWrappe
 		public boolean isRequiredProperty() {
 			return required;
 		}
-		
+
 		public boolean isReadOnlyProperty() {
 			return readOnly;
 		}
-		
+
 		public InternalField(Field field) {
 			fieldName = field.getName();
 			EntityProperty entityPropertyAnnotation = field.getAnnotation(EntityProperty.class);
 			required = entityPropertyAnnotation.required();
 			readOnly = entityPropertyAnnotation.readOnly();
 		}
-		
+
 		public abstract Object getValue(Object obj);
 
 		public abstract void setValue(Object obj, Object value);
 
 	}
-	
+
+	class InternalFieldMethodsReflectionImpl extends InternalField {
+
+		Method getterMethod;
+
+		Method setterMethod;
+
+		public InternalFieldMethodsReflectionImpl(Field field, Method getterMethod, Method setterMethod) {
+			super(field);
+			this.getterMethod = getterMethod;
+			this.setterMethod = setterMethod;
+		}
+
+		@Override
+		public Object getValue(Object obj) {
+			try {
+				return getterMethod.invoke(obj, new Object[] {});
+			} catch (Exception e) {
+				throw new RuntimeException(e);
+			}
+		}
+
+		@Override
+		public void setValue(Object obj, Object value) {
+			try {
+				setterMethod.invoke(obj, value);
+			} catch (Exception e) {
+				throw new RuntimeException(e);
+			}
+		}
+
+	}
+
 	class InternalFieldPublicImpl extends InternalField {
 
 		private final Field field;
@@ -192,7 +274,7 @@ public class ComponentPropertiesWrapperImpl implements ComponentPropertiesWrappe
 	}
 
 	private static final Object[] DEFAULT_GETTER_ARGUMENTS = new Object[] {};
-	
+
 	class InternalFieldFastClassImpl extends InternalField {
 
 		FastClass fastClass;
