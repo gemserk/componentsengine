@@ -126,23 +126,41 @@ public class ComponentPropertiesWrapperImpl implements ComponentPropertiesWrappe
 
 		for (InternalField internalField : internalFields) {
 
-			String fieldName = internalField.getFieldName();
+			Property<Object> property = getProperty(entity, componentId, internalField);
 
-			String propertyName = componentId + "." + fieldName;
-			Property<Object> property = entity.getProperty(propertyName);
-
-			if (property == null) {
-
-				if (internalField.isRequiredProperty())
-					throw new RequiredPropertyNotFoundException(propertyName, "property " + propertyName + " not found on " + entity.getId() + "! and it is required");
-
+			if (property == null)
 				continue;
-			}
-
+			
 			Object propertyValue = property.get();
 			internalField.setValue(component, propertyValue);
 		}
 
+	}
+
+	private Property<Object> getProperty(Entity entity, String componentId, InternalField internalField) {
+		String fieldName = internalField.getFieldName();
+		String propertyName = componentId + "." + fieldName;
+
+		if (logger.isTraceEnabled())
+			logger.trace("trying to get property " + propertyName + " from entity " + entity.getId());
+		Property<Object> property = entity.getProperty(propertyName);
+
+		if (property != null)
+			return property;
+
+		if (logger.isTraceEnabled())
+			logger.trace("property " + propertyName + " not found");
+
+		if (logger.isTraceEnabled())
+			logger.trace("trying to get property " + fieldName + " from entity " + entity.getId());
+		property = entity.getProperty(fieldName);
+
+		if (property != null)
+			return property;
+
+		if (internalField.isRequiredProperty())
+			throw new RequiredPropertyNotFoundException(fieldName, "neither property " + propertyName + " nor " + fieldName + " found on " + entity.getId() + "! and it is a required property");
+		return null;
 	}
 
 	public void exportTo(Component component, Entity entity) {
@@ -154,16 +172,10 @@ public class ComponentPropertiesWrapperImpl implements ComponentPropertiesWrappe
 			if (internalField.isReadOnlyProperty())
 				continue;
 
-			String fieldName = internalField.getFieldName();
-			String propertyName = componentId + "." + fieldName;
-			Property<Object> property = entity.getProperty(propertyName);
-
-			if (property == null) {
-
-				if (internalField.isRequiredProperty())
-					throw new RequiredPropertyNotFoundException(propertyName, "property " + propertyName + " not found on " + entity.getId() + "! and it is required");
+			Property<Object> property = getProperty(entity, componentId, internalField);
+			
+			if (property == null)
 				continue;
-			}
 
 			Object value = internalField.getValue(component);
 			property.set(value);

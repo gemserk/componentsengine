@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.gemserk.componentsengine.components.Component;
+import com.gemserk.componentsengine.components.FieldsReflectionComponent;
 import com.gemserk.componentsengine.components.annotations.EntityProperty;
 import com.gemserk.componentsengine.entities.Entity;
 import com.gemserk.componentsengine.properties.Property;
@@ -265,5 +266,45 @@ public class ReflectionTest {
 		logger.info("wrapper time: {}, direct access time: {}", new Object[] {wrapperTime, directAccessTime});
 		logger.info("wrapper time =(aprox) {} x direct access time", new Object[] {proporcion});
 	}
+	
+	public class TestPropertyWithoutPrefixComponent extends FieldsReflectionComponent {
+
+		@EntityProperty
+		private String value;
+		
+		public void setValue(String value) {
+			this.value = value;
+		}
+		
+		public String getValue() {
+			return value;
+		}
+		
+		public TestPropertyWithoutPrefixComponent(String id) {
+			super(id);
+		}
+		
+	}
+
+	@Test
+	public void shouldSetPropertyToComponentUsingDefaultNameIfPropertyWithPrefixDoesNotExists() {
+		TestPropertyWithoutPrefixComponent component = new TestPropertyWithoutPrefixComponent("testComponent");
+		Entity entity = new Entity("entity");
+		entity.addProperty("value", new SimpleProperty<Object>("hello"));
+		ComponentPropertiesWrapper componentPropertyWrapperImpl = new ComponentPropertiesWrapperImpl(TestPropertyWithoutPrefixComponent.class);
+		componentPropertyWrapperImpl.importFrom(component, entity);
+		assertEquals("hello", component.getValue());
+	}
+	
+	@Test(expected=RequiredPropertyNotFoundException.class)
+	public void shouldFailIfRequiredPropertyNotFoundWithOrWithoutComponentIdPrefix() {
+		TestPropertyWithoutPrefixComponent component = new TestPropertyWithoutPrefixComponent("testComponent");
+		Entity entity = new Entity("entity");
+		ComponentPropertiesWrapper componentPropertyWrapperImpl = new ComponentPropertiesWrapperImpl(TestPropertyWithoutPrefixComponent.class);
+		componentPropertyWrapperImpl.importFrom(component, entity);
+		assertEquals("hello", component.getValue());
+	}
+	
+	// test should fail if required property does not exist with or without prefix
 	
 }
