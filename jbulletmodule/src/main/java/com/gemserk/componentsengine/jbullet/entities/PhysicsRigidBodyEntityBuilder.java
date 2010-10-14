@@ -6,7 +6,6 @@ import javax.vecmath.Vector2f;
 import javax.vecmath.Vector3f;
 
 import com.bulletphysics.collision.shapes.CollisionShape;
-import com.bulletphysics.dynamics.DynamicsWorld;
 import com.bulletphysics.dynamics.RigidBody;
 import com.bulletphysics.dynamics.RigidBodyConstructionInfo;
 import com.bulletphysics.linearmath.DefaultMotionState;
@@ -19,6 +18,7 @@ import com.gemserk.componentsengine.messages.Message;
 import com.gemserk.componentsengine.messages.MessageQueue;
 import com.gemserk.componentsengine.properties.InnerProperty;
 import com.gemserk.componentsengine.properties.Properties;
+import com.gemserk.componentsengine.properties.PropertiesMapBuilder;
 import com.gemserk.componentsengine.properties.PropertyGetter;
 import com.gemserk.componentsengine.templates.EntityBuilder;
 import com.gemserk.vecmath.utils.VecmathUtils;
@@ -110,14 +110,24 @@ public class PhysicsRigidBodyEntityBuilder extends EntityBuilder {
 			@EntityProperty
 			private RigidBody rigidBody;
 			
+			private MessageQueue messageQueue;
+			
 			public void setRigidBody(RigidBody rigidBody) {
 				this.rigidBody = rigidBody;
 			}
 			
+			@Inject 
+			public void setMessageQueue(MessageQueue messageQueue) {
+				this.messageQueue = messageQueue;
+			}
+			
 			@Handles
-			public void registerBody(Message message) {
-				DynamicsWorld world = Properties.getValue(message, "world");
-				world.addRigidBody(rigidBody);
+			public void init(Message message) {
+				
+				messageQueue.enqueue(new Message("addRigidBody", new PropertiesMapBuilder(){{
+					property("rigidBody", rigidBody);
+				}}.build())) ;
+				
 			}
 			
 		}).withProperties(new ComponentProperties() {
