@@ -18,7 +18,7 @@ import com.gemserk.componentsengine.properties.Properties;
 import com.gemserk.componentsengine.properties.PropertiesMapBuilder;
 import com.gemserk.componentsengine.properties.PropertyGetter;
 import com.gemserk.componentsengine.templates.EntityBuilder;
-import com.gemserk.vecmath.utils.VectorUtils;
+import com.gemserk.vecmath.utils.VecmathUtils;
 import com.google.inject.Inject;
 
 public class PhysicsRigidBodyEntityBuilder extends EntityBuilder {
@@ -105,7 +105,7 @@ public class PhysicsRigidBodyEntityBuilder extends EntityBuilder {
 			@Override
 			public Object get(Entity entity) {
 				Vector2f direction = Properties.getValue(entity, "physics.direction");
-				return VectorUtils.getThetaInRadians(direction);
+				return VecmathUtils.getThetaInRadians(direction);
 			}
 		}));
 

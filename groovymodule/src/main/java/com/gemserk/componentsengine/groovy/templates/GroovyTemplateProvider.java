@@ -29,7 +29,7 @@ public class GroovyTemplateProvider implements TemplateProvider {
 		try {
 			return new GroovyEntityTemplate(groovyScriptProvider.load(name), injector);
 		} catch (Exception e) {
-			throw new TemplateNotFoundException("Unable to load template" + name, e);
+			throw new TemplateNotFoundException("Unable to load template " + name, e);
 		}
 	}
 

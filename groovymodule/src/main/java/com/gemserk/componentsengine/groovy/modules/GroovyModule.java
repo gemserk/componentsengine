@@ -8,10 +8,11 @@ import com.gemserk.componentsengine.templates.TemplateProvider;
 import com.google.inject.AbstractModule;
 
 public class GroovyModule extends AbstractModule {
+
 	@Override
 	protected void configure() {
-		bind(GroovyScriptProvider.class).toInstance(new CachedScriptProvider(new GroovyScriptProviderImpl()));// GROOVY
-		bind(TemplateProvider.class).toInstance(new GroovyTemplateProvider());// GROOVY
-		
+		bind(GroovyScriptProvider.class).toInstance(new CachedScriptProvider(new GroovyScriptProviderImpl()));
+		bind(TemplateProvider.class).toInstance(new GroovyTemplateProvider());
 	}
+
 }
