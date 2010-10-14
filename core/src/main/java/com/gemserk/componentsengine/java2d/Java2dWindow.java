@@ -23,11 +23,11 @@ public abstract class Java2dWindow {
 	protected final KeyboardInput keyboardInput;
 
 	protected final MouseInput mouseInput;
-	
+
 	public MouseInput getMouseInput() {
 		return mouseInput;
 	}
-	
+
 	public KeyboardInput getKeyboardInput() {
 		return keyboardInput;
 	}
@@ -62,10 +62,10 @@ public abstract class Java2dWindow {
 		canvas.addMouseListener(mouseInput);
 		canvas.addMouseMotionListener(mouseInput);
 
-//		 canvas.createBufferStrategy(2);
+		// canvas.createBufferStrategy(2);
 
 		renderStrategy = new VolatileImageJava2dRenderStrategy(canvas);
-//		renderStrategy = new BufferStrategyJava2dRenderStrategy(canvas);
+		// renderStrategy = new BufferStrategyJava2dRenderStrategy(canvas);
 
 	}
 
@@ -150,34 +150,54 @@ public abstract class Java2dWindow {
 
 		done = false;
 
-		long lastTime = System.currentTimeMillis();
 		long frames = 0;
-		
 		long time = 0;
 
+		double t = 0.0;
+		final double dt = 0.01;
+
+		double currentTime = 0.001 * System.currentTimeMillis();
+		double accumulator = dt;
+
 		while (!done) {
-
-			long currentTime = System.currentTimeMillis();
-			long delta = currentTime - lastTime;
-			lastTime = currentTime;
-			
-			frames++;
-
-			time += delta;
-			
-			if (time >= 1000) {
-				fps = frames;
-				time -= 1000;
-				frames = 0;
-				System.out.println("FPS: " + fps);
-			}
-
-			internalRender();
 
 			keyboardInput.poll();
 			mouseInput.poll();
 
-			update((int) delta);
+			double newTime = 0.001 * System.currentTimeMillis();
+			double frameTime = newTime - currentTime;
+			if (frameTime > 0.25)
+				frameTime = 0.25;
+			currentTime = newTime;
+
+			accumulator += frameTime;
+
+			while (accumulator >= dt) {
+				// previousState = currentState;
+				// integrate ( currentState, t, dt )
+				update((int) (dt * 1000));
+
+				t += dt;
+				accumulator -= dt;
+			}
+
+			// double alpha = accumulator / dt;
+
+			// State state = currentState*alpha + previousState * ( 1.0 - alpha );
+
+			// render( state ); using interpolated state
+
+			internalRender();
+
+			frames++;
+			time += frameTime * 1000;
+
+			if (time >= 1000) {
+				time -= 1000;
+				System.out.println("FPS: " + frames);
+				frames = 0;
+			}
+
 		}
 	}
 
