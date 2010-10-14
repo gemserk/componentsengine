@@ -14,6 +14,8 @@ import com.gemserk.componentsengine.render.RenderQueue;
 import com.gemserk.componentsengine.render.RenderQueueImpl;
 import com.gemserk.componentsengine.resources.images.ImageManager;
 import com.gemserk.componentsengine.resources.images.ImageManagerImpl;
+import com.gemserk.componentsengine.templates.JavaEntityTemplate;
+import com.gemserk.componentsengine.templates.RegistrableTemplateProvider;
 import com.gemserk.componentsengine.templates.TemplateProvider;
 import com.gemserk.componentsengine.templates.TemplateProviderManager;
 import com.gemserk.componentsengine.templates.TemplateProviderManagerImpl;
@@ -44,5 +46,8 @@ public class BasicModule extends AbstractModule {
 		bind(TemplateProviderManagerImpl.class).in(Singleton.class);
 		bind(TemplateProviderManager.class).to(TemplateProviderManagerImpl.class);
 		bind(TemplateProvider.class).to(TemplateProviderManagerImpl.class);
+		
+		bind(RegistrableTemplateProvider.class).in(Singleton.class);
+		bind(JavaEntityTemplate.class);
 	}
 }

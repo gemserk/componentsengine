@@ -6,16 +6,19 @@ import javax.vecmath.Vector2f;
 import javax.vecmath.Vector3f;
 
 import com.bulletphysics.collision.shapes.CollisionShape;
+import com.bulletphysics.dynamics.DynamicsWorld;
 import com.bulletphysics.dynamics.RigidBody;
 import com.bulletphysics.dynamics.RigidBodyConstructionInfo;
 import com.bulletphysics.linearmath.DefaultMotionState;
 import com.bulletphysics.linearmath.Transform;
+import com.gemserk.componentsengine.components.FieldsReflectionComponent;
+import com.gemserk.componentsengine.components.annotations.EntityProperty;
+import com.gemserk.componentsengine.components.annotations.Handles;
 import com.gemserk.componentsengine.entities.Entity;
 import com.gemserk.componentsengine.messages.Message;
 import com.gemserk.componentsengine.messages.MessageQueue;
 import com.gemserk.componentsengine.properties.InnerProperty;
 import com.gemserk.componentsengine.properties.Properties;
-import com.gemserk.componentsengine.properties.PropertiesMapBuilder;
 import com.gemserk.componentsengine.properties.PropertyGetter;
 import com.gemserk.componentsengine.templates.EntityBuilder;
 import com.gemserk.vecmath.utils.VecmathUtils;
@@ -57,13 +60,6 @@ public class PhysicsRigidBodyEntityBuilder extends EntityBuilder {
 		rigidBody.setAngularFactor(new Vector3f(0f, 0f, 1f));
 		rigidBody.setUserPointer(entity);
 		rigidBody.setRestitution(restitution);
-
-		// it depends of the entity creation order :S or if the component to handle the message is on the root or not
-		messageQueue.enqueue(new Message("addRigidBody", new PropertiesMapBuilder() {
-			{
-				property("rigidBody", rigidBody);
-			}
-		}.build()));
 
 		property("physics.rigidBody", rigidBody);
 		property("physics.position", new InnerProperty(entity, new PropertyGetter() {
@@ -108,6 +104,27 @@ public class PhysicsRigidBodyEntityBuilder extends EntityBuilder {
 				return VecmathUtils.getThetaInRadians(direction);
 			}
 		}));
+		
+		component(new FieldsReflectionComponent("registerBodyComponent") {
+			
+			@EntityProperty
+			private RigidBody rigidBody;
+			
+			public void setRigidBody(RigidBody rigidBody) {
+				this.rigidBody = rigidBody;
+			}
+			
+			@Handles
+			public void registerBody(Message message) {
+				DynamicsWorld world = Properties.getValue(message, "world");
+				world.addRigidBody(rigidBody);
+			}
+			
+		}).withProperties(new ComponentProperties() {
+			{
+				propertyRef("rigidBody", "physics.rigidBody");
+			}
+		});
 
 	}
 }
