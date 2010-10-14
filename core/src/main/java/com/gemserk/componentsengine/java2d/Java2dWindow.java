@@ -161,6 +161,7 @@ public abstract class Java2dWindow {
 
 		while (!done) {
 
+			// should input polling be inside the while of the accumulator?
 			keyboardInput.poll();
 			mouseInput.poll();
 

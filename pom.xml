@@ -48,6 +48,7 @@
 		<module>slickmodule</module>
 		<module>groovymodule</module>
 		<module>paulsoundsystemmodule</module>
+		<module>jbulletmodule</module>
 	</modules>
 
 	<build>
