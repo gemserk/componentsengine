@@ -9,11 +9,13 @@ import java.util.Set;
 import com.gemserk.componentsengine.components.Component;
 import com.gemserk.componentsengine.genericproviders.GenericProvider;
 import com.gemserk.componentsengine.groovy.genericproviders.ValueFromClosure;
+import com.gemserk.componentsengine.groovy.templates.GroovyTemplateProvider;
 import com.gemserk.componentsengine.groovy.triggers.ClosureTrigger;
 import com.gemserk.componentsengine.groovy.triggers.GroovySingleGenericMessageTrigger;
 import com.gemserk.componentsengine.messages.Message;
 import com.gemserk.componentsengine.messages.MessageQueue;
 import com.gemserk.componentsengine.properties.PropertiesMapBuilder;
+import com.gemserk.componentsengine.templates.TemplateProviderManager;
 import com.gemserk.componentsengine.triggers.NullTrigger;
 import com.gemserk.componentsengine.triggers.Trigger;
 import com.gemserk.componentsengine.utils.annotations.BuilderUtils;
@@ -102,12 +104,19 @@ public class InitBuilderUtilsGroovy {
 
 
 	@Inject @BuilderUtils Map<String,Object> builderUtils;
+	
 	@Inject MessageQueue messageQueue;
+	
+	@Inject TemplateProviderManager templateProviderManager;
+	
+	@Inject GroovyTemplateProvider groovyTemplateProvider;
 	
 	public void config() {
 		builderUtils.put("triggers", new TriggerUtils(messageQueue));
 		builderUtils.put("genericprovider", new ProvidersUtils());
 		builderUtils.put("components", new ComponentUtils());
 		builderUtils.put("messages", new MessageUtils());
+		
+		templateProviderManager.register(groovyTemplateProvider);
 	}
 }
