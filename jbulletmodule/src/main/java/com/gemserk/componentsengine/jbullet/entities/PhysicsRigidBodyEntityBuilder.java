@@ -26,9 +26,6 @@ import com.google.inject.Inject;
 
 public class PhysicsRigidBodyEntityBuilder extends EntityBuilder {
 
-	@Inject
-	MessageQueue messageQueue;
-
 	@Override
 	public void build() {
 
@@ -122,7 +119,12 @@ public class PhysicsRigidBodyEntityBuilder extends EntityBuilder {
 			}
 			
 			@Handles
-			public void init(Message message) {
+			public void entityAdded(Message message) {
+				
+				Entity addedEntity = (Entity) message.getProperty("entity").get(); 
+				if(entity!=addedEntity)
+					return;
+				
 				
 				messageQueue.enqueue(new Message("addRigidBody", new PropertiesMapBuilder(){{
 					property("rigidBody", rigidBody);

@@ -1,11 +1,15 @@
 package com.gemserk.componentsengine.components;
 
+import java.util.Collection;
+
 import com.gemserk.componentsengine.components.annotations.Handles;
 import com.gemserk.componentsengine.entities.Entity;
 import com.gemserk.componentsengine.entities.EntityManager;
 import com.gemserk.componentsengine.messages.ChildrenManagementMessageFactory;
 import com.gemserk.componentsengine.messages.Message;
+import com.gemserk.componentsengine.messages.MessageQueue;
 import com.gemserk.componentsengine.properties.Properties;
+import com.gemserk.componentsengine.properties.PropertiesMapBuilder;
 import com.gemserk.componentsengine.properties.PropertyLocator;
 import com.google.inject.Inject;
 
@@ -13,6 +17,9 @@ public class ChildrenManagementComponent extends ReflectionComponent {
 
 	@Inject
 	EntityManager entityManager;
+
+	@Inject
+	MessageQueue messageQueue;
 
 	private PropertyLocator<Entity> entityProperty = Properties.property(ChildrenManagementMessageFactory.PARAMETER_ENTITY);
 	private PropertyLocator<String> removeEntityIdProperty = Properties.property(ChildrenManagementMessageFactory.PARAMETER_REMOVE_ENTITY_ID);
@@ -32,6 +39,16 @@ public class ChildrenManagementComponent extends ReflectionComponent {
 			throw new RuntimeException("parent id must be not null");
 
 		entityManager.addEntity(entityToAdd, whereEntityId);
+		
+		sendEntityAddedMessages(entityToAdd);
+	}
+
+	private void sendEntityAddedMessages(Entity entity) {
+		Collection<Entity> children = entity.getChildren().values();
+		for (Entity child : children) {
+			sendEntityAddedMessages(child);
+		}
+		messageQueue.enqueue(new Message("entityAdded", new PropertiesMapBuilder().property("entity", entity).build()));
 	}
 
 	@Handles(ids = { ChildrenManagementMessageFactory.REMOVE_MESSAGE_ID })
