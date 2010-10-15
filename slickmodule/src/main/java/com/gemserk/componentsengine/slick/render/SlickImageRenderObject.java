@@ -28,6 +28,10 @@ public class SlickImageRenderObject extends SlickCallableRenderObject {
 	public SlickImageRenderObject(int layer, Image image, float x, float y, Vector2f size, float theta, Color color) {
 		this(layer, image, new Vector2f(x, y), size, theta, color);
 	}
+	
+	public SlickImageRenderObject(int layer, Image image, float x, float y, float w, float h, float theta, Color color) {
+		this(layer, image, new Vector2f(x, y), new Vector2f(w, h), theta, color);
+	}
 
 	@Override
 	public void execute(Graphics g) {

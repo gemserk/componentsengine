@@ -107,7 +107,7 @@ public class PhysicsRigidBodyEntityBuilder extends EntityBuilder {
 		
 		component(new FieldsReflectionComponent("registerBodyComponent") {
 			
-			@EntityProperty
+			@EntityProperty(readOnly=true)
 			private RigidBody rigidBody;
 			
 			private MessageQueue messageQueue;
