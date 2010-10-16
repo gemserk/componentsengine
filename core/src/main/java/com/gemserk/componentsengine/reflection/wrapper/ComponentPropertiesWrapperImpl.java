@@ -18,6 +18,7 @@ import com.gemserk.componentsengine.components.Component;
 import com.gemserk.componentsengine.components.annotations.EntityProperty;
 import com.gemserk.componentsengine.entities.Entity;
 import com.gemserk.componentsengine.properties.Property;
+import com.gemserk.componentsengine.properties.SimpleProperty;
 import com.gemserk.componentsengine.reflection.RequiredPropertyNotFoundException;
 import com.google.inject.internal.Strings;
 
@@ -130,7 +131,7 @@ public class ComponentPropertiesWrapperImpl implements ComponentPropertiesWrappe
 
 			if (property == null)
 				continue;
-			
+
 			Object propertyValue = property.get();
 			internalField.setValue(component, propertyValue);
 		}
@@ -173,11 +174,17 @@ public class ComponentPropertiesWrapperImpl implements ComponentPropertiesWrappe
 				continue;
 
 			Property<Object> property = getProperty(entity, componentId, internalField);
-			
-			if (property == null)
-				continue;
 
 			Object value = internalField.getValue(component);
+
+			if (property == null) {
+
+				// property not found, set a new property on the entity....
+
+				property = new SimpleProperty<Object>(value);
+				entity.addProperty(componentId + "." + internalField.getFieldName(), property);
+			}
+
 			property.set(value);
 		}
 

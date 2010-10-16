@@ -305,6 +305,40 @@ public class ReflectionTest {
 		assertEquals("hello", component.getValue());
 	}
 	
-	// test should fail if required property does not exist with or without prefix
+	// what should happens if a property is set on the component but it wasn't on the entity before that?
+	
+	public class TestPropertyWithNoRequiredValue extends FieldsReflectionComponent {
+
+		@EntityProperty(required=false)
+		private String value;
+		
+		public void setValue(String value) {
+			this.value = value;
+		}
+		
+		public String getValue() {
+			return value;
+		}
+		
+		public TestPropertyWithNoRequiredValue(String id) {
+			super(id);
+		}
+		
+	}
+	
+	@Test
+	public void shouldSetANotInitedEntityPropertyWhenInitedOnTheComponent() {
+		TestPropertyWithNoRequiredValue component = new TestPropertyWithNoRequiredValue("testComponent");
+		
+		Entity entity = new Entity("entity");
+		
+		component.setValue("hello");
+		
+		ComponentPropertiesWrapper componentPropertyWrapperImpl = new ComponentPropertiesWrapperImpl(TestPropertyWithNoRequiredValue.class);
+
+		componentPropertyWrapperImpl.exportTo(component, entity);
+		
+		assertEquals("hello", entity.getProperty("testComponent.value").get());
+	}
 	
 }
