@@ -81,7 +81,7 @@ public abstract class ReflectionComponent extends Component {
 				postHandleMessage(message);
 			}
 		} catch (Exception e) {
-			throw new RuntimeException("error while invoking handleMessage for message of type: " + message.getClass() + " in " + this.getId() + " in  " + this.entity.getId(), e);
+			throw new RuntimeException("error while invoking handleMessage for message : " + message.getId() + " in " + this.getId() + " in  " + this.entity.getId(), e);
 		}
 
 	}

@@ -72,8 +72,8 @@ public class Entity implements PropertiesHolder, ComponentsHolder {
 		return componentsHolder.getComponents().get(name);
 	}
 
-	public void addProperty(String key, Property<Object> value) {
-		propertiesHolder.addProperty(key, value);
+	public void addProperty(String key, Property<Object> property) {
+		propertiesHolder.addProperty(key, property);
 	}
 
 	public Property<Object> getProperty(String key) {
