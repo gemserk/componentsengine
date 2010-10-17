@@ -87,6 +87,9 @@ public class PhysicsRigidBodyEntityBuilder extends EntityBuilder {
 
 			@EntityProperty(readOnly = true)
 			private RigidBody rigidBody;
+			
+			@EntityProperty(required=false)
+			private Boolean inited = false;
 
 			private MessageQueue messageQueue;
 
@@ -101,7 +104,10 @@ public class PhysicsRigidBodyEntityBuilder extends EntityBuilder {
 
 			@Handles
 			public void entityAdded(Message message) {
-
+				
+				if (inited)
+					return;
+				
 				Entity addedEntity = (Entity) message.getProperty("entity").get();
 				if (entity != addedEntity)
 					return;
@@ -112,6 +118,7 @@ public class PhysicsRigidBodyEntityBuilder extends EntityBuilder {
 					}
 				}.build()));
 
+				inited = true;
 			}
 
 		}).withProperties(new ComponentProperties() {
