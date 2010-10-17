@@ -3,6 +3,7 @@ package com.gemserk.jbullet.utils;
 import javax.vecmath.Vector3f;
 
 import com.bulletphysics.collision.shapes.CollisionShape;
+import com.bulletphysics.collision.shapes.StaticPlaneShape;
 import com.bulletphysics.dynamics.RigidBody;
 import com.bulletphysics.dynamics.RigidBodyConstructionInfo;
 import com.bulletphysics.linearmath.DefaultMotionState;
@@ -33,6 +34,10 @@ public class JBulletUtils {
 		rigidBody.setRestitution(restitution);
 
 		return rigidBody;
+	}
+	
+	public CollisionShape staticPlane(float a, float b, float c, float d) {
+		return new StaticPlaneShape(new Vector3f(a, b, c), d);
 	}
 
 }
