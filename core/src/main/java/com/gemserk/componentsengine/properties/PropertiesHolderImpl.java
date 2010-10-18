@@ -22,7 +22,7 @@ public class PropertiesHolderImpl implements PropertiesHolder {
 
 	@Override
 	public void addProperty(String key, Property<Object> value) {
-		this.properties.put(key, value);
+		this.properties.put(key.intern(), value);
 	}
 
 	@Override

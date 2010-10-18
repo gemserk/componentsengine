@@ -221,10 +221,11 @@ public class GroovyEntityBuilder {
 
 	public Entity entity(String id, Closure closure) {
 
-		Entity entity = new Entity(id);
+		Entity entity = this.entity;
 
-		if (this.entity != null)
-			entity = this.entity;
+		if (this.entity == null)
+			entity = new Entity(id);
+		
 
 		closure.setDelegate(new BuilderContext(entity, this));
 		closure.setResolveStrategy(Closure.DELEGATE_FIRST);

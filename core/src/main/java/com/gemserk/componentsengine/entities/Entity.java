@@ -38,7 +38,7 @@ public class Entity implements PropertiesHolder, ComponentsHolder {
 	static public Multiset<String> times = HashMultiset.create();
 
 	public Entity(String id) {
-		this.id = id;
+		this.id = id.intern();
 	}
 
 	public String getId() {

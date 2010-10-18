@@ -13,7 +13,7 @@ public class Component implements MessageHandler {
 	protected Entity entity;
 
 	public Component(String id) {
-		this.id = id;
+		this.id = id.intern();
 	}
 
 	public String getId() {

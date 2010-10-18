@@ -10,11 +10,11 @@ public class PropertyLocator<T> {
 	}
 
 	public void setName(String name) {
-		this.name = name;
+		this.name = name.intern();
 	}
 
 	public PropertyLocator(String name) {
-		this.name = name;
+		this.name = name.intern();
 	}
 
 	public Property<T> get(PropertiesHolder propertiesHolder) {

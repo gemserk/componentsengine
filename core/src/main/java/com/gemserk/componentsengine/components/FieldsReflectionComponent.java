@@ -6,6 +6,7 @@ import java.util.Map;
 import com.gemserk.componentsengine.messages.Message;
 import com.gemserk.componentsengine.reflection.wrapper.ComponentPropertiesWrapper;
 import com.gemserk.componentsengine.reflection.wrapper.ComponentPropertiesWrapperImpl;
+import com.gemserk.componentsengine.reflection.wrapper.FastComponentPropertiesWrapper;
 
 public class FieldsReflectionComponent extends ReflectionComponent {
 
@@ -22,7 +23,8 @@ public class FieldsReflectionComponent extends ReflectionComponent {
 
 	public FieldsReflectionComponent(String id) {
 		super(id);
-		propertiesWrapper = getWrapper(getClass());
+		propertiesWrapper = new FastComponentPropertiesWrapper(id,((ComponentPropertiesWrapperImpl)getWrapper(getClass())).getInternalFields());
+//		propertiesWrapper = getWrapper(getClass());
 	}
 	
 	protected void preHandleMessage(Message message) {
