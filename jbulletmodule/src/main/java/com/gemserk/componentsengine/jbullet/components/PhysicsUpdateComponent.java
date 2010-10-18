@@ -23,10 +23,18 @@ public class PhysicsUpdateComponent extends FieldsReflectionComponent {
 		float deltaInSeconds = delta / 1000f;
 		world.stepSimulation(deltaInSeconds, 7);
 	}
+	
+	// TODO: separate in different components
 
 	@Handles
 	public void addRigidBody(Message message) {
 		RigidBody rigidBody = Properties.getValue(message, "rigidBody");
 		world.addRigidBody(rigidBody);
+	}
+	
+	@Handles
+	public void removeRigidBody(Message message) {
+		RigidBody rigidBody = Properties.getValue(message, "rigidBody");
+		world.removeRigidBody(rigidBody);
 	}
 }
