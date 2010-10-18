@@ -29,6 +29,10 @@ public class VecmathUtils {
 		return new Vector2f(x, y);
 	}
 	
+	public static Vector2f vector(Vector2f v) {
+		return vector(v.x, v.y);
+	}
+	
 	public static Vector2f randomVector(float x, float y, float w, float h) {
 		return vector(x + random.nextFloat() * w, y + random.nextFloat() * h);
 	}
