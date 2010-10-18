@@ -7,6 +7,9 @@ import com.gemserk.componentsengine.messages.MessageQueue;
 import com.gemserk.componentsengine.properties.PropertiesMapBuilder;
 import com.google.inject.Inject;
 
+/**
+ * Enqueues a message physicsUpdate to components engine whenever internalTick callback is called.
+ */
 public class ComponentsEngineTickCallback extends InternalTickCallback {
 
 	MessageQueue messageQueue;
