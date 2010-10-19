@@ -60,6 +60,25 @@ public class PhysicsRigidBodyEntityBuilder extends EntityBuilder {
 				return new Vector2f(position.x, position.y);
 			}
 		}));
+		
+//		, new PropertySetter() {
+//
+//			@Override
+//			public void set(Entity entity, Object value) {
+//
+//				RigidBody rigidBody = Properties.getValue(entity, prefix + ".rigidBody");
+//				Vector2f position = (Vector2f) value;
+//
+//				System.out.println("setting position " + position + " on entity " + entity.getId());
+//
+//				Transform worldTransform = new Transform();
+//				rigidBody.getWorldTransform(worldTransform);
+//				worldTransform.origin.set(position.x, position.y, 0f);
+//				rigidBody.setWorldTransform(worldTransform);
+//
+//			}
+//		}));
+		
 		property(prefix + ".direction", new InnerProperty(entity, new PropertyGetter() {
 
 			@Override
@@ -126,6 +145,37 @@ public class PhysicsRigidBodyEntityBuilder extends EntityBuilder {
 				}.build()));
 
 				inited = true;
+			}
+
+		}).withProperties(new ComponentProperties() {
+			{
+				propertyRef("rigidBody", prefix + ".rigidBody");
+			}
+		});
+		
+		component(new FieldsReflectionComponent("spatialComponent") {
+
+			@EntityProperty(readOnly = true)
+			private RigidBody rigidBody;
+
+			public void setRigidBody(RigidBody rigidBody) {
+				this.rigidBody = rigidBody;
+			}
+
+			@Handles
+			public void translate(Message message) {
+				
+				Entity targetEntity = Properties.getValue(message, "entity");
+				if (entity != targetEntity)
+					return;
+				
+				Vector3f position = Properties.getValue(message, "position");
+				
+				Transform worldTransform = new Transform();
+				rigidBody.getWorldTransform(worldTransform);
+				worldTransform.origin.set(position);
+				rigidBody.setWorldTransform(worldTransform);
+				
 			}
 
 		}).withProperties(new ComponentProperties() {
