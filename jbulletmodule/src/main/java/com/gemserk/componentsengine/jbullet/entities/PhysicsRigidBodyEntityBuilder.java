@@ -54,7 +54,11 @@ public class PhysicsRigidBodyEntityBuilder extends EntityBuilder {
 				RigidBody rigidBody = Properties.getValue(entity, prefix + ".rigidBody");
 
 				Transform worldTransform = new Transform();
-				rigidBody.getMotionState().getWorldTransform(worldTransform);
+				
+				if (!rigidBody.isStaticObject())
+					rigidBody.getMotionState().getWorldTransform(worldTransform);
+				else
+					rigidBody.getWorldTransform(worldTransform);
 				Tuple3f position = worldTransform.origin;
 
 				return new Vector2f(position.x, position.y);

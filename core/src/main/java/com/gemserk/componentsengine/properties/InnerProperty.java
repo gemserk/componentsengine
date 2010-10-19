@@ -15,15 +15,15 @@ public class InnerProperty implements Property<Object> {
 		this.propertyGetter = propertyGetter;
 		this.propertySetter = propertySetter;
 	}
-	
+
 	public InnerProperty(Entity entity, PropertyGetter propertyGetter) {
 		this(entity, propertyGetter, null);
 	}
-	
+
 	public InnerProperty(Entity entity, PropertySetter propertySetter) {
 		this(entity, null, propertySetter);
 	}
-	
+
 	public InnerProperty(Entity entity) {
 		this(entity, null, null);
 	}
@@ -39,6 +39,14 @@ public class InnerProperty implements Property<Object> {
 	public void set(Object value) {
 		if (propertySetter != null)
 			propertySetter.set(entity, value);
+	}
+
+	@Override
+	public String toString() {
+		Object object = get();
+		if (object != null)
+			return "INNERPROP: " + object.toString();
+		return "INNERPROP: null value";
 	}
 
 }
