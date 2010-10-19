@@ -6,6 +6,7 @@ import javax.vecmath.Tuple3f;
 import javax.vecmath.Vector2f;
 import javax.vecmath.Vector3f;
 
+import com.bulletphysics.collision.broadphase.CollisionFilterGroups;
 import com.bulletphysics.dynamics.RigidBody;
 import com.bulletphysics.linearmath.Transform;
 import com.gemserk.componentsengine.components.FieldsReflectionComponent;
@@ -29,6 +30,9 @@ public class PhysicsRigidBodyEntityBuilder extends EntityBuilder {
 
 		tags("physics", "rigidBody");
 
+		property("collisionFilterGroup", parameters.get("collisionFilterGroup") != null ? parameters.get("collisionFilterGroup") : CollisionFilterGroups.DEFAULT_FILTER);
+		property("collisionFilterMask", parameters.get("collisionFilterMask") != null ? parameters.get("collisionFilterMask") : CollisionFilterGroups.ALL_FILTER);
+
 		final String prefix = (String) (parameters.get("prefix") != null ? parameters.get("prefix") : "physics");
 
 		Vector2f position = (Vector2f) parameters.get("position");
@@ -38,7 +42,7 @@ public class PhysicsRigidBodyEntityBuilder extends EntityBuilder {
 		rigidBody.getWorldTransform(worldTransform);
 		worldTransform.origin.set(position.x, position.y, 0f);
 		rigidBody.setWorldTransform(worldTransform);
-		
+
 		// we add the pointer to the entity, so we can access it from the collision object (the rigid body)
 		rigidBody.setUserPointer(entity);
 
@@ -90,8 +94,8 @@ public class PhysicsRigidBodyEntityBuilder extends EntityBuilder {
 
 			@EntityProperty(readOnly = true)
 			private RigidBody rigidBody;
-			
-			@EntityProperty(required=false)
+
+			@EntityProperty(required = false)
 			private Boolean inited = false;
 
 			private MessageQueue messageQueue;
@@ -107,10 +111,10 @@ public class PhysicsRigidBodyEntityBuilder extends EntityBuilder {
 
 			@Handles
 			public void entityAdded(Message message) {
-				
+
 				if (inited)
 					return;
-				
+
 				Entity addedEntity = (Entity) message.getProperty("entity").get();
 				if (entity != addedEntity)
 					return;

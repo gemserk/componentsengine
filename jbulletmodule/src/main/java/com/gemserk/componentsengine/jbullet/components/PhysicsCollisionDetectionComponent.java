@@ -8,10 +8,20 @@ import com.bulletphysics.collision.narrowphase.PersistentManifold;
 import com.gemserk.componentsengine.components.FieldsReflectionComponent;
 import com.gemserk.componentsengine.components.annotations.Handles;
 import com.gemserk.componentsengine.messages.Message;
+import com.gemserk.componentsengine.messages.MessageQueue;
 import com.gemserk.componentsengine.properties.Properties;
+import com.gemserk.componentsengine.properties.PropertiesMapBuilder;
+import com.google.inject.Inject;
 
 public class PhysicsCollisionDetectionComponent extends FieldsReflectionComponent {
 
+	MessageQueue messageQueue;
+
+	@Inject
+	public void setMessageQueue(MessageQueue messageQueue) {
+		this.messageQueue = messageQueue;
+	}
+	
 	public PhysicsCollisionDetectionComponent(String id) {
 		super(id);
 	}
@@ -25,12 +35,19 @@ public class PhysicsCollisionDetectionComponent extends FieldsReflectionComponen
 		int numManifolds = dispatcher.getNumManifolds();
 		for (int i = 0; i < numManifolds; i++) {
 			PersistentManifold contactManifold = dispatcher.getManifoldByIndexInternal(i);
-			CollisionObject body0 = (CollisionObject) contactManifold.getBody0();
-			CollisionObject body1 = (CollisionObject) contactManifold.getBody1();
+			final CollisionObject body0 = (CollisionObject) contactManifold.getBody0();
+			final CollisionObject body1 = (CollisionObject) contactManifold.getBody1();
 
 			int numContacts = contactManifold.getNumContacts();
 			for (int j = 0; j < numContacts; j++) {
-				ManifoldPoint contactPoint = contactManifold.getContactPoint(j);
+				final ManifoldPoint contactPoint = contactManifold.getContactPoint(j);
+				messageQueue.enqueue(new Message("physicsContactProcessed", new PropertiesMapBuilder() {
+					{
+						property("cp", contactPoint);
+						property("body0", body0);
+						property("body1", body1);
+					}
+				}.build()));
 			}
 		}
 	}

@@ -16,7 +16,6 @@ import org.slf4j.LoggerFactory;
 
 import com.gemserk.componentsengine.components.Component;
 import com.gemserk.componentsengine.components.annotations.EntityProperty;
-import com.gemserk.componentsengine.reflection.wrapper.ComponentPropertiesWrapperImpl;
 import com.google.inject.internal.Strings;
 
 public class PropertiesInternalFields {
