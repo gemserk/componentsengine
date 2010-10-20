@@ -5,20 +5,16 @@ import java.util.HashMap;
 import com.gemserk.componentsengine.components.ReflectionComponent;
 import com.gemserk.componentsengine.components.annotations.Handles;
 import com.gemserk.componentsengine.messages.Message;
-import com.gemserk.componentsengine.messages.MessageQueue;
 import com.gemserk.componentsengine.properties.Properties;
 import com.gemserk.componentsengine.properties.PropertyLocator;
 import com.gemserk.componentsengine.timers.Timer;
 import com.gemserk.componentsengine.triggers.Trigger;
-import com.google.inject.Inject;
 
 public class TimerComponent extends ReflectionComponent {
 
 	private PropertyLocator<Timer> timerProperty;
-	private PropertyLocator<Trigger> triggerProperty;
 	
-	@Inject 
-	MessageQueue messageQueue;
+	private PropertyLocator<Trigger> triggerProperty;
 
 	public TimerComponent(String id) {
 		super(id);

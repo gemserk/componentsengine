@@ -30,8 +30,8 @@ public class PhysicsRigidBodyEntityBuilder extends EntityBuilder {
 
 		tags("physics", "rigidBody");
 
-		property("collisionFilterGroup", parameters.get("collisionFilterGroup") != null ? parameters.get("collisionFilterGroup") : CollisionFilterGroups.DEFAULT_FILTER);
-		property("collisionFilterMask", parameters.get("collisionFilterMask") != null ? parameters.get("collisionFilterMask") : CollisionFilterGroups.ALL_FILTER);
+		property("collisionFilterGroup", parameters.get("collisionFilterGroup") != null ? parameters.get("collisionFilterGroup") : (int)CollisionFilterGroups.DEFAULT_FILTER);
+		property("collisionFilterMask", parameters.get("collisionFilterMask") != null ? parameters.get("collisionFilterMask") : (int)CollisionFilterGroups.ALL_FILTER);
 
 		final String prefix = (String) (parameters.get("prefix") != null ? parameters.get("prefix") : "physics");
 

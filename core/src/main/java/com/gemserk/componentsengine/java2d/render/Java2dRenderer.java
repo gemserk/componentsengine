@@ -70,8 +70,8 @@ public class Java2dRenderer implements Renderer {
 				float y = (float) (position.getY() + ((float) -height) / 2f);
 
 				tx.concatenate(AffineTransform.getTranslateInstance(x + width / 2, y + height / 2));
-				tx.concatenate(AffineTransform.getScaleInstance(size.getX(), size.getY()));
 				tx.concatenate(AffineTransform.getRotateInstance(theta));
+				tx.concatenate(AffineTransform.getScaleInstance(size.getX(), size.getY()));
 				tx.concatenate(AffineTransform.getTranslateInstance(-width / 2, -height / 2));
 
 				graphics.transform(tx);

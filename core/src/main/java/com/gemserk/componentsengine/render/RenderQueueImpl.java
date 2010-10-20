@@ -15,6 +15,8 @@ public class RenderQueueImpl implements RenderQueue {
 		}
 	}
 	
+	private static RenderObjectComparator renderObjectComparator = new RenderObjectComparator();
+	
 	List<Renderer> renderers = new ArrayList<Renderer>();
 
 	List<RenderObject> renderObjectsQueue = new ArrayList<RenderObject>();
@@ -28,19 +30,15 @@ public class RenderQueueImpl implements RenderQueue {
 	}
 
 	public void render() {
-		Collections.sort(renderObjectsQueue, new RenderObjectComparator());
-		for (RenderObject renderObject : renderObjectsQueue) {
+		Collections.sort(renderObjectsQueue, renderObjectComparator);
+		for (RenderObject renderObject : renderObjectsQueue) 
 			render(renderObject);
-		}
 		renderObjectsQueue.clear();
 	}
 
 	private void render(RenderObject renderObject) {
-		
-		for (Renderer renderer : renderers) {
+		for (Renderer renderer : renderers) 
 			renderer.render(renderObject);
-		}
-		
 	}
 
 }
