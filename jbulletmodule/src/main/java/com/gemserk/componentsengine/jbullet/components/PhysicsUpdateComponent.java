@@ -1,6 +1,6 @@
 package com.gemserk.componentsengine.jbullet.components;
 
-import com.bulletphysics.dynamics.DynamicsWorld;
+import com.bulletphysics.dynamics.DiscreteDynamicsWorld;
 import com.bulletphysics.dynamics.RigidBody;
 import com.gemserk.componentsengine.components.FieldsReflectionComponent;
 import com.gemserk.componentsengine.components.annotations.EntityProperty;
@@ -11,7 +11,7 @@ import com.gemserk.componentsengine.properties.Properties;
 public class PhysicsUpdateComponent extends FieldsReflectionComponent {
 
 	@EntityProperty
-	DynamicsWorld world;
+	DiscreteDynamicsWorld world;
 
 	public PhysicsUpdateComponent(String id) {
 		super(id);
@@ -29,7 +29,11 @@ public class PhysicsUpdateComponent extends FieldsReflectionComponent {
 	@Handles
 	public void addRigidBody(Message message) {
 		RigidBody rigidBody = Properties.getValue(message, "rigidBody");
-		world.addRigidBody(rigidBody);
+		
+		Short collisionFilterGroup = Properties.getValue(message, "collisionFilterGroup");
+		Short collisionFilterMask = Properties.getValue(message, "collisionFilterMask");
+		
+		world.addRigidBody(rigidBody, collisionFilterGroup, collisionFilterMask);
 	}
 	
 	@Handles

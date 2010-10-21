@@ -34,14 +34,14 @@ public class ComponentsEngineOverlapFilterCallback extends OverlapFilterCallback
 		if (entity1 == null)
 			return collides;
 
-		Integer filterMask0 = Properties.getValue(entity0, "collisionFilterMask");
-		Integer filterGroup0 = Properties.getValue(entity0, "collisionFilterGroup");
+		Short filterMask0 = Properties.getValue(entity0, "collisionFilterMask");
+		Short filterGroup0 = Properties.getValue(entity0, "collisionFilterGroup");
 
 		if (filterMask0 == null || filterGroup0 == null)
 			return collides;
 
-		Integer filterMask1 = Properties.getValue(entity1, "collisionFilterMask");
-		Integer filterGroup1 = Properties.getValue(entity1, "collisionFilterGroup");
+		Short filterMask1 = Properties.getValue(entity1, "collisionFilterMask");
+		Short filterGroup1 = Properties.getValue(entity1, "collisionFilterGroup");
 
 		if (filterMask1 == null || filterGroup1 == null)
 			return collides;

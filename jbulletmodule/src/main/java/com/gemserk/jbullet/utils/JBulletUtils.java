@@ -15,6 +15,10 @@ import com.bulletphysics.linearmath.Transform;
  */
 public class JBulletUtils {
 
+	private Transform transform = new Transform();
+	
+	private Vector3f vector3fAux = new Vector3f();
+	
 	public RigidBody rigidBody(CollisionShape collisionShape, float mass, float friction, float linearDamping, float angularDamping, float restitution) {
 		Transform transform = new Transform();
 		transform.setIdentity();
@@ -36,8 +40,21 @@ public class JBulletUtils {
 		return rigidBody;
 	}
 	
+	public RigidBody setPosition(RigidBody rigidBody, Vector3f position) {
+		rigidBody.getWorldTransform(transform);
+		transform.origin.set(position);
+		rigidBody.setWorldTransform(transform);
+		return rigidBody;
+	}
+	
 	public CollisionShape staticPlane(float a, float b, float c, float d) {
 		return new StaticPlaneShape(new Vector3f(a, b, c), d);
+	}
+
+	public Vector3f getPosition(RigidBody rigidBody) {
+		rigidBody.getWorldTransform(transform);
+		vector3fAux.set(transform.origin);
+		return vector3fAux;
 	}
 
 }

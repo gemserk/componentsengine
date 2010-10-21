@@ -30,8 +30,11 @@ public class PhysicsRigidBodyEntityBuilder extends EntityBuilder {
 
 		tags("physics", "rigidBody");
 
-		property("collisionFilterGroup", parameters.get("collisionFilterGroup") != null ? parameters.get("collisionFilterGroup") : (int)CollisionFilterGroups.DEFAULT_FILTER);
-		property("collisionFilterMask", parameters.get("collisionFilterMask") != null ? parameters.get("collisionFilterMask") : (int)CollisionFilterGroups.ALL_FILTER);
+		Short collisionFilterGroup = (Short) (parameters.get("collisionFilterGroup") != null ? parameters.get("collisionFilterGroup") : CollisionFilterGroups.DEFAULT_FILTER);
+		Short collisionFilterMask = (Short) (parameters.get("collisionFilterMask") != null ? parameters.get("collisionFilterMask") : CollisionFilterGroups.ALL_FILTER);
+		
+		property("collisionFilterGroup", collisionFilterGroup);
+		property("collisionFilterMask", collisionFilterMask);
 
 		final String prefix = (String) (parameters.get("prefix") != null ? parameters.get("prefix") : "physics");
 
@@ -64,24 +67,6 @@ public class PhysicsRigidBodyEntityBuilder extends EntityBuilder {
 				return new Vector2f(position.x, position.y);
 			}
 		}));
-		
-//		, new PropertySetter() {
-//
-//			@Override
-//			public void set(Entity entity, Object value) {
-//
-//				RigidBody rigidBody = Properties.getValue(entity, prefix + ".rigidBody");
-//				Vector2f position = (Vector2f) value;
-//
-//				System.out.println("setting position " + position + " on entity " + entity.getId());
-//
-//				Transform worldTransform = new Transform();
-//				rigidBody.getWorldTransform(worldTransform);
-//				worldTransform.origin.set(position.x, position.y, 0f);
-//				rigidBody.setWorldTransform(worldTransform);
-//
-//			}
-//		}));
 		
 		property(prefix + ".direction", new InnerProperty(entity, new PropertyGetter() {
 
@@ -120,7 +105,13 @@ public class PhysicsRigidBodyEntityBuilder extends EntityBuilder {
 
 			@EntityProperty(required = false)
 			private Boolean inited = false;
-
+			
+			@EntityProperty(readOnly = true)
+			Short collisionFilterGroup;
+			
+			@EntityProperty(readOnly = true)
+			Short collisionFilterMask;
+			
 			private MessageQueue messageQueue;
 
 			public void setRigidBody(RigidBody rigidBody) {
@@ -145,6 +136,8 @@ public class PhysicsRigidBodyEntityBuilder extends EntityBuilder {
 				messageQueue.enqueue(new Message("addRigidBody", new PropertiesMapBuilder() {
 					{
 						property("rigidBody", rigidBody);
+						property("collisionFilterGroup", collisionFilterGroup);
+						property("collisionFilterMask", collisionFilterMask);
 					}
 				}.build()));
 
