@@ -9,36 +9,55 @@ import org.newdawn.slick.geom.Vector2f;
  * Temporary class while there are no custom renderers registered on the Renderer.
  */
 public class SlickImageRenderObject extends SlickCallableRenderObject {
+
+	private Color color;
+
+	private float theta;
+
+	private float x;
+
+	private float y;
+
+	private float w;
+
+	private float h;
+
+	private Image image;
 	
-	private final Color color;
-	private final float theta;
-	private final Vector2f position;
-	private final Image image;
-	private final Vector2f size;
+	public SlickImageRenderObject() {
+		super(0);
+	}
 
 	public SlickImageRenderObject(int layer, Image image, Vector2f position, Vector2f size, float theta, Color color) {
+		this(layer, image, position.x, position.y, size.x, size.y, theta, color);
+	}
+
+	public SlickImageRenderObject(int layer, Image image, float x, float y, Vector2f size, float theta, Color color) {
+		this(layer, image, x, y, size.x, size.y, theta, color);
+	}
+
+	public SlickImageRenderObject(int layer, Image image, float x, float y, float w, float h, float theta, Color color) {
 		super(layer);
+		set(layer, image, x, y, w, h, theta, color);
+	}
+	
+	public void set(int layer, Image image, float x, float y, float w, float h, float theta, Color color) {
+		this.layer = layer;
 		this.color = color;
 		this.theta = theta;
-		this.position = position;
+		this.x = x;
+		this.y = y;
 		this.image = image;
-		this.size = size;
-	}
-	
-	public SlickImageRenderObject(int layer, Image image, float x, float y, Vector2f size, float theta, Color color) {
-		this(layer, image, new Vector2f(x, y), size, theta, color);
-	}
-	
-	public SlickImageRenderObject(int layer, Image image, float x, float y, float w, float h, float theta, Color color) {
-		this(layer, image, new Vector2f(x, y), new Vector2f(w, h), theta, color);
+		this.w = w;
+		this.h = h;
 	}
 
 	@Override
 	public void execute(Graphics g) {
 		g.pushTransform();
 		{
-			g.translate(position.x, position.y);
-			g.scale(size.x, size.y);
+			g.translate(x, y);
+			g.scale(w, h);
 			g.rotate(0, 0, theta);
 			g.drawImage(image, -(image.getWidth() / 2), -(image.getHeight() / 2), color);
 		}
