@@ -1,6 +1,5 @@
 package com.gemserk.componentsengine.reflection.wrapper;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
 import org.slf4j.Logger;
@@ -18,7 +17,7 @@ public class FastComponentPropertiesWrapper implements ComponentPropertiesWrappe
 	protected static final Logger logger = LoggerFactory.getLogger(FastComponentPropertiesWrapper.class);
 
 
-	Collection<PropertyWithField> propertiesWithField;
+	PropertyWithField[] propertiesWithField;
 
 	public static class PropertyWithField {
 		final String scopedId;
@@ -34,12 +33,14 @@ public class FastComponentPropertiesWrapper implements ComponentPropertiesWrappe
 	}
 
 	public FastComponentPropertiesWrapper(String componentId, Collection<InternalField> internalFields) {
-		propertiesWithField = new ArrayList<FastComponentPropertiesWrapper.PropertyWithField>(internalFields.size());
+		propertiesWithField = new PropertyWithField[internalFields.size()];
+		int index = 0;
 		for (InternalField internalField : internalFields) {
 			String fieldName = internalField.getFieldName();
 			String propertyName = componentId + "." + fieldName;
 
-			propertiesWithField.add(new PropertyWithField(propertyName.intern(), fieldName.intern(), internalField));
+			propertiesWithField[index] = new PropertyWithField(propertyName.intern(), fieldName.intern(), internalField);
+			index++;
 		}
 	}
 

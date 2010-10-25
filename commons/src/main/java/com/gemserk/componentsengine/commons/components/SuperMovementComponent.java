@@ -18,6 +18,8 @@ public class SuperMovementComponent extends ReflectionComponent {
 	private PropertyLocator<Float> maxVelocityProperty;
 	private PropertyLocator<Vector2f> forceProperty;
 	private PropertyLocator<Float> frictionFactorProperty;
+	private PropertyLocator<Integer> deltaProperty;
+	
 
 	public SuperMovementComponent(String id) {
 		super(id);
@@ -30,11 +32,13 @@ public class SuperMovementComponent extends ReflectionComponent {
 		forceProperty = Properties.property(id, "force");
 
 		frictionFactorProperty = Properties.property(id, "frictionFactor");
+		
+		deltaProperty = Properties.property("delta");
 	}
 
 	@Handles
 	public void update(Message message) {
-		int delta = (Integer) Properties.getValue(message, "delta");
+		int delta = deltaProperty.getValue(message);
 		Vector2f position = this.positionProperty.getValue(entity);
 		Vector2f velocity = this.velocityProperty.getValue(entity);
 		Vector2f force = this.forceProperty.getValue(entity);
