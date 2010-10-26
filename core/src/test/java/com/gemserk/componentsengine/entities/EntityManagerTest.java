@@ -5,11 +5,7 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.CoreMatchers.sameInstance;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assert.fail;
 
-import java.util.List;
-
-import org.hamcrest.collection.IsCollectionContaining;
 import org.hamcrest.collection.IsMapContaining;
 import org.jmock.Expectations;
 import org.jmock.Mockery;

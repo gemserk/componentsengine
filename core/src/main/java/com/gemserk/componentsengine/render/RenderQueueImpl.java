@@ -31,14 +31,16 @@ public class RenderQueueImpl implements RenderQueue {
 
 	public void render() {
 		Collections.sort(renderObjectsQueue, renderObjectComparator);
-		for (RenderObject renderObject : renderObjectsQueue) 
-			render(renderObject);
+		for (int i = 0; i < renderObjectsQueue.size(); i++) {
+			render(renderObjectsQueue.get(i));
+		}
 		renderObjectsQueue.clear();
 	}
 
 	private void render(RenderObject renderObject) {
-		for (Renderer renderer : renderers) 
-			renderer.render(renderObject);
+		for (int i = 0; i < renderers.size(); i++) {
+			renderers.get(i).render(renderObject);
+		}
 	}
 
 }
