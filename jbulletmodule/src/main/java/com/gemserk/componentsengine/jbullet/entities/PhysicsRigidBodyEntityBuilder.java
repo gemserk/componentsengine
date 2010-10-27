@@ -45,6 +45,8 @@ public class PhysicsRigidBodyEntityBuilder extends EntityBuilder {
 		rigidBody.getWorldTransform(worldTransform);
 		worldTransform.origin.set(position.x, position.y, 0f);
 		rigidBody.setWorldTransform(worldTransform);
+		
+		rigidBody.getMotionState().setWorldTransform(worldTransform);
 
 		// we add the pointer to the entity, so we can access it from the collision object (the rigid body)
 		rigidBody.setUserPointer(entity);
