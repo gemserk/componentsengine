@@ -94,15 +94,12 @@ public class CopyOnWriteMessageDispatcher implements MessageDispatcher, MessageQ
 		public void put(K key, V value) {
 			Collection<V> innerCollection = getInnerCollection(key);
 			innerCollection.add(value);
-			
-			logger.debug("Adding key: {} - value: {}",key,value);
 		}
 
 
 		public void remove(K key, V value) {
 			Collection<V> innerCollection = getInnerCollection(key);
 			innerCollection.remove(value);
-			logger.debug("Removing key: {} - value: {}",key,value);
 		}
 		
 		public Collection<V> get(K key) {
