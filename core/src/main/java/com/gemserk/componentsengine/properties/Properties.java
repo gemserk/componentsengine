@@ -10,7 +10,6 @@ public class Properties {
 		return new PropertyLocator<T>(prefix + "." + key);
 	}
 
-	@SuppressWarnings("unchecked")
 	public static <T> T getValue(PropertiesHolder propertiesHolder, String key) {
 		return Properties.<T>property(key).getValue(propertiesHolder);
 	}

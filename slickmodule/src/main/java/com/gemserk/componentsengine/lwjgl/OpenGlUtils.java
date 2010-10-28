@@ -3,6 +3,7 @@ package com.gemserk.componentsengine.lwjgl;
 import static org.lwjgl.opengl.GL11.*;
 
 import org.newdawn.slick.Color;
+import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.geom.Vector2f;
 
 public class OpenGlUtils {
@@ -83,6 +84,27 @@ public class OpenGlUtils {
 
 	public static void glVertex(Vector2f v) {
 		glVertex3f(v.x, v.y, 0);
+	}
+
+	private static final Vector2f tmpStart = new Vector2f();
+	private static final Vector2f tmpEnd = new Vector2f();
+
+	public static void renderSlickShapeBorders(Shape shape, float width, Color color) {
+		
+		int pointCount = shape.getPointCount();
+		
+		for (int i = 0; i < pointCount; i++) {
+			
+			float[] p0 = shape.getPoint(i);
+			float[] p1 = i + 1 < pointCount ? shape.getPoint(i+1) : shape.getPoint(0);
+			
+			tmpStart.set(p0[0], p0[1]);
+			tmpEnd.set(p1[0], p1[1]);
+			
+			OpenGlUtils.renderLine(tmpStart, tmpEnd, width, color);
+			
+		}
+		
 	}
 
 }
