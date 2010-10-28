@@ -71,13 +71,15 @@ public abstract class ReflectionComponent extends Component {
 		return cachedMethods;
 	}
 
+	Object[] param = new Object[1];//avoids the creation of the array to pass parameters
 	@Override
 	public void handleMessage(Message message) {
 		try {
 			Method method = methods.get(message.getId());
 			if (method != null) {
 				preHandleMessage(message);
-				method.invoke(this, message);
+				param[0]=message;
+				method.invoke(this, param);
 				postHandleMessage(message);
 			}
 		} catch (Exception e) {

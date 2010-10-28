@@ -8,6 +8,7 @@ import com.gemserk.componentsengine.entities.EntityManager;
 import com.gemserk.componentsengine.entities.Root;
 import com.gemserk.componentsengine.game.GameLoop;
 import com.gemserk.componentsengine.game.GameLoopImpl;
+import com.gemserk.componentsengine.messages.CopyOnWriteMessageDispatcher;
 import com.gemserk.componentsengine.messages.MessageDispatcher;
 import com.gemserk.componentsengine.messages.MessageDispatcherImpl;
 import com.gemserk.componentsengine.messages.MessageQueue;
@@ -32,9 +33,9 @@ public class BasicModule extends AbstractModule {
 		bind(RenderQueueImpl.class).in(Singleton.class);
 		bind(RenderQueue.class).to(RenderQueueImpl.class);
 
-		bind(MessageDispatcherImpl.class).in(Singleton.class);
-		bind(MessageDispatcher.class).to(MessageDispatcherImpl.class);
-		bind(MessageQueue.class).to(MessageDispatcherImpl.class).in(Singleton.class);
+		bind(CopyOnWriteMessageDispatcher.class).in(Singleton.class);
+		bind(MessageDispatcher.class).to(CopyOnWriteMessageDispatcher.class);
+		bind(MessageQueue.class).to(CopyOnWriteMessageDispatcher.class).in(Singleton.class);
 		bind(GameLoop.class).to(GameLoopImpl.class).in(Singleton.class);
 		bind(EntityManager.class).in(Singleton.class);
 

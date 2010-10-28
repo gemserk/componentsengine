@@ -34,4 +34,12 @@ public class Component implements MessageHandler {
 	public Set<String> getMessageIds(){
 		return null;
 	}
+	
+	@Override
+	public String toString() {
+		if(entity!=null)
+			return String.format("Component: id - %s  : entityId: %s", id,entity.getId());
+		else
+			return String.format("Component: id - %s", id);
+	}
 }
