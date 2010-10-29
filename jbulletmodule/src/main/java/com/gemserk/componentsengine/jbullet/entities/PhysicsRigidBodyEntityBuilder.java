@@ -1,8 +1,5 @@
 package com.gemserk.componentsengine.jbullet.entities;
 
-import javax.vecmath.Matrix3f;
-import javax.vecmath.Matrix4f;
-import javax.vecmath.Tuple3f;
 import javax.vecmath.Vector2f;
 import javax.vecmath.Vector3f;
 
@@ -21,11 +18,12 @@ import com.gemserk.componentsengine.properties.PropertiesMapBuilder;
 import com.gemserk.componentsengine.properties.PropertyGetter;
 import com.gemserk.componentsengine.properties.PropertySetter;
 import com.gemserk.componentsengine.templates.EntityBuilder;
+import com.gemserk.jbullet.utils.JBulletUtils;
 import com.gemserk.vecmath.utils.VecmathUtils;
 import com.google.inject.Inject;
 
 public class PhysicsRigidBodyEntityBuilder extends EntityBuilder {
-	
+
 	@Override
 	public void build() {
 
@@ -55,93 +53,47 @@ public class PhysicsRigidBodyEntityBuilder extends EntityBuilder {
 		property(prefix + ".rigidBody", rigidBody);
 		property(prefix + ".position", new InnerProperty(entity, new PropertyGetter() {
 
-			private final Transform worldTransform = new Transform();
-			
+			private final Vector2f position = new Vector2f();
+
 			@Override
 			public Object get(Entity entity) {
 				RigidBody rigidBody = Properties.getValue(entity, prefix + ".rigidBody");
-
-
-				if (!rigidBody.isStaticObject())
-					rigidBody.getMotionState().getWorldTransform(worldTransform);
-				else
-					rigidBody.getWorldTransform(worldTransform);
-				Tuple3f position = worldTransform.origin;
-
-				return new Vector2f(position.x, position.y);
+				Vector3f position3f = JBulletUtils.getPosition(rigidBody);
+				position.set(position3f.x, position3f.y);
+				return position;
 			}
 		}, new PropertySetter() {
-			
-			private final Transform worldTransform = new Transform();
-			
+
 			@Override
 			public void set(Entity entity, Object value) {
-				
 				Vector2f position = (Vector2f) value;
-
 				RigidBody rigidBody = Properties.getValue(entity, prefix + ".rigidBody");
-
-				rigidBody.getWorldTransform(worldTransform);
-				worldTransform.origin.set(position.x, position.y, 0);
-				rigidBody.setWorldTransform(worldTransform);
-
-				if (!rigidBody.isStaticObject()) {
-					rigidBody.getMotionState().getWorldTransform(worldTransform);
-					worldTransform.origin.set(position.x, position.y, 0);
-					rigidBody.getMotionState().setWorldTransform(worldTransform);
-				}
-				
+				JBulletUtils.setPosition(rigidBody, position);
 			}
 		}));
 
 		property(prefix + ".direction", new InnerProperty(entity, new PropertyGetter() {
-
-			private final Transform worldTransform = new Transform();
-
-			private final Matrix4f matrix = new Matrix4f();
-
-			private final Matrix3f rotationMatrix = new Matrix3f();
-
-			private final Vector3f directionTmp = new Vector3f();
 
 			private final Vector2f direction = new Vector2f();
 
 			@Override
 			public Object get(Entity entity) {
 				RigidBody rigidBody = Properties.getValue(entity, prefix + ".rigidBody");
-				rigidBody.getMotionState().getWorldTransform(worldTransform);
-				worldTransform.getMatrix(matrix);
-				matrix.getRotationScale(rotationMatrix);
-				directionTmp.set(1, 0, 0);
-				rotationMatrix.transform(directionTmp);
-				direction.set(directionTmp.x, directionTmp.y);
-
+				Vector3f direction3f = JBulletUtils.getDirection(rigidBody);
+				direction.set(direction3f.x, direction3f.y);
 				return direction;
 			}
 		}, new PropertySetter() {
 
-			private final Transform worldTransform = new Transform();
-
 			@Override
 			public void set(Entity entity, Object value) {
-
 				Vector2f direction = (Vector2f) value;
-
 				RigidBody rigidBody = Properties.getValue(entity, prefix + ".rigidBody");
-
-				rigidBody.getWorldTransform(worldTransform);
-				worldTransform.basis.rotZ(VecmathUtils.getThetaInRadians(direction));
-				rigidBody.setWorldTransform(worldTransform);
-
-				if (!rigidBody.isStaticObject()) {
-					rigidBody.getMotionState().getWorldTransform(worldTransform);
-					worldTransform.basis.rotZ(VecmathUtils.getThetaInRadians(direction));
-					rigidBody.getMotionState().setWorldTransform(worldTransform);
-				}
+				JBulletUtils.setDirection(rigidBody, VecmathUtils.getThetaInRadians(direction));
 			}
 
 		}));
-		
+
 		property(prefix + ".angle", new InnerProperty(entity, new PropertyGetter() {
 
 			@Override
@@ -149,7 +101,15 @@ public class PhysicsRigidBodyEntityBuilder extends EntityBuilder {
 				Vector2f direction = Properties.getValue(entity, prefix + ".direction");
 				return VecmathUtils.getThetaInRadians(direction);
 			}
-			
+
+		}, new PropertySetter() {
+
+			@Override
+			public void set(Entity entity, Object value) {
+				Float angle = (Float) value;
+				RigidBody rigidBody = Properties.getValue(entity, prefix + ".rigidBody");
+				JBulletUtils.setDirection(rigidBody, angle);
+			}
 		}));
 
 		component(new FieldsReflectionComponent("registerBodyComponent") {
