@@ -19,12 +19,13 @@ import com.gemserk.componentsengine.properties.InnerProperty;
 import com.gemserk.componentsengine.properties.Properties;
 import com.gemserk.componentsengine.properties.PropertiesMapBuilder;
 import com.gemserk.componentsengine.properties.PropertyGetter;
+import com.gemserk.componentsengine.properties.PropertySetter;
 import com.gemserk.componentsengine.templates.EntityBuilder;
 import com.gemserk.vecmath.utils.VecmathUtils;
 import com.google.inject.Inject;
 
 public class PhysicsRigidBodyEntityBuilder extends EntityBuilder {
-
+	
 	@Override
 	public void build() {
 
@@ -32,7 +33,7 @@ public class PhysicsRigidBodyEntityBuilder extends EntityBuilder {
 
 		Short collisionFilterGroup = (Short) (parameters.get("collisionFilterGroup") != null ? parameters.get("collisionFilterGroup") : CollisionFilterGroups.DEFAULT_FILTER);
 		Short collisionFilterMask = (Short) (parameters.get("collisionFilterMask") != null ? parameters.get("collisionFilterMask") : CollisionFilterGroups.ALL_FILTER);
-		
+
 		property("collisionFilterGroup", collisionFilterGroup);
 		property("collisionFilterMask", collisionFilterMask);
 
@@ -45,7 +46,7 @@ public class PhysicsRigidBodyEntityBuilder extends EntityBuilder {
 		rigidBody.getWorldTransform(worldTransform);
 		worldTransform.origin.set(position.x, position.y, 0f);
 		rigidBody.setWorldTransform(worldTransform);
-		
+
 		rigidBody.getMotionState().setWorldTransform(worldTransform);
 
 		// we add the pointer to the entity, so we can access it from the collision object (the rigid body)
@@ -54,12 +55,13 @@ public class PhysicsRigidBodyEntityBuilder extends EntityBuilder {
 		property(prefix + ".rigidBody", rigidBody);
 		property(prefix + ".position", new InnerProperty(entity, new PropertyGetter() {
 
+			private final Transform worldTransform = new Transform();
+			
 			@Override
 			public Object get(Entity entity) {
 				RigidBody rigidBody = Properties.getValue(entity, prefix + ".rigidBody");
 
-				Transform worldTransform = new Transform();
-				
+
 				if (!rigidBody.isStaticObject())
 					rigidBody.getMotionState().getWorldTransform(worldTransform);
 				else
@@ -68,29 +70,78 @@ public class PhysicsRigidBodyEntityBuilder extends EntityBuilder {
 
 				return new Vector2f(position.x, position.y);
 			}
+		}, new PropertySetter() {
+			
+			private final Transform worldTransform = new Transform();
+			
+			@Override
+			public void set(Entity entity, Object value) {
+				
+				Vector2f position = (Vector2f) value;
+
+				RigidBody rigidBody = Properties.getValue(entity, prefix + ".rigidBody");
+
+				rigidBody.getWorldTransform(worldTransform);
+				worldTransform.origin.set(position.x, position.y, 0);
+				rigidBody.setWorldTransform(worldTransform);
+
+				if (!rigidBody.isStaticObject()) {
+					rigidBody.getMotionState().getWorldTransform(worldTransform);
+					worldTransform.origin.set(position.x, position.y, 0);
+					rigidBody.getMotionState().setWorldTransform(worldTransform);
+				}
+				
+			}
 		}));
-		
+
 		property(prefix + ".direction", new InnerProperty(entity, new PropertyGetter() {
+
+			private final Transform worldTransform = new Transform();
+
+			private final Matrix4f matrix = new Matrix4f();
+
+			private final Matrix3f rotationMatrix = new Matrix3f();
+
+			private final Vector3f directionTmp = new Vector3f();
+
+			private final Vector2f direction = new Vector2f();
 
 			@Override
 			public Object get(Entity entity) {
 				RigidBody rigidBody = Properties.getValue(entity, prefix + ".rigidBody");
-
-				Transform worldTransform = new Transform();
 				rigidBody.getMotionState().getWorldTransform(worldTransform);
-
-				Matrix4f matrix = new Matrix4f();
 				worldTransform.getMatrix(matrix);
-
-				Matrix3f rotationMatrix = new Matrix3f();
 				matrix.getRotationScale(rotationMatrix);
+				directionTmp.set(1, 0, 0);
+				rotationMatrix.transform(directionTmp);
+				direction.set(directionTmp.x, directionTmp.y);
 
-				Vector3f direction = new Vector3f(1, 0, 0);
-				rotationMatrix.transform(direction);
-
-				return new Vector2f(direction.x, direction.y);
+				return direction;
 			}
+		}, new PropertySetter() {
+
+			private final Transform worldTransform = new Transform();
+
+			@Override
+			public void set(Entity entity, Object value) {
+
+				Vector2f direction = (Vector2f) value;
+
+				RigidBody rigidBody = Properties.getValue(entity, prefix + ".rigidBody");
+
+				rigidBody.getWorldTransform(worldTransform);
+				worldTransform.basis.rotZ(VecmathUtils.getThetaInRadians(direction));
+				rigidBody.setWorldTransform(worldTransform);
+
+				if (!rigidBody.isStaticObject()) {
+					rigidBody.getMotionState().getWorldTransform(worldTransform);
+					worldTransform.basis.rotZ(VecmathUtils.getThetaInRadians(direction));
+					rigidBody.getMotionState().setWorldTransform(worldTransform);
+				}
+			}
+
 		}));
+		
 		property(prefix + ".angle", new InnerProperty(entity, new PropertyGetter() {
 
 			@Override
@@ -98,6 +149,7 @@ public class PhysicsRigidBodyEntityBuilder extends EntityBuilder {
 				Vector2f direction = Properties.getValue(entity, prefix + ".direction");
 				return VecmathUtils.getThetaInRadians(direction);
 			}
+			
 		}));
 
 		component(new FieldsReflectionComponent("registerBodyComponent") {
@@ -107,13 +159,13 @@ public class PhysicsRigidBodyEntityBuilder extends EntityBuilder {
 
 			@EntityProperty(required = false)
 			private Boolean inited = false;
-			
+
 			@EntityProperty(readOnly = true)
 			Short collisionFilterGroup;
-			
+
 			@EntityProperty(readOnly = true)
 			Short collisionFilterMask;
-			
+
 			private MessageQueue messageQueue;
 
 			public void setRigidBody(RigidBody rigidBody) {
@@ -144,37 +196,6 @@ public class PhysicsRigidBodyEntityBuilder extends EntityBuilder {
 				}.build()));
 
 				inited = true;
-			}
-
-		}).withProperties(new ComponentProperties() {
-			{
-				propertyRef("rigidBody", prefix + ".rigidBody");
-			}
-		});
-		
-		component(new FieldsReflectionComponent("spatialComponent") {
-
-			@EntityProperty(readOnly = true)
-			private RigidBody rigidBody;
-
-			public void setRigidBody(RigidBody rigidBody) {
-				this.rigidBody = rigidBody;
-			}
-
-			@Handles
-			public void translate(Message message) {
-				
-				Entity targetEntity = Properties.getValue(message, "entity");
-				if (entity != targetEntity)
-					return;
-				
-				Vector3f position = Properties.getValue(message, "position");
-				
-				Transform worldTransform = new Transform();
-				rigidBody.getWorldTransform(worldTransform);
-				worldTransform.origin.set(position);
-				rigidBody.setWorldTransform(worldTransform);
-				
 			}
 
 		}).withProperties(new ComponentProperties() {
