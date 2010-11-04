@@ -134,6 +134,10 @@ public abstract class EntityBuilder {
 			});
 
 		}
+		
+		public void propertyRef(final String key) {
+			propertyRef(key, key);
+		}
 
 		private void execute(Entity entity, String componentId) {
 			for (ExecutableWithEntityAndId command : commands) {
