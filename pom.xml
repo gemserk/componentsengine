@@ -49,6 +49,7 @@
 		<module>groovymodule</module>
 		<module>paulsoundsystemmodule</module>
 		<module>jbulletmodule</module>
+		<module>androidmodule</module>
 	</modules>
 
 	<build>
