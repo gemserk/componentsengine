@@ -11,6 +11,7 @@ import com.gemserk.componentsengine.components.Component;
 import com.gemserk.componentsengine.entities.Entity;
 import com.gemserk.componentsengine.groovy.input.GroovyInputMappingBuilder;
 import com.gemserk.componentsengine.groovy.properties.ClosureProperty;
+import com.gemserk.componentsengine.properties.Property;
 import com.gemserk.componentsengine.properties.ReferenceProperty;
 import com.gemserk.componentsengine.properties.SimpleProperty;
 import com.gemserk.componentsengine.templates.EntityTemplate;
@@ -40,6 +41,10 @@ public class GroovyEntityBuilder {
 			this.builder = builder;
 		}
 
+		public void property(String key, Property<Object> property) {
+			entity.addProperty(key, property);
+		}
+
 		public void property(String key, Object value) {
 			entity.addProperty(key, new SimpleProperty<Object>(value));
 		}
@@ -51,8 +56,7 @@ public class GroovyEntityBuilder {
 		public void property(String key, Closure closure) {
 			entity.addProperty(key, new ClosureProperty(entity, closure));
 		}
-
-
+		
 		public void component(Component component) {
 			injector.injectMembers(component);
 			entity.addComponent(component);
@@ -62,20 +66,29 @@ public class GroovyEntityBuilder {
 			component(component);
 
 			closure.setDelegate(new Object() {
+				
+				String getId(String key) {
+					return component.getId() + "." + key;
+				}
 
 				@SuppressWarnings("unused")
+				public void property(String key, Property<Object> property) {
+					BuilderContext.this.property(getId(key), property);
+				}
+				
+				@SuppressWarnings("unused")
 				public void property(String key, Object value) {
-					BuilderContext.this.property(component.getId() + "." + key, value);
+					BuilderContext.this.property(getId(key), value);
 				}
 
 				@SuppressWarnings("unused")
 				public void propertyRef(String key, String referencedPropertyName) {
-					BuilderContext.this.propertyRef(component.getId() + "." + key, referencedPropertyName);
+					BuilderContext.this.propertyRef(getId(key), referencedPropertyName);
 				}
 
 				@SuppressWarnings("unused")
 				public void property(String key, Closure closure) {
-					BuilderContext.this.property(component.getId() + "." + key, closure);
+					BuilderContext.this.property(getId(key), closure);
 				}
 
 			});
