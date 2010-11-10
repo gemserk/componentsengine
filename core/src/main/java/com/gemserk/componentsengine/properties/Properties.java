@@ -10,12 +10,20 @@ public class Properties {
 		return new PropertyLocator<T>(prefix + "." + key);
 	}
 
+	@SuppressWarnings("unchecked")
 	public static <T> T getValue(PropertiesHolder propertiesHolder, String key) {
-		return Properties.<T>property(key).getValue(propertiesHolder);
+		Property<T> property = (Property<T>) propertiesHolder.getProperty(key);
+		return property != null ? property.get() : null;
 	}
 
+	@SuppressWarnings("unchecked")
 	public static void setValue(PropertiesHolder propertiesHolder, String key, Object value) {
-		property(key).setValue(propertiesHolder, value);
+		Property property = propertiesHolder.getProperty(key);
+		if (property == null) {
+			property = new SimpleProperty<Object>(value);
+			propertiesHolder.addProperty(key, property);
+		}
+		property.set(value);
 	}
 
 }
