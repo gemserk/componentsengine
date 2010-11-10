@@ -4,6 +4,8 @@ public class ReferenceProperty<T extends Object> implements Property<T> {
 
 	String referencedPropertyName;
 	PropertiesHolder holder;
+	Property<T> cachedProperty;
+	
 	
 	public ReferenceProperty(String referencedPropertyName, PropertiesHolder holder) {
 		this.referencedPropertyName = referencedPropertyName;
@@ -13,12 +15,19 @@ public class ReferenceProperty<T extends Object> implements Property<T> {
 	@SuppressWarnings("unchecked")
 	@Override
 	public T get() {
-		return (T) holder.getProperty(referencedPropertyName).get();
+		return (T) getProperty().get();
+	}
+
+	private Property<T> getProperty() {
+		if(cachedProperty==null){
+			cachedProperty = (Property<T>) holder.getProperty(referencedPropertyName);
+		}
+		return cachedProperty;
 	}
 
 	@Override
 	public void set(T value) {
-		holder.getProperty(referencedPropertyName).set(value);
+		getProperty().set(value);
 	}
 
 	@Override
