@@ -7,10 +7,9 @@ import com.gemserk.componentsengine.entities.Entity;
 import com.gemserk.componentsengine.entities.EntityManager;
 import com.gemserk.componentsengine.entities.Root;
 import com.gemserk.componentsengine.game.GameLoop;
-import com.gemserk.componentsengine.game.GameLoopImpl;
+import com.gemserk.componentsengine.game.MessageReusingGameLoop;
 import com.gemserk.componentsengine.messages.CopyOnWriteMessageDispatcher;
 import com.gemserk.componentsengine.messages.MessageDispatcher;
-import com.gemserk.componentsengine.messages.MessageDispatcherImpl;
 import com.gemserk.componentsengine.messages.MessageQueue;
 import com.gemserk.componentsengine.render.RenderQueue;
 import com.gemserk.componentsengine.render.RenderQueueImpl;
@@ -36,7 +35,7 @@ public class BasicModule extends AbstractModule {
 		bind(CopyOnWriteMessageDispatcher.class).in(Singleton.class);
 		bind(MessageDispatcher.class).to(CopyOnWriteMessageDispatcher.class);
 		bind(MessageQueue.class).to(CopyOnWriteMessageDispatcher.class).in(Singleton.class);
-		bind(GameLoop.class).to(GameLoopImpl.class).in(Singleton.class);
+		bind(GameLoop.class).to(MessageReusingGameLoop.class).in(Singleton.class);
 		bind(EntityManager.class).in(Singleton.class);
 
 		Entity rootEntity = new Entity("root");

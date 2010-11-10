@@ -1,6 +1,5 @@
-package com.gemserk.componentsengine.android;
+package com.gemserk.componentsengine.game;
 
-import com.gemserk.componentsengine.game.GameLoop;
 import com.gemserk.componentsengine.input.MonitorUpdater;
 import com.gemserk.componentsengine.messages.Message;
 import com.gemserk.componentsengine.messages.MessageQueue;
