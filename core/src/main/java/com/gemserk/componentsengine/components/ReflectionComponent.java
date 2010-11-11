@@ -19,12 +19,11 @@ import com.google.inject.internal.Maps;
 public abstract class ReflectionComponent extends Component {
 
 	protected static final Logger logger = LoggerFactory.getLogger(ReflectionComponent.class);
+	
 	static final Map<Class, Map<String, Method>> cache = new HashMap<Class, Map<String, Method>>();
 
-	
-	private final Map<String,Method> methods;
-	
-	
+	private final Map<String, Method> methods;
+
 	public ReflectionComponent(String id) {
 		super(id);
 		methods = getMethods(getClass());
@@ -32,11 +31,11 @@ public abstract class ReflectionComponent extends Component {
 
 	private static Map<String, Method> getMethods(Class<? extends ReflectionComponent> clazz) {
 		Map<String, Method> cachedMethods = cache.get(clazz);
-		if(cachedMethods==null){
+		if (cachedMethods == null) {
 			cachedMethods = buildCachedMethods(clazz);
 			cache.put(clazz, cachedMethods);
 		}
-		
+
 		return cachedMethods;
 	}
 
@@ -51,34 +50,33 @@ public abstract class ReflectionComponent extends Component {
 				continue;
 
 			Class[] methodParametersTypes = method.getParameterTypes();
-			if(methodParametersTypes.length != 1 || !(methodParametersTypes[0].equals(Message.class)))
-				throw new RuntimeException("Error in component configuration (wrong parameters: "+Arrays.asList(methodParametersTypes)+")");
+			if (methodParametersTypes.length != 1 || !(methodParametersTypes[0].equals(Message.class)))
+				throw new RuntimeException("Error in component configuration (wrong parameters: " + Arrays.asList(methodParametersTypes) + ")");
 
-			
 			method.setAccessible(true);
 			List<String> messageIds = Arrays.asList(annotation.ids());
-			
-			
+
 			List<String> finalMessageIds = messageIds.isEmpty() ? Arrays.asList(method.getName()) : messageIds;
-			
+
 			for (String messageId : finalMessageIds) {
-				if(cachedMethods.containsKey(messageId))
+				if (cachedMethods.containsKey(messageId))
 					throw new RuntimeException("Error in component configuration, multiple methods handle same  message.id:" + messageId);
 				cachedMethods.put(messageId, method);
 			}
 		}
-		
+
 		return cachedMethods;
 	}
 
-	Object[] param = new Object[1];//avoids the creation of the array to pass parameters
+	Object[] param = new Object[1];// avoids the creation of the array to pass parameters
+
 	@Override
 	public void handleMessage(Message message) {
 		try {
 			Method method = methods.get(message.getId());
 			if (method != null) {
 				preHandleMessage(message);
-				param[0]=message;
+				param[0] = message;
 				method.invoke(this, param);
 				postHandleMessage(message);
 			}
@@ -95,62 +93,10 @@ public abstract class ReflectionComponent extends Component {
 	protected void preHandleMessage(Message message) {
 
 	}
-	
+
 	@Override
 	public Set<String> getMessageIds() {
 		return methods.keySet();
 	}
-	
-	
-
-//	Method getMethod(Message message) {
-//		Map<String, Method> cachedMethods = cache.get(this.getClass());
-//		if (cachedMethods == null) {
-//			cachedMethods = new HashMap<String, Method>();
-//			cache.put(getClass(), cachedMethods);
-//		}
-//		Method cachedMethod = cachedMethods.get(message.getId());
-//		if (cachedMethod != null) {
-//			return cachedMethod;
-//		} else {
-//			Method[] methods = this.getClass().getMethods();
-//			List<Method> selectedMethods = new ArrayList<Method>();
-//
-//			for (Method method : methods) {
-//				Handles annotation = method.getAnnotation(Handles.class);
-//				if (annotation == null)
-//					continue;
-//
-//				List<String> messageIds = Arrays.asList(annotation.ids());
-//				if (messageIds.isEmpty()) {
-//					if (method.getName().equals(message.getId()))
-//						selectedMethods.add(method);
-//				} else {
-//					if (messageIds.contains(message.getId())) {
-//						selectedMethods.add(method);
-//					}
-//				}
-//			}
-//			
-//			if(selectedMethods.size() > 1)
-//				throw new RuntimeException("Error in component configuration message.id:" + message.getId() + " entity.id:" + entity.getId() + " component.id:" + this.getId() );
-//
-//		
-//			
-//			if(selectedMethods.isEmpty())
-//				return null;
-//			
-//			cachedMethod = selectedMethods.get(0);
-//			
-//			Class[] methodParametersTypes = cachedMethod.getParameterTypes();
-//			if(methodParametersTypes.length != 1 || !(methodParametersTypes[0].equals(Message.class)))
-//				throw new RuntimeException("Error in component configuration (wrong parameters: "+Arrays.asList(methodParametersTypes)+") message.id:" + message.getId() + " entity.id:" + entity.getId() + " component.id:" + this.getId() );
-//
-//			
-//			
-//			cachedMethods.put(message.getId(), cachedMethod);
-//			return cachedMethod;
-//		}
-//	}
 
 }

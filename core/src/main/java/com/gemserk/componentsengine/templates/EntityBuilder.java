@@ -43,6 +43,10 @@ public abstract class EntityBuilder {
 	public void property(String key, Property property) {
 		entity.addProperty(key, property);
 	}
+	
+	public void child(Entity child) {
+		entity.addEntity(child);
+	}
 
 	public ComponentPropertiesReceiver component(Component component) {
 		injector.injectMembers(component);
