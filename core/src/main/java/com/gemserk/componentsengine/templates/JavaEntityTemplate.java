@@ -15,6 +15,8 @@ public class JavaEntityTemplate extends EntityTemplateAdapter {
 
 	@Override
 	public Entity instantiate(String entityName, Map<String, Object> parameters) {
+		if (entityName == null || "".equals(entityName))
+			entityName = entityBuilder.getId();
 		return apply(new Entity(entityName), parameters);
 	}
 
@@ -27,14 +29,14 @@ public class JavaEntityTemplate extends EntityTemplateAdapter {
 
 		return entity;
 	}
-	
+
 	Injector injector;
-	
-	@Inject 
+
+	@Inject
 	public void setInjector(Injector injector) {
 		this.injector = injector;
 	}
-	
+
 	public JavaEntityTemplate with(EntityBuilder entityBuilder) {
 		injector.injectMembers(entityBuilder);
 		this.entityBuilder = entityBuilder;

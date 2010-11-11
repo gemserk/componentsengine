@@ -30,6 +30,10 @@ public abstract class EntityBuilder {
 			entity.getTags().add(tag);
 		}
 	}
+	
+	public String getId() {
+		return "";
+	}
 
 	public void property(String key, Object value) {
 		entity.addProperty(key, new SimpleProperty<Object>(value));
