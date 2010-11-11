@@ -42,7 +42,10 @@ public class GroovyEntityBuilder {
 		}
 
 		public void property(String key, Property<Object> property) {
-			entity.addProperty(key, property);
+			if (property != null)
+				entity.addProperty(key, property);
+			else
+				property(key, (Object) null);
 		}
 
 		public void property(String key, Object value) {
@@ -56,7 +59,7 @@ public class GroovyEntityBuilder {
 		public void property(String key, Closure closure) {
 			entity.addProperty(key, new ClosureProperty(entity, closure));
 		}
-		
+
 		public void component(Component component) {
 			injector.injectMembers(component);
 			entity.addComponent(component);
@@ -66,7 +69,7 @@ public class GroovyEntityBuilder {
 			component(component);
 
 			closure.setDelegate(new Object() {
-				
+
 				String getId(String key) {
 					return component.getId() + "." + key;
 				}
@@ -75,7 +78,7 @@ public class GroovyEntityBuilder {
 				public void property(String key, Property<Object> property) {
 					BuilderContext.this.property(getId(key), property);
 				}
-				
+
 				@SuppressWarnings("unused")
 				public void property(String key, Object value) {
 					BuilderContext.this.property(getId(key), value);
@@ -187,7 +190,6 @@ public class GroovyEntityBuilder {
 
 		// / calls to builder
 
-
 		public Entity entity(String id, Closure closure) {
 			Entity newEntity = new Entity(id);
 			closure.setDelegate(new BuilderContext(newEntity, GroovyEntityBuilder.this));
@@ -198,8 +200,8 @@ public class GroovyEntityBuilder {
 
 	}
 
-	@Inject 
-	public void setUtils(@BuilderUtils Map<String,Object> utils) {
+	@Inject
+	public void setUtils(@BuilderUtils Map<String, Object> utils) {
 		this.utils = utils;
 	}
 
@@ -238,7 +240,6 @@ public class GroovyEntityBuilder {
 
 		if (this.entity == null)
 			entity = new Entity(id);
-		
 
 		closure.setDelegate(new BuilderContext(entity, this));
 		closure.setResolveStrategy(Closure.DELEGATE_FIRST);

@@ -38,10 +38,12 @@ public abstract class EntityBuilder {
 	public void propertyRef(String key, String ref) {
 		entity.addProperty(key, new ReferenceProperty<Object>(ref, entity));
 	}
-	
 
 	public void property(String key, Property property) {
-		entity.addProperty(key, property);
+		if (property != null)
+			entity.addProperty(key, property);
+		else
+			property(key, (Object)null);
 	}
 	
 	public void child(Entity child) {
