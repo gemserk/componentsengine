@@ -8,7 +8,6 @@ import org.slf4j.LoggerFactory;
 import com.gemserk.componentsengine.components.Component;
 import com.gemserk.componentsengine.entities.Entity;
 import com.gemserk.componentsengine.properties.Property;
-import com.gemserk.componentsengine.properties.SimpleProperty;
 import com.gemserk.componentsengine.reflection.RequiredPropertyNotFoundException;
 import com.gemserk.componentsengine.reflection.internalfields.InternalField;
 import com.gemserk.componentsengine.reflection.internalfields.PropertiesInternalFields;
@@ -86,13 +85,8 @@ public class ComponentPropertiesWrapperImpl implements ComponentPropertiesWrappe
 
 			Object value = internalField.getValue(component);
 
-			if (property == null) {
-
-				// property not found, set a new property on the entity....
-
-				property = new SimpleProperty<Object>(value);
-				entity.addProperty(componentId + "." + internalField.getFieldName(), property);
-			}
+			if (property == null)
+				continue;
 
 			property.set(value);
 		}
