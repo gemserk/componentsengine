@@ -25,8 +25,10 @@ public abstract class InternalField {
 	}
 
 	public InternalField(Field field) {
-		fieldName = field.getName();
 		EntityProperty entityPropertyAnnotation = field.getAnnotation(EntityProperty.class);
+		
+		String key = entityPropertyAnnotation.key();
+		fieldName = key.equals("") ? field.getName() : key;
 		required = entityPropertyAnnotation.required();
 		readOnly = entityPropertyAnnotation.readOnly();
 	}

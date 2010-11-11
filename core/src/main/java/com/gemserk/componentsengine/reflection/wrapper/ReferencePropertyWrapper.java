@@ -6,40 +6,41 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.gemserk.componentsengine.components.Component;
-import com.gemserk.componentsengine.entities.Entity;
-import com.gemserk.componentsengine.properties.EntityPropertyReference;
+import com.gemserk.componentsengine.properties.PropertiesHolder;
+import com.gemserk.componentsengine.properties.ReferenceProperty;
 import com.gemserk.componentsengine.reflection.internalfields.InternalField;
 
-public class EntityPropertyReferenceWrapper {
+public class ReferencePropertyWrapper {
 
-	protected static final Logger logger = LoggerFactory.getLogger(EntityPropertyReferenceWrapper.class);
+	protected static final Logger logger = LoggerFactory.getLogger(ReferencePropertyWrapper.class);
 
 	PropertyWithField[] propertiesWithField;
 
 	public static class PropertyWithField {
-		final EntityPropertyReference entityPropertyReference;
+		final ReferenceProperty entityPropertyReference;
 		final InternalField internalField;
 
-		public PropertyWithField(EntityPropertyReference entityPropertyReference, InternalField internalField) {
+		public PropertyWithField(ReferenceProperty entityPropertyReference, InternalField internalField) {
 			this.entityPropertyReference = entityPropertyReference;
 			this.internalField = internalField;
 		}
 
 	}
 
-	public EntityPropertyReferenceWrapper(String componentId, Collection<InternalField> internalFields) {
+	public ReferencePropertyWrapper(String scopeId, Collection<InternalField> internalFields) {
 		propertiesWithField = new PropertyWithField[internalFields.size()];
 		int index = 0;
 		for (InternalField internalField : internalFields) {
 			String fieldName = internalField.getFieldName();
-			String propertyName = componentId + "." + fieldName;
+			
+			String propertyName = scopeId != null ? scopeId + "." + fieldName : fieldName;
 
-			propertiesWithField[index] = new PropertyWithField(new EntityPropertyReference(propertyName.intern()), internalField);
+			propertiesWithField[index] = new PropertyWithField(new ReferenceProperty(propertyName.intern()), internalField);
 			index++;
 		}
 	}
 
-	public void config(Component component) {
+	public void config(Object component) {
 
 		for (PropertyWithField propertyWithField : propertiesWithField) {
 
@@ -47,9 +48,9 @@ public class EntityPropertyReferenceWrapper {
 		}
 	}
 
-	public void setEntity(Entity entity) {
+	public void wrap(PropertiesHolder propertiesHolder) {
 		for (PropertyWithField propertyWithField : propertiesWithField) {
-			propertyWithField.entityPropertyReference.setEntity(entity);
+			propertyWithField.entityPropertyReference.setPropertiesHolder(propertiesHolder);
 		}
 	}
 

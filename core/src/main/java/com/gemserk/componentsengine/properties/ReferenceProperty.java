@@ -6,10 +6,19 @@ public class ReferenceProperty<T extends Object> implements Property<T> {
 	PropertiesHolder holder;
 	Property<T> cachedProperty;
 	
+	public ReferenceProperty(String referencedPropertyName) {
+		this(referencedPropertyName,null);
+	}
+	
 	
 	public ReferenceProperty(String referencedPropertyName, PropertiesHolder holder) {
-		this.referencedPropertyName = referencedPropertyName;
+		this.referencedPropertyName = referencedPropertyName.intern();
 		this.holder = holder;
+	}
+	
+	public void setPropertiesHolder(PropertiesHolder entity) {
+		this.holder = entity;
+		this.cachedProperty = null;
 	}
 
 	@SuppressWarnings("unchecked")

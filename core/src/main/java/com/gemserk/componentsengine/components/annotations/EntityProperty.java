@@ -12,6 +12,8 @@ import java.lang.annotation.Target;
 @Retention(RUNTIME)
 public @interface EntityProperty {
 
+	public String key() default "";
+	
 	public boolean required() default true;
 	
 	public boolean readOnly() default false;

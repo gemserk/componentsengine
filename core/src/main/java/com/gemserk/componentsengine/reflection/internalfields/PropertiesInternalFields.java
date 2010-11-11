@@ -14,7 +14,6 @@ import net.sf.cglib.reflect.FastMethod;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.gemserk.componentsengine.components.Component;
 import com.gemserk.componentsengine.components.annotations.EntityProperty;
 import com.google.inject.internal.Strings;
 
@@ -23,10 +22,10 @@ public class PropertiesInternalFields {
 	
 	public static boolean useFastClassIfPossible = true;
 	protected Collection<InternalField> internalFields = new LinkedList<InternalField>();
-	private final Class<? extends Component> componentClass;
+	private final Class<?> componentClass;
 	
 	
-	public PropertiesInternalFields(Class<? extends Component> componentClass) {
+	public PropertiesInternalFields(Class<?> componentClass) {
 		this.componentClass = componentClass;
 		List<Field> listFields = new ArrayList<Field>();
 
