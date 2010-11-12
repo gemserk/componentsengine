@@ -16,6 +16,9 @@ public class ReferencePropertyWrapper {
 
 	PropertyWithField[] propertiesWithField;
 
+	PropertiesHolder currentlyWrappedPropertiesPlaceholder;
+	
+	
 	public static class PropertyWithField {
 		final ReferenceProperty entityPropertyReference;
 		final InternalField internalField;
@@ -49,6 +52,11 @@ public class ReferencePropertyWrapper {
 	}
 
 	public void wrap(PropertiesHolder propertiesHolder) {
+		if(currentlyWrappedPropertiesPlaceholder == propertiesHolder)
+			return;
+		
+		currentlyWrappedPropertiesPlaceholder = propertiesHolder;
+		
 		for (PropertyWithField propertyWithField : propertiesWithField) {
 			propertyWithField.entityPropertyReference.setPropertiesHolder(propertiesHolder);
 		}
