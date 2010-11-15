@@ -41,15 +41,12 @@ public class GroovyEntityBuilder {
 			this.builder = builder;
 		}
 
-		public void property(String key, Property<Object> property) {
-			if (property != null)
-				entity.addProperty(key, property);
-			else
-				property(key, (Object) null);
-		}
-
+		@SuppressWarnings("unchecked")
 		public void property(String key, Object value) {
-			entity.addProperty(key, new SimpleProperty<Object>(value));
+			if (value instanceof Property)
+				entity.addProperty(key, (Property) value);
+			else 
+				entity.addProperty(key, new SimpleProperty<Object>(value));
 		}
 
 		public void propertyRef(String key, String referencedPropertyName) {
@@ -72,11 +69,6 @@ public class GroovyEntityBuilder {
 
 				String getId(String key) {
 					return component.getId() + "." + key;
-				}
-
-				@SuppressWarnings("unused")
-				public void property(String key, Property<Object> property) {
-					BuilderContext.this.property(getId(key), property);
 				}
 
 				@SuppressWarnings("unused")
