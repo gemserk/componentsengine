@@ -10,7 +10,6 @@ public class ReferenceProperty<T extends Object> implements Property<T> {
 		this(referencedPropertyName,null);
 	}
 	
-	
 	public ReferenceProperty(String referencedPropertyName, PropertiesHolder holder) {
 		this.referencedPropertyName = referencedPropertyName.intern();
 		this.holder = holder;
@@ -21,7 +20,6 @@ public class ReferenceProperty<T extends Object> implements Property<T> {
 		this.cachedProperty = null;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public T get() {
 		return (T) getProperty().get();

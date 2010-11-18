@@ -18,7 +18,7 @@ import com.google.inject.internal.Maps;
 @SuppressWarnings("unchecked")
 public abstract class ReflectionComponent extends Component {
 
-	protected static final Logger logger = LoggerFactory.getLogger(ReflectionComponent.class);
+	private static final Logger logger = LoggerFactory.getLogger(ReflectionComponent.class);
 	
 	static final Map<Class, Map<String, Method>> cache = new HashMap<Class, Map<String, Method>>();
 
