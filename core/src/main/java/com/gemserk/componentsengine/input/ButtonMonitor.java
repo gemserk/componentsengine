@@ -4,7 +4,6 @@ public abstract class ButtonMonitor {
 	
 	public enum Status {PRESSED, RELEASED, HOLDED}
 		
-	
 	boolean pressed;
 	boolean released;	
 	boolean holded;

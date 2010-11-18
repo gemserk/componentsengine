@@ -8,25 +8,28 @@ import com.gemserk.componentsengine.render.RenderQueueImpl;
 import com.google.inject.Inject;
 
 public class MessageReusingGameLoop implements GameLoop {
+	
 	@Inject
 	MessageQueue messageQueue;
+	
 	@Inject
 	RenderQueueImpl renderQueueImpl;
+	
 	@Inject
 	MonitorUpdater monitorUpdater;
 
 	Message renderMessage = new Message("render");
+	
 	SimpleProperty<Object> renderQueueProperty = new SimpleProperty<Object>();
 	
 	Message updateMessage = new Message("update");
+	
 	SimpleProperty<Object> deltaProperty = new SimpleProperty<Object>();
 	
 	public MessageReusingGameLoop() {
 		renderMessage.addProperty("renderer", renderQueueProperty);
 		updateMessage.addProperty("delta", deltaProperty);
 	}
-	
-	
 	
 	@Override
 	public void render() {
