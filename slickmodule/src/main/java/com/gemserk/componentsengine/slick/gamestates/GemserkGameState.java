@@ -64,11 +64,7 @@ public class GemserkGameState extends BasicGameState {
 
 	@Override
 	public void init(final GameContainer container, StateBasedGame stateBasedGame) throws SlickException {
-
 		this.stateBasedGame = stateBasedGame;
-
-		
-		
 		onInit();
 		initGame();
 	}

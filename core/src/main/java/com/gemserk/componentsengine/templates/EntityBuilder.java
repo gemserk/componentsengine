@@ -16,21 +16,21 @@ import com.google.inject.Injector;
 public abstract class EntityBuilder {
 
 	protected Entity entity;
-	
+
 	protected Map<String, Object> parameters;
-	
+
 	@Inject
 	private Injector injector;
 
 	@Inject
 	protected TemplateProvider templateProvider;
-	
+
 	public void tags(String... tags) {
 		for (String tag : tags) {
 			entity.getTags().add(tag);
 		}
 	}
-	
+
 	public String getId() {
 		return "";
 	}
@@ -38,8 +38,15 @@ public abstract class EntityBuilder {
 	public void property(String key, Object value) {
 		if (value instanceof Property)
 			entity.addProperty(key, (Property) value);
-		else 
+		else
 			entity.addProperty(key, new SimpleProperty<Object>(value));
+	}
+
+	public void property(String key, Object value, Object defaultValue) {
+		if (value == null)
+			property(key, defaultValue);
+		else 
+			property(key, value);
 	}
 
 	public void propertyRef(String key, String ref) {
@@ -61,14 +68,16 @@ public abstract class EntityBuilder {
 	void setEntity(Entity currentEntity) {
 		entity = currentEntity;
 	}
-	
+
 	public void setParameters(Map<String, Object> parameters) {
 		this.parameters = parameters;
 	}
 
 	/**
 	 * Applies a template to the current entity.
-	 * @param templateName name of the template to apply.
+	 * 
+	 * @param templateName
+	 *            name of the template to apply.
 	 */
 	public void parent(String templateName) {
 		EntityTemplate parentTemplate = templateProvider.getTemplate(templateName);
@@ -77,14 +86,17 @@ public abstract class EntityBuilder {
 
 	/**
 	 * Applies a template to the current entity.
-	 * @param templateName name of the template to apply.
-	 * @param parameters paramteres to invoke the template.
+	 * 
+	 * @param templateName
+	 *            name of the template to apply.
+	 * @param parameters
+	 *            paramteres to invoke the template.
 	 */
 	public void parent(String templateName, Map<String, Object> parameters) {
 		EntityTemplate parentTemplate = templateProvider.getTemplate(templateName);
 		parentTemplate.apply(entity, parameters);
 	}
-	
+
 	public static class ComponentPropertiesReceiver {
 		private final String componentId;
 		private final Entity entity;
@@ -106,7 +118,7 @@ public abstract class EntityBuilder {
 		public abstract class ExecutableWithEntityAndId {
 			public abstract void execute(Entity entity, String componentId);
 		}
-		
+
 		public void property(final String key, final Property<Object> property) {
 			commands.add(new ExecutableWithEntityAndId() {
 
@@ -128,6 +140,13 @@ public abstract class EntityBuilder {
 				}
 			});
 		}
+		
+		public void property(final String key, final Object value, Object defaultValue) {
+			if (value == null)
+				property(key, defaultValue);
+			else
+				property(key, value);
+		}
 
 		public void propertyRef(final String key, final String ref) {
 			commands.add(new ExecutableWithEntityAndId() {
@@ -140,7 +159,7 @@ public abstract class EntityBuilder {
 			});
 
 		}
-		
+
 		public void propertyRef(final String key) {
 			propertyRef(key, key);
 		}
