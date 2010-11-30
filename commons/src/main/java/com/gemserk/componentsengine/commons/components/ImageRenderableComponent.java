@@ -10,7 +10,6 @@ import com.gemserk.componentsengine.messages.Message;
 import com.gemserk.componentsengine.properties.Properties;
 import com.gemserk.componentsengine.properties.PropertyLocator;
 import com.gemserk.componentsengine.render.RenderQueue;
-import com.gemserk.componentsengine.render.RenderQueueImpl;
 import com.gemserk.componentsengine.slick.render.SlickImageRenderObject;
 
 public class ImageRenderableComponent extends ReflectionComponent {

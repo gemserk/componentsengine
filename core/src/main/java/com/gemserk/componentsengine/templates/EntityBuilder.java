@@ -119,24 +119,15 @@ public abstract class EntityBuilder {
 			public abstract void execute(Entity entity, String componentId);
 		}
 
-		public void property(final String key, final Property<Object> property) {
-			commands.add(new ExecutableWithEntityAndId() {
-
-				@Override
-				public void execute(Entity entity, String componentId) {
-					entity.addProperty(componentId + "." + key, property);
-
-				}
-			});
-		}
-
 		public void property(final String key, final Object value) {
 			commands.add(new ExecutableWithEntityAndId() {
 
 				@Override
 				public void execute(Entity entity, String componentId) {
-					entity.addProperty(componentId + "." + key, new SimpleProperty<Object>(value));
-
+					if (value instanceof Property)
+						entity.addProperty(componentId + "." + key, (Property) value);
+					else
+						entity.addProperty(componentId + "." + key, new SimpleProperty<Object>(value));
 				}
 			});
 		}
