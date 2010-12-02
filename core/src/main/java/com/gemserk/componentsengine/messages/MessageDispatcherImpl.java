@@ -11,7 +11,7 @@ import com.gemserk.componentsengine.components.Component;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 
-public class MessageDispatcherImpl implements MessageQueue, MessageDispatcher {
+public class MessageDispatcherImpl implements  MessageDispatcher {
 
 	List<Component> components = new LinkedList<Component>();
 	Queue<Message> messages = new LinkedList<Message>();
@@ -54,23 +54,4 @@ public class MessageDispatcherImpl implements MessageQueue, MessageDispatcher {
 			component.handleMessage(message);
 		}
 	}
-
-	@Override
-	public void enqueue(Message message) {
-		dispatch(message);
-	}
-
-	@Override
-	public void processMessages() {
-		while (!messages.isEmpty()) {
-			Message message = messages.poll();
-			enqueue(message);
-		}
-	}
-
-	@Override
-	public void enqueueDelay(Message message) {
-		messages.add(message);
-	}
-
 }

@@ -10,7 +10,10 @@ import com.gemserk.componentsengine.game.GameLoop;
 import com.gemserk.componentsengine.game.MessageReusingGameLoop;
 import com.gemserk.componentsengine.messages.CopyOnWriteMessageDispatcher;
 import com.gemserk.componentsengine.messages.MessageDispatcher;
+import com.gemserk.componentsengine.messages.MessageProvider;
 import com.gemserk.componentsengine.messages.MessageQueue;
+import com.gemserk.componentsengine.messages.MessageQueueImpl;
+import com.gemserk.componentsengine.messages.PoolReturningMessageQueue;
 import com.gemserk.componentsengine.render.RenderQueue;
 import com.gemserk.componentsengine.render.RenderQueueImpl;
 import com.gemserk.componentsengine.resources.images.ImageManager;
@@ -34,7 +37,8 @@ public class BasicModule extends AbstractModule {
 
 		bind(CopyOnWriteMessageDispatcher.class).in(Singleton.class);
 		bind(MessageDispatcher.class).to(CopyOnWriteMessageDispatcher.class);
-		bind(MessageQueue.class).to(CopyOnWriteMessageDispatcher.class).in(Singleton.class);
+		bind(MessageQueue.class).to(PoolReturningMessageQueue.class).in(Singleton.class);
+		bind(MessageProvider.class).in(Singleton.class);
 		bind(GameLoop.class).to(MessageReusingGameLoop.class).in(Singleton.class);
 		bind(EntityManager.class).in(Singleton.class);
 

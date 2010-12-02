@@ -1,11 +1,11 @@
 package com.gemserk.componentsengine.messages;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import com.gemserk.componentsengine.properties.PropertiesHolder;
 import com.gemserk.componentsengine.properties.PropertiesHolderImpl;
 import com.gemserk.componentsengine.properties.Property;
+import com.gemserk.componentsengine.utils.CachingFastMap;
 
 
 public class Message implements PropertiesHolder {
@@ -15,7 +15,7 @@ public class Message implements PropertiesHolder {
 	protected PropertiesHolder propertiesHolder = new PropertiesHolderImpl();
 	
 	public Message(String id) {
-		this(id, new HashMap<String, Property<Object>>());
+		this(id, new CachingFastMap<String, Property<Object>>());
 	}
 
 	public Message(String id, Map<String, Property<Object>> properties) {
@@ -29,6 +29,10 @@ public class Message implements PropertiesHolder {
 	
 	public String getId() {
 		return id;
+	}
+	
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	public void addProperty(String key, Property<Object> value) {

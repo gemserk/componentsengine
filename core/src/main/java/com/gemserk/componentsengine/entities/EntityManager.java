@@ -23,13 +23,26 @@ public class EntityManager {
 
 		Map<String, Entity> entities = new HashMap<String, Entity>();
 
+		ArrayList<Entity> entityList = new ArrayList<Entity>();
+		
+		
 		private void registerEntity(Entity entity) {
 			if (getEntityById(entity.getId()) != null)
 				throw new RuntimeException("entity with id " + entity.getId() + " already registered");
 			for (Component component : entity.getComponents().values()) {
 				messageDispatcher.registerComponent(component);
 			}
+			store(entity);
+		}
+
+		private void store(Entity entity) {
 			entities.put(entity.getId(), entity);
+			entityList.add(entity);//we throw exception if it is already registered
+		}
+		
+		private void remove(Entity entity) {
+			entities.remove(entity.getId());
+			entityList.remove(entity);
 		}
 
 		public void registerEntities(List<Entity> entities) {
@@ -42,8 +55,10 @@ public class EntityManager {
 			for (Component component : entity.getComponents().values()) {
 				messageDispatcher.unregisterComponent(component);
 			}
-			entities.remove(entity.getId());
+			remove(entity);
 		}
+
+		
 
 		public void unregisterEntities(List<Entity> entities) {
 			for (Entity entity : entities) {
@@ -53,6 +68,10 @@ public class EntityManager {
 
 		public Entity getEntityById(String id) {
 			return entities.get(id);
+		}
+
+		public ArrayList<Entity> getEntities() {
+			return entityList;
 		}
 
 	}
@@ -98,6 +117,10 @@ public class EntityManager {
 			return;
 		entity.removeFromParent();
 		entityRegistrator.unregisterEntities(plainTreeEntities(entity));
+	}
+	
+	public  ArrayList<Entity> getEntities(){
+		return entityRegistrator.getEntities();
 	}
 
 }

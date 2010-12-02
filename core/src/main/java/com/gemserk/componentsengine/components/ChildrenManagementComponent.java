@@ -7,9 +7,11 @@ import com.gemserk.componentsengine.entities.Entity;
 import com.gemserk.componentsengine.entities.EntityManager;
 import com.gemserk.componentsengine.messages.ChildrenManagementMessageFactory;
 import com.gemserk.componentsengine.messages.Message;
+import com.gemserk.componentsengine.messages.MessageProvider;
 import com.gemserk.componentsengine.messages.MessageQueue;
+import com.gemserk.componentsengine.messages.messageBuilder.MessageBuilder;
+import com.gemserk.componentsengine.messages.messageBuilder.MessageBuilderImpl;
 import com.gemserk.componentsengine.properties.Properties;
-import com.gemserk.componentsengine.properties.PropertiesMapBuilder;
 import com.gemserk.componentsengine.properties.PropertyLocator;
 import com.google.inject.Inject;
 
@@ -20,6 +22,10 @@ public class ChildrenManagementComponent extends ReflectionComponent {
 
 	@Inject
 	MessageQueue messageQueue;
+	 
+	@Inject MessageProvider messageProvider;
+	
+	MessageBuilder messageBuilder = new MessageBuilderImpl();
 
 	private PropertyLocator<Entity> entityProperty = Properties.property(ChildrenManagementMessageFactory.PARAMETER_ENTITY);
 	private PropertyLocator<String> removeEntityIdProperty = Properties.property(ChildrenManagementMessageFactory.PARAMETER_REMOVE_ENTITY_ID);
@@ -48,7 +54,8 @@ public class ChildrenManagementComponent extends ReflectionComponent {
 		for (Entity child : children) {
 			sendEntityAddedMessages(child);
 		}
-		messageQueue.enqueue(new Message("entityAdded", new PropertiesMapBuilder().property("entity", entity).build()));
+		
+		messageQueue.enqueue(messageBuilder.init(messageProvider.createMessage("entityAdded")).property("entity", entity).get());
 	}
 
 	@Handles(ids = { ChildrenManagementMessageFactory.REMOVE_MESSAGE_ID })
