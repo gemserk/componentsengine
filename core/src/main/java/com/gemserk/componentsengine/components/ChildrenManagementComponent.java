@@ -23,9 +23,7 @@ public class ChildrenManagementComponent extends ReflectionComponent {
 	@Inject
 	MessageQueue messageQueue;
 	 
-	@Inject MessageProvider messageProvider;
-	
-	MessageBuilder messageBuilder = new MessageBuilderImpl();
+	@Inject MessageBuilder messageBuilder;
 
 	private PropertyLocator<Entity> entityProperty = Properties.property(ChildrenManagementMessageFactory.PARAMETER_ENTITY);
 	private PropertyLocator<String> removeEntityIdProperty = Properties.property(ChildrenManagementMessageFactory.PARAMETER_REMOVE_ENTITY_ID);
@@ -55,7 +53,7 @@ public class ChildrenManagementComponent extends ReflectionComponent {
 			sendEntityAddedMessages(child);
 		}
 		
-		messageQueue.enqueue(messageBuilder.init(messageProvider.createMessage("entityAdded")).property("entity", entity).get());
+		messageQueue.enqueue(messageBuilder.newMessage("entityAdded").property("entity", entity).get());
 	}
 
 	@Handles(ids = { ChildrenManagementMessageFactory.REMOVE_MESSAGE_ID })

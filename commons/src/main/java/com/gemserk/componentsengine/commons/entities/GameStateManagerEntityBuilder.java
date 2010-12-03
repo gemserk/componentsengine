@@ -17,6 +17,8 @@ import com.google.inject.Inject;
 
 public class GameStateManagerEntityBuilder extends EntityBuilder {
 
+	
+	
 	static class HandleStateChangedComponent extends FieldsReflectionComponent {
 		
 		@Inject
@@ -24,6 +26,8 @@ public class GameStateManagerEntityBuilder extends EntityBuilder {
 		
 		@EntityProperty
 		Entity currentState;
+		
+		@Inject ChildrenManagementMessageFactory childrenManagementMessageFactory;
 
 		HandleStateChangedComponent(String id) {
 			super(id);
@@ -38,9 +42,9 @@ public class GameStateManagerEntityBuilder extends EntityBuilder {
 				return;
 
 			if (currentState != null)
-				messageQueue.enqueue(ChildrenManagementMessageFactory.removeEntity(currentState));
+				messageQueue.enqueue(childrenManagementMessageFactory.removeEntity(currentState));
 
-			messageQueue.enqueue(ChildrenManagementMessageFactory.addEntity(newState, entity));
+			messageQueue.enqueue(childrenManagementMessageFactory.addEntity(newState, entity));
 
 			currentState = newState;
 		}

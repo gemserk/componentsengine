@@ -14,6 +14,8 @@ import com.gemserk.componentsengine.messages.MessageProvider;
 import com.gemserk.componentsengine.messages.MessageQueue;
 import com.gemserk.componentsengine.messages.MessageQueueImpl;
 import com.gemserk.componentsengine.messages.PoolReturningMessageQueue;
+import com.gemserk.componentsengine.messages.messageBuilder.MessageBuilder;
+import com.gemserk.componentsengine.messages.messageBuilder.MessageBuilderImpl;
 import com.gemserk.componentsengine.render.RenderQueue;
 import com.gemserk.componentsengine.render.RenderQueueImpl;
 import com.gemserk.componentsengine.resources.images.ImageManager;
@@ -39,6 +41,7 @@ public class BasicModule extends AbstractModule {
 		bind(MessageDispatcher.class).to(CopyOnWriteMessageDispatcher.class);
 		bind(MessageQueue.class).to(PoolReturningMessageQueue.class).in(Singleton.class);
 		bind(MessageProvider.class).in(Singleton.class);
+		bind(MessageBuilder.class).to(MessageBuilderImpl.class);//it is correct, in this case it is not singleton
 		bind(GameLoop.class).to(MessageReusingGameLoop.class).in(Singleton.class);
 		bind(EntityManager.class).in(Singleton.class);
 

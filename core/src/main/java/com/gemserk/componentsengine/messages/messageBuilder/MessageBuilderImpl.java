@@ -1,14 +1,18 @@
 package com.gemserk.componentsengine.messages.messageBuilder;
 
 import com.gemserk.componentsengine.messages.Message;
+import com.gemserk.componentsengine.messages.MessageProvider;
 import com.gemserk.componentsengine.properties.SimpleProperty;
+import com.google.inject.Inject;
 
 public class MessageBuilderImpl implements MessageBuilder, InitializedMessageBuilder {
 	
 	private Message message;
 	
-	public InitializedMessageBuilder init(Message message){
-		this.message = message;
+	@Inject MessageProvider messageProvider;
+	
+	public InitializedMessageBuilder newMessage(String id){
+		this.message = messageProvider.createMessage(id);
 		return this;
 	}
 	
@@ -18,7 +22,9 @@ public class MessageBuilderImpl implements MessageBuilder, InitializedMessageBui
 	}
 	
 	public Message get(){
-		return message;
+		Message theMessage = message;
+		message = null;
+		return theMessage;
 	}
 	
 }

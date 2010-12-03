@@ -4,5 +4,5 @@ import com.gemserk.componentsengine.messages.Message;
 
 
 public interface MessageBuilder {
-	public InitializedMessageBuilder init(Message message);
+	InitializedMessageBuilder newMessage(String id);
 }

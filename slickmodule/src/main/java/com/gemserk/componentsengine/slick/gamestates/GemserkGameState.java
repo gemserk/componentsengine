@@ -40,6 +40,8 @@ public class GemserkGameState extends BasicGameState {
 
 	@Inject
 	MessageQueue messageQueue;
+	
+	@Inject ChildrenManagementMessageFactory childrenManagementMessageFactory;
 
 	@Inject
 	private TemplateProvider templateProvider;
@@ -129,7 +131,7 @@ public class GemserkGameState extends BasicGameState {
 
 	public void loadScene(String sceneName) {
 		Entity entity = templateProvider.getTemplate(sceneName).instantiate("scene");
-		messageQueue.enqueue(ChildrenManagementMessageFactory.addEntity(entity, rootEntity));
+		messageQueue.enqueue(childrenManagementMessageFactory.addEntity(entity, rootEntity));
 	}
 
 }

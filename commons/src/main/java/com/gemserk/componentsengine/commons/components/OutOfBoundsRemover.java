@@ -27,6 +27,8 @@ public class OutOfBoundsRemover extends ReflectionComponent {
 
 	@Inject
 	MessageQueue messageQueue;
+	
+	@Inject ChildrenManagementMessageFactory childrenManagementMessageFactory;
 
 	public OutOfBoundsRemover(String id) {
 		super(id);
@@ -44,7 +46,7 @@ public class OutOfBoundsRemover extends ReflectionComponent {
 		Collection<Entity> entitiesToRemove = rootEntity.getEntities(Predicates.and(EntityPredicates.withAnyTag(tags), Predicates.not(SlickEntityPredicates.isIn(worldBounds))));
 
 		for (Entity entityToRemove : entitiesToRemove) {
-			messageQueue.enqueueDelay(ChildrenManagementMessageFactory.removeEntity(entityToRemove));
+			messageQueue.enqueueDelay(childrenManagementMessageFactory.removeEntity(entityToRemove));
 		}
 
 	}
