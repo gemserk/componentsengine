@@ -29,4 +29,8 @@ public class ParametersWrapper {
 		return (T) wrappedParameters.get(id);
 	}
 
+	public void put(String key, Object value) {
+		wrappedParameters.put(key, value);
+	}
+
 }
