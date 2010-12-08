@@ -17,8 +17,9 @@ public class ParametersWrapper {
 		return wrappedParameters;
 	}
 
+	@SuppressWarnings("unchecked")
 	public <T> T get(String id) {
-		return get(id, null);
+		return (T) wrappedParameters.get(id);
 	}
 
 	@SuppressWarnings("unchecked")
