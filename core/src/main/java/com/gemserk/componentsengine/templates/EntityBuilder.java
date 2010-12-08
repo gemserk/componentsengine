@@ -17,7 +17,9 @@ public abstract class EntityBuilder {
 
 	protected Entity entity;
 
-	protected Map<String, Object> parameters;
+//	protected Map<String, Object> parameters;
+	
+	protected ParametersWrapper parameters = new ParametersWrapper();
 
 	@Inject
 	private Injector injector;
@@ -70,7 +72,7 @@ public abstract class EntityBuilder {
 	}
 
 	public void setParameters(Map<String, Object> parameters) {
-		this.parameters = parameters;
+		this.parameters.setWrappedParameters(parameters);
 	}
 
 	/**
@@ -95,6 +97,10 @@ public abstract class EntityBuilder {
 	public void parent(String templateName, Map<String, Object> parameters) {
 		EntityTemplate parentTemplate = templateProvider.getTemplate(templateName);
 		parentTemplate.apply(entity, parameters);
+	}
+	
+	public void parent(String templateName, ParametersWrapper parameters) {
+		parent(templateName, parameters.getWrappedParameters());
 	}
 
 	public static class ComponentPropertiesReceiver {
