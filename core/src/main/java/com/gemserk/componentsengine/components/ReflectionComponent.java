@@ -24,9 +24,13 @@ public abstract class ReflectionComponent extends Component {
 
 	private final Map<String, Method> methods;
 
+	private final String[] messageIds;
+	
 	public ReflectionComponent(String id) {
 		super(id);
 		methods = getMethods(getClass());
+		Set<String> methodNames = methods.keySet();
+		messageIds = methodNames.toArray(new String[methodNames.size()]);
 	}
 
 	private static Map<String, Method> getMethods(Class<? extends ReflectionComponent> clazz) {
@@ -95,8 +99,8 @@ public abstract class ReflectionComponent extends Component {
 	}
 
 	@Override
-	public Set<String> getMessageIds() {
-		return methods.keySet();
+	public String[] getMessageIds() {
+		return messageIds;
 	}
 
 }

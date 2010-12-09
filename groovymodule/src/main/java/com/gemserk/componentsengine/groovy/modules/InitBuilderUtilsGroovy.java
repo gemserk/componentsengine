@@ -62,6 +62,8 @@ public class InitBuilderUtilsGroovy {
 					messageIds = Sets.newHashSet(messageIdsCandidates.toString());
 				}
 			}
+			
+			final String[] messageIdsArray = messageIds.toArray(new String[messageIds.size()]);
 
 			return new Component((String) parameters.get("id")) {
 
@@ -76,8 +78,8 @@ public class InitBuilderUtilsGroovy {
 				}
 
 				@Override
-				public Set<String> getMessageIds() {
-					return messageIds;
+				public String[] getMessageIds() {
+					return messageIdsArray;
 				}
 
 			};

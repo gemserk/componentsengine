@@ -3,7 +3,7 @@ package com.gemserk.componentsengine.game;
 import com.gemserk.componentsengine.input.MonitorUpdater;
 import com.gemserk.componentsengine.messages.Message;
 import com.gemserk.componentsengine.messages.MessageQueue;
-import com.gemserk.componentsengine.properties.SimpleProperty;
+import com.gemserk.componentsengine.messages.messageBuilder.MessageBuilder;
 import com.gemserk.componentsengine.render.RenderQueueImpl;
 import com.google.inject.Inject;
 
@@ -15,10 +15,11 @@ public class GameLoopImpl implements GameLoop {
 	@Inject
 	MonitorUpdater monitorUpdater;
 
+	@Inject MessageBuilder messageBuilder;
+	
 	@Override
 	public void render() {
-		Message message = new Message("render");
-		message.addProperty("renderer", new SimpleProperty<Object>(renderQueueImpl));
+		Message message = messageBuilder.newMessage("render").property("renderer", renderQueueImpl).get();
 		messageQueue.enqueue(message);
 		messageQueue.processMessages();
 		renderQueueImpl.render();
@@ -27,8 +28,7 @@ public class GameLoopImpl implements GameLoop {
 	@Override
 	public void update(int delta) {
 		monitorUpdater.update();
-		Message message = new Message("update");
-		message.addProperty("delta", new SimpleProperty<Object>(delta));
+		Message message = messageBuilder.newMessage("update").property("delta", delta).get();
 		messageQueue.enqueue(message);
 		messageQueue.processMessages();
 	}

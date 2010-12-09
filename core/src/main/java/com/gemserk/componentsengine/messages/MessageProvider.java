@@ -18,13 +18,17 @@ public class MessageProvider {
 	public Message createMessage(String id){
 		Message message = messagePool.newObject();
 		message.setId(id);
+//		System.out.println("MESSAGES-NEW: "+ id + " - " + messagePool.size());
 		return message;
+		
 	}
 	
 	public void free(Message message){
 		message.getProperties().clear();
+//		String oldId = message.id;
 		message.setId(null);
 		messagePool.free(message);
+//		System.out.println("MESSAGES-FREE: " + oldId + " - "+ messagePool.size());
 	}
 	
 	

@@ -12,7 +12,7 @@ public class Message implements PropertiesHolder {
 	
 	protected String id;
 	
-	protected PropertiesHolder propertiesHolder = new PropertiesHolderImpl();
+	final protected PropertiesHolder propertiesHolder;
 	
 	public Message(String id) {
 		this(id, new CachingFastMap<String, Property<Object>>());
@@ -24,7 +24,7 @@ public class Message implements PropertiesHolder {
 	}
 	
 	public Message() {
-		this(Message.class.getName());
+		this("Message");
 	}
 	
 	public String getId() {

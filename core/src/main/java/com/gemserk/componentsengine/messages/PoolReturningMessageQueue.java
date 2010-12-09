@@ -17,19 +17,23 @@ public class PoolReturningMessageQueue implements MessageQueue {
 	@Inject MessageProvider messageProvider;
 
 	public void enqueue(Message message) {
-		messageDispatcher.dispatch(message);
+		dispatchMessage(message);
 	}
 	
 	public void enqueueDelay(Message message) {
 		messages.add(message);
+	}
+	
+	public void dispatchMessage(Message message){
+		messageDispatcher.dispatch(message);
+		messageProvider.free(message);
 	}
 
 
 	public void processMessages() {
 		while (!messages.isEmpty()) {
 			Message message = messages.poll();
-			messageDispatcher.dispatch(message);
-			messageProvider.free(message);
+			dispatchMessage(message);
 		}
 	}
 }

@@ -20,7 +20,7 @@ public class MessageDispatcherImpl implements  MessageDispatcher {
 
 	@Override
 	public void registerComponent(Component component) {
-		Set<String> messageIds = component.getMessageIds();
+		String[] messageIds = component.getMessageIds();
 		if (messageIds == null) {
 			components.add(component);
 		} else {
@@ -32,7 +32,7 @@ public class MessageDispatcherImpl implements  MessageDispatcher {
 
 	@Override
 	public void unregisterComponent(Component component) {
-		Set<String> messageIds = component.getMessageIds();
+		String[] messageIds = component.getMessageIds();
 		if (messageIds == null) {
 			components.remove(component);
 		} else {

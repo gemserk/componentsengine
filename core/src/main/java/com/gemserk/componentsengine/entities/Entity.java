@@ -3,11 +3,10 @@ package com.gemserk.componentsengine.entities;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import com.gemserk.componentsengine.components.Component;
 import com.gemserk.componentsengine.components.ComponentsHolder;
@@ -15,11 +14,10 @@ import com.gemserk.componentsengine.components.ComponentsHolderImpl;
 import com.gemserk.componentsengine.properties.PropertiesHolder;
 import com.gemserk.componentsengine.properties.PropertiesHolderImpl;
 import com.gemserk.componentsengine.properties.Property;
+import com.gemserk.componentsengine.utils.RandomAccessMap;
 import com.google.common.base.Predicate;
-import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Multiset;
 
 public class Entity implements PropertiesHolder, ComponentsHolder {
 
@@ -33,9 +31,7 @@ public class Entity implements PropertiesHolder, ComponentsHolder {
 
 	protected Entity parent = null;
 
-	protected Map<String, Entity> children = new LinkedHashMap<String, Entity>(100);
-
-	static public Multiset<String> times = HashMultiset.create();
+	protected Map<String, Entity> children = new RandomAccessMap<String, Entity>();
 
 	public Entity(String id) {
 		this.id = id.intern();

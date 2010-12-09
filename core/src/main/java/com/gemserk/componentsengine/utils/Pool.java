@@ -56,4 +56,8 @@ import java.util.List;
 	public void free (T object) {
 		if (freeObjects.size() < maxSize) freeObjects.add(object);
 	}
+	
+	public int size(){
+		return freeObjects.size();
+	}
 }

@@ -28,7 +28,7 @@ public class CopyOnWriteMessageDispatcher implements MessageDispatcher, MessageQ
 	MyMultimap<String, Component> componentsByMessageId = new MyMultimap<String, Component>();
 	
 	public void registerComponent(Component component){
-		Set<String> messageIds = component.getMessageIds();
+		String[] messageIds = component.getMessageIds();
 		if(messageIds==null){
 			components.add(component);
 		}else{
@@ -39,7 +39,7 @@ public class CopyOnWriteMessageDispatcher implements MessageDispatcher, MessageQ
 	}
 	
 	public void unregisterComponent(Component component){
-		Set<String> messageIds = component.getMessageIds();
+		String[] messageIds = component.getMessageIds();
 		if(messageIds==null){
 			components.remove(component);
 		}else{

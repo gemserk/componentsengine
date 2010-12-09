@@ -31,7 +31,7 @@ public class Component implements MessageHandler {
 	public void handleMessage(Message message) {
 	}
 	
-	public Set<String> getMessageIds(){
+	public String[] getMessageIds(){
 		return null;
 	}
 	

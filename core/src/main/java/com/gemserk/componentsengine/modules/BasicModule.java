@@ -7,12 +7,11 @@ import com.gemserk.componentsengine.entities.Entity;
 import com.gemserk.componentsengine.entities.EntityManager;
 import com.gemserk.componentsengine.entities.Root;
 import com.gemserk.componentsengine.game.GameLoop;
-import com.gemserk.componentsengine.game.MessageReusingGameLoop;
+import com.gemserk.componentsengine.game.GameLoopImpl;
 import com.gemserk.componentsengine.messages.CopyOnWriteMessageDispatcher;
 import com.gemserk.componentsengine.messages.MessageDispatcher;
 import com.gemserk.componentsengine.messages.MessageProvider;
 import com.gemserk.componentsengine.messages.MessageQueue;
-import com.gemserk.componentsengine.messages.MessageQueueImpl;
 import com.gemserk.componentsengine.messages.PoolReturningMessageQueue;
 import com.gemserk.componentsengine.messages.messageBuilder.MessageBuilder;
 import com.gemserk.componentsengine.messages.messageBuilder.MessageBuilderImpl;
@@ -42,7 +41,7 @@ public class BasicModule extends AbstractModule {
 		bind(MessageQueue.class).to(PoolReturningMessageQueue.class).in(Singleton.class);
 		bind(MessageProvider.class).in(Singleton.class);
 		bind(MessageBuilder.class).to(MessageBuilderImpl.class);//it is correct, in this case it is not singleton
-		bind(GameLoop.class).to(MessageReusingGameLoop.class).in(Singleton.class);
+		bind(GameLoop.class).to(GameLoopImpl.class).in(Singleton.class);
 		bind(EntityManager.class).in(Singleton.class);
 
 		Entity rootEntity = new Entity("root");
