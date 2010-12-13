@@ -77,7 +77,7 @@ public class RandomAccessMap<K, V> implements Map<K, V>, RandomAccess<V> {
 
 	@Override
 	public void putAll(Map<? extends K, ? extends V> m) {
-		for (Entry<? extends K, ? extends V> entry : m.entrySet()) {
+		for (java.util.Map.Entry<? extends K, ? extends V> entry : m.entrySet()) {
 			put(entry.getKey(), entry.getValue());
 		}
 
@@ -106,7 +106,40 @@ public class RandomAccessMap<K, V> implements Map<K, V>, RandomAccess<V> {
 
 	@Override
 	public Set<java.util.Map.Entry<K, V>> entrySet() {
-		throw new UnsupportedOperationException();
+		Set<java.util.Map.Entry<K, V>> result = new HashSet<Map.Entry<K,V>>();
+		for (int i = 0; i < size(); i++) {
+			result.add(new Entry(keys.get(i),items.get(i)));
+		}
+		return result;
+	}
+	
+	class Entry implements Map.Entry<K, V> {
+
+		K key;
+		V value;
+		
+		
+		
+		public Entry(K key, V value) {
+			this.key = key;
+			this.value = value;
+		}
+
+		@Override
+		public K getKey() {
+			return key;
+		}
+
+		@Override
+		public V getValue() {
+			return value;
+		}
+
+		@Override
+		public V setValue(V value) {
+			throw new UnsupportedOperationException("not implemented");
+		}
+		
 	}
 
 }

@@ -13,6 +13,7 @@ import com.gemserk.componentsengine.messages.messageBuilder.MessageBuilder;
 import com.gemserk.componentsengine.messages.messageBuilder.MessageBuilderImpl;
 import com.gemserk.componentsengine.properties.Properties;
 import com.gemserk.componentsengine.properties.PropertyLocator;
+import com.gemserk.componentsengine.utils.RandomAccess;
 import com.google.inject.Inject;
 
 public class ChildrenManagementComponent extends ReflectionComponent {
@@ -48,9 +49,10 @@ public class ChildrenManagementComponent extends ReflectionComponent {
 	}
 
 	private void sendEntityAddedMessages(Entity entity) {
-		Collection<Entity> children = entity.getChildren().values();
-		for (Entity child : children) {
-			sendEntityAddedMessages(child);
+		
+		RandomAccess<Entity> children = (RandomAccess<Entity>) entity.getChildren();
+		for (int i = 0; i < children.size(); i++) {
+			sendEntityAddedMessages(children.get(i));
 		}
 		
 		messageQueue.enqueue(messageBuilder.newMessage("entityAdded").property("entity", entity).get());

@@ -54,6 +54,10 @@ public class ReferencePropertyWrapper {
 		if(currentlyWrappedPropertiesPlaceholder == propertiesHolder)
 			return;
 		
+		wrapClean(propertiesHolder);
+	}
+	
+	public void wrapClean(PropertiesHolder propertiesHolder) {	
 		currentlyWrappedPropertiesPlaceholder = propertiesHolder;
 		
 		for (PropertyWithField propertyWithField : propertiesWithField) {

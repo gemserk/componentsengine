@@ -1,16 +1,13 @@
 package com.gemserk.componentsengine.messages;
 
-import java.util.LinkedList;
 import java.util.Queue;
 
-import com.gemserk.componentsengine.messages.Message;
-import com.gemserk.componentsengine.messages.MessageDispatcher;
-import com.gemserk.componentsengine.messages.MessageQueue;
+import com.gemserk.componentsengine.utils.ArrayDeque;
 import com.google.inject.Inject;
 
 public class PoolReturningMessageQueue implements MessageQueue {
 
-	Queue<Message> messages = new LinkedList<Message>();
+	Queue<Message> messages = new ArrayDeque<Message>();
 
 	@Inject MessageDispatcher messageDispatcher;
 

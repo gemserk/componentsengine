@@ -16,6 +16,9 @@ public class EntityManager {
 
 	MessageDispatcher messageDispatcher;
 	
+	ArrayList<Entity> plainEntitiesReusedList = new ArrayList<Entity>();
+	
+	
 	@Inject
 	public void setMessageDispatcher(MessageDispatcher messageDispatcher) {
 		this.messageDispatcher = messageDispatcher;
@@ -93,6 +96,7 @@ public class EntityManager {
 		if (oldEntity != null) {
 			oldEntity.removeFromParent();
 			entityRegistrator.unregisterEntities(plainTreeEntities(oldEntity));
+			plainEntitiesReusedList.clear();
 		}
 		
 		if (parentEntityId != null) {
@@ -103,15 +107,14 @@ public class EntityManager {
 		}
 
 		entityRegistrator.registerEntities(plainTreeEntities(entity));
-
+		plainEntitiesReusedList.clear();//to avoid keeping references and generating a memory leak
 	}
 
 	
 	
 	private ArrayList<Entity> plainTreeEntities(Entity entity) {
-		ArrayList<Entity> resultEntities = new ArrayList<Entity>();
-		innerPlainTreeEntities(resultEntities, entity);
-		return resultEntities;
+		innerPlainTreeEntities(plainEntitiesReusedList, entity);
+		return plainEntitiesReusedList;
 	}
 	
 	private void innerPlainTreeEntities(List<Entity> resultEntities, Entity entity) {
@@ -129,6 +132,7 @@ public class EntityManager {
 			return;
 		entity.removeFromParent();
 		entityRegistrator.unregisterEntities(plainTreeEntities(entity));
+		plainEntitiesReusedList.clear();//to avoid keeping references and generating a memory leak
 	}
 	
 	public  ArrayList<Entity> getEntities(){

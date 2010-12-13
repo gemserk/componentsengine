@@ -4,6 +4,8 @@ import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import com.gemserk.componentsengine.entities.Entity;
+import com.gemserk.componentsengine.messages.Message;
 import com.gemserk.componentsengine.reflection.internalfields.InternalField;
 import com.gemserk.componentsengine.reflection.internalfields.PropertiesInternalFields;
 import com.gemserk.componentsengine.reflection.wrapper.ReferencePropertyWrapper;
@@ -29,7 +31,11 @@ public class PropertiesWrapper {
 		propertiesWrapper.config(this);
 	}
 	
-	public void wrap(PropertiesHolder propertiesHolder) {
-		propertiesWrapper.wrap(propertiesHolder);
+	public void wrap(Entity entity) {
+		propertiesWrapper.wrap(entity);
+	}
+	
+	public void wrap(Message message) {
+		propertiesWrapper.wrapClean(message);
 	}
 }

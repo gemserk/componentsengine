@@ -5,7 +5,7 @@ import java.util.Map;
 import com.gemserk.componentsengine.properties.PropertiesHolder;
 import com.gemserk.componentsengine.properties.PropertiesHolderImpl;
 import com.gemserk.componentsengine.properties.Property;
-import com.gemserk.componentsengine.utils.CachingFastMap;
+import com.gemserk.componentsengine.utils.RandomAccessMap;
 
 
 public class Message implements PropertiesHolder {
@@ -15,7 +15,7 @@ public class Message implements PropertiesHolder {
 	final protected PropertiesHolder propertiesHolder;
 	
 	public Message(String id) {
-		this(id, new CachingFastMap<String, Property<Object>>());
+		this(id, new RandomAccessMap<String, Property<Object>>());
 	}
 
 	public Message(String id, Map<String, Property<Object>> properties) {

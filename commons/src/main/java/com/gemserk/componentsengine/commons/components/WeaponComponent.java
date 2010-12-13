@@ -39,6 +39,8 @@ public class WeaponComponent extends ReflectionComponent {
 		currentReloadTimeProperty.setValue(entity, 0);
 	}
 
+	Object[] parametersCache = new Object[1];
+	
 	@Handles
 	public void update(Message message) {
 		int delta = (Integer) Properties.getValue(message, "delta");
@@ -54,7 +56,8 @@ public class WeaponComponent extends ReflectionComponent {
 			return;
 
 		Trigger trigger = triggerProperty.getValue(entity);
-		trigger.trigger(entity);
+		parametersCache[0] = entity;
+		trigger.trigger(parametersCache);
 		
 		currentReloadTime = reloadTimeProperty.getValue(entity);
 		currentReloadTimeProperty.setValue(entity, currentReloadTime);
