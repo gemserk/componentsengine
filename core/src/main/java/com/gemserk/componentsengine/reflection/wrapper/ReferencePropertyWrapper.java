@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 
 import com.gemserk.componentsengine.properties.PropertiesHolder;
 import com.gemserk.componentsengine.properties.ReferenceProperty;
+import com.gemserk.componentsengine.properties.ReferencePropertyWithFallback;
 import com.gemserk.componentsengine.reflection.internalfields.InternalField;
 
 public class ReferencePropertyWrapper {
@@ -19,10 +20,10 @@ public class ReferencePropertyWrapper {
 	
 	
 	public static class PropertyWithField {
-		final ReferenceProperty entityPropertyReference;
+		final ReferencePropertyWithFallback entityPropertyReference;
 		final InternalField internalField;
 
-		public PropertyWithField(ReferenceProperty entityPropertyReference, InternalField internalField) {
+		public PropertyWithField(ReferencePropertyWithFallback entityPropertyReference, InternalField internalField) {
 			this.entityPropertyReference = entityPropertyReference;
 			this.internalField = internalField;
 		}
@@ -36,8 +37,9 @@ public class ReferencePropertyWrapper {
 			String fieldName = internalField.getFieldName();
 			
 			String propertyName = scopeId != null ? scopeId + "." + fieldName : fieldName;
+			String fallbackPropertyName = fieldName;
 
-			propertiesWithField[index] = new PropertyWithField(new ReferenceProperty(propertyName.intern()), internalField);
+			propertiesWithField[index] = new PropertyWithField(new ReferencePropertyWithFallback(propertyName.intern(),fallbackPropertyName.intern()), internalField);
 			index++;
 		}
 	}
