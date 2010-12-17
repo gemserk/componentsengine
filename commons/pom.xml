@@ -3,7 +3,7 @@
 	<parent>
 		<artifactId>componentsengine</artifactId>
 		<groupId>com.gemserk.componentsengine</groupId>
-		<version>0.0.8-SNAPSHOT</version>
+		<version>0.0.8</version>
 	</parent>
 
 	<artifactId>commons</artifactId>
