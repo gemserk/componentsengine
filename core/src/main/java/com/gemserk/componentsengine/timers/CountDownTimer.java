@@ -6,11 +6,16 @@ public class CountDownTimer implements Timer {
 
 	int time;
 	int timeLeft;
-	boolean fired = true;
+	boolean fired;
 
 	public CountDownTimer(int time) {
+		this(time, false);
+	}
+
+	public CountDownTimer(int time, boolean started) {
 		this.time = time;
 		this.timeLeft = time;
+		this.fired = !started;
 	}
 
 	public boolean update(int delta) {
