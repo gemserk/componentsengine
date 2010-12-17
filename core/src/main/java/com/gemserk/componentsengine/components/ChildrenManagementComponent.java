@@ -7,7 +7,7 @@ import com.gemserk.componentsengine.entities.Entity;
 import com.gemserk.componentsengine.entities.EntityManager;
 import com.gemserk.componentsengine.messages.ChildrenManagementMessageFactory;
 import com.gemserk.componentsengine.messages.Message;
-import com.gemserk.componentsengine.messages.MessageProvider;
+import com.gemserk.componentsengine.messages.MessageProviderImpl;
 import com.gemserk.componentsengine.messages.MessageQueue;
 import com.gemserk.componentsengine.messages.messageBuilder.MessageBuilder;
 import com.gemserk.componentsengine.messages.messageBuilder.MessageBuilderImpl;

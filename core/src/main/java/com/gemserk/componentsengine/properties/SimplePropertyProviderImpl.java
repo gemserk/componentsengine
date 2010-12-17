@@ -3,7 +3,7 @@ package com.gemserk.componentsengine.properties;
 import com.gemserk.componentsengine.utils.Pool;
 import com.gemserk.componentsengine.utils.Pool.PoolObjectFactory;
 
-public class SimpleProperyProvider {
+public class SimplePropertyProviderImpl implements SimplePropertyProvider {
 
 	Pool<SimpleProperty> simplePropertyPool = new Pool<SimpleProperty>(new PoolObjectFactory<SimpleProperty>() {
 
@@ -14,6 +14,7 @@ public class SimpleProperyProvider {
 	},1000);
 	
 	
+	@Override
 	public SimpleProperty createProperty(Object value){
 		SimpleProperty property = simplePropertyPool.newObject();
 		property.set(value);
@@ -21,6 +22,7 @@ public class SimpleProperyProvider {
 		
 	}
 	
+	@Override
 	public void free(SimpleProperty property){
 		property.set(null);
 		simplePropertyPool.free(property);

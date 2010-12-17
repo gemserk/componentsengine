@@ -6,7 +6,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class RandomAccessMap<K, V> implements Map<K, V>, RandomAccess<V> {
+public class RandomAccessMap<K, V> implements Map<K, V>, RandomAccessWithKey<K,V> {
 
 	ArrayList<V> items = new ArrayList<V>();
 	ArrayList<K> keys = new ArrayList<K>();
@@ -86,6 +86,11 @@ public class RandomAccessMap<K, V> implements Map<K, V>, RandomAccess<V> {
 	public V get(int index) {
 		return items.get(index);
 	}
+	
+	@Override
+	public K getKey(int index) {
+		return keys.get(index);
+	}
 
 	@Override
 	public void clear() {
@@ -141,5 +146,7 @@ public class RandomAccessMap<K, V> implements Map<K, V>, RandomAccess<V> {
 		}
 		
 	}
+
+	
 
 }
