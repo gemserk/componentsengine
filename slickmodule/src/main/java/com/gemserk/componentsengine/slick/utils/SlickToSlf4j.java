@@ -39,4 +39,9 @@ public class SlickToSlf4j implements LogSystem {
 		logger.warn(message);
 	}
 
+	@Override
+	public void warn(String message, Throwable e) {
+		logger.warn(message,e);
+	}
+
 }

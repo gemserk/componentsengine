@@ -14,6 +14,7 @@ import com.gemserk.componentsengine.messages.Message;
 import com.gemserk.componentsengine.properties.Properties;
 import com.gemserk.componentsengine.render.RenderQueue;
 import com.gemserk.componentsengine.slick.render.SlickCallableRenderObject;
+import com.gemserk.resources.Resource;
 
 public class LabelComponent extends FieldsReflectionComponent {
 
@@ -23,8 +24,8 @@ public class LabelComponent extends FieldsReflectionComponent {
 	@EntityProperty(readOnly = true)
 	Vector2f position;
 
-	@EntityProperty(readOnly = true)
-	Font font;
+	@EntityProperty(readOnly = true, required=false)
+	Resource<Font> font;
 
 	@EntityProperty(readOnly = true)
 	String message = "";
@@ -53,8 +54,10 @@ public class LabelComponent extends FieldsReflectionComponent {
 		RenderQueue renderQueue = Properties.getValue(message, "renderer");
 		final String text = MessageFormat.format(this.message, value);
 		
-		int textWidth = font.getWidth(text);
-		int textHeight = font.getLineHeight();
+		final Font fnt = font.get();
+		
+		int textWidth = fnt.getWidth(text);
+		int textHeight = fnt.getLineHeight();
 
 		float left = 0.0f;
 
@@ -80,7 +83,7 @@ public class LabelComponent extends FieldsReflectionComponent {
 
 				Color currentColor = g.getColor();
 
-				g.setFont(font);
+				g.setFont(fnt);
 				
 				g.pushTransform();
 				{

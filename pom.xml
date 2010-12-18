@@ -216,6 +216,11 @@
 				<artifactId>codecjorbis</artifactId>
 				<version>${soundSystem.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>com.gemserk.resources</groupId>
+				<artifactId>resourcesmanager-core</artifactId>
+				<version>0.0.8</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
