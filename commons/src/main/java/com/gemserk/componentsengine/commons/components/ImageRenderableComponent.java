@@ -11,10 +11,11 @@ import com.gemserk.componentsengine.properties.Properties;
 import com.gemserk.componentsengine.properties.PropertyLocator;
 import com.gemserk.componentsengine.render.RenderQueue;
 import com.gemserk.componentsengine.slick.render.SlickImageRenderObject;
+import com.gemserk.resources.Resource;
 
 public class ImageRenderableComponent extends ReflectionComponent {
 
-	PropertyLocator<Image> imageProperty;
+	PropertyLocator<Resource<Image>> imageProperty;
 
 	PropertyLocator<Vector2f> positionProperty;
 
@@ -46,10 +47,10 @@ public class ImageRenderableComponent extends ReflectionComponent {
 		final Vector2f position = positionProperty.getValue(entity);
 		final Color color = renderColorProperty.getValue(entity, Color.white);
 		final Vector2f size = sizeProperty.getValue(entity, new Vector2f(1, 1));
-		final Image image = imageProperty.getValue(entity);
+		final Resource<Image> image = imageProperty.getValue(entity);
 		final float theta = (float) directionProperty.getValue(entity).getTheta();
 		Integer layer = layerProperty.getValue(entity, 0);
 
-		renderQueue.enqueue(new SlickImageRenderObject(layer, image, position, size, theta, color));
+		renderQueue.enqueue(new SlickImageRenderObject(layer, image.get(), position, size, theta, color));
 	}
 }
