@@ -16,16 +16,15 @@ public class MessageBuilderImpl implements MessageBuilder, InitializedMessageBui
 	@Inject SimplePropertyProvider simpleProperyProvider;
 	
 	public InitializedMessageBuilder newMessage(String id){
-		this.message = messageProvider.createMessage(id);
+		this.message = createMessage(id);
 		return this;
 	}
-	
+
 	public InitializedMessageBuilder property(String key, Object value){
-		SimpleProperty simpleProperty = simpleProperyProvider.createProperty(value);
-		message.addProperty(key, simpleProperty);
+		addPropertyToMessage(message, key, value);
 		return this;
 	}
-	
+
 	public Message get(){
 		Message theMessage = message;
 		message = null;
@@ -33,12 +32,21 @@ public class MessageBuilderImpl implements MessageBuilder, InitializedMessageBui
 	}
 	
 	public Message clone(Message origin){
-		this.newMessage(origin.getId());
+		Message theMessage = createMessage(origin.getId());
 		RandomAccessWithKey<String,Property<Object>> properties =  (RandomAccessWithKey<String, Property<Object>>) origin.getProperties();
 		for (int i = 0; i < properties.size(); i++) {
-			property(properties.getKey(i),properties.get(i).get());
+			addPropertyToMessage(theMessage, properties.getKey(i),properties.get(i).get());
 		}
-		return get();
+		return theMessage;
+	}
+	
+	public Message createMessage(String id) {
+		return messageProvider.createMessage(id);
+	}
+	
+	public void addPropertyToMessage(Message theMessage, String key, Object value) {
+		SimpleProperty simpleProperty = simpleProperyProvider.createProperty(value);
+		theMessage.addProperty(key, simpleProperty);
 	}
 	
 }

@@ -10,6 +10,7 @@ import com.gemserk.componentsengine.entities.Entity;
 import com.gemserk.componentsengine.messages.ChildrenManagementMessageFactory;
 import com.gemserk.componentsengine.messages.Message;
 import com.gemserk.componentsengine.messages.MessageQueue;
+import com.gemserk.componentsengine.messages.messageBuilder.MessageBuilder;
 import com.gemserk.componentsengine.properties.Properties;
 import com.gemserk.componentsengine.properties.PropertiesMapBuilder;
 import com.gemserk.componentsengine.templates.EntityBuilder;
@@ -54,6 +55,8 @@ public class GameStateManagerEntityBuilder extends EntityBuilder {
 
 		@Inject
 		MessageQueue messageQueue;
+		
+		@Inject MessageBuilder messageBuilder;
 
 		HandleStateTransitionComponent(String id) {
 			super(id);
@@ -73,9 +76,9 @@ public class GameStateManagerEntityBuilder extends EntityBuilder {
 
 			Entity stateEntity = stateEntities.get(transition);
 
-			messageQueue.enqueueDelay(new Message("leaveNodeState", new PropertiesMapBuilder().property("message", message).build()));
-			messageQueue.enqueueDelay(new Message("changeNodeState", new PropertiesMapBuilder().property("state", stateEntity).build()));
-			messageQueue.enqueueDelay(new Message("enterNodeState", new PropertiesMapBuilder().property("message", message).build()));
+			messageQueue.enqueueDelay(messageBuilder.newMessage("leaveNodeState").property("message",messageBuilder.clone(message)).get());
+			messageQueue.enqueueDelay(messageBuilder.newMessage("changeNodeState").property("state", stateEntity).get());
+			messageQueue.enqueueDelay(messageBuilder.newMessage("enterNodeState").property("message",messageBuilder.clone(message)).get());
 		}
 	}
 
