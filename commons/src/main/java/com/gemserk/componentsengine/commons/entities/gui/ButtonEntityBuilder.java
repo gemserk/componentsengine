@@ -7,7 +7,10 @@ import com.gemserk.componentsengine.commons.components.CursorOverDetector;
 import com.gemserk.componentsengine.components.FieldsReflectionComponent;
 import com.gemserk.componentsengine.components.annotations.EntityProperty;
 import com.gemserk.componentsengine.components.annotations.Handles;
+import com.gemserk.componentsengine.entities.Entity;
 import com.gemserk.componentsengine.messages.Message;
+import com.gemserk.componentsengine.messages.MessageQueue;
+import com.gemserk.componentsengine.messages.messageBuilder.MessageBuilder;
 import com.gemserk.componentsengine.templates.EntityBuilder;
 import com.gemserk.componentsengine.triggers.NullTrigger;
 import com.gemserk.componentsengine.triggers.Trigger;
@@ -59,9 +62,15 @@ public class ButtonEntityBuilder extends EntityBuilder {
 		}
 	}
 
+	@Inject
+	MessageQueue messageQueue;
+
+	@Inject
+	MessageBuilder messageBuilder;
+
 	@Override
 	public void build() {
-		
+
 		tags("button");
 
 		property("position", parameters.get("position"));
@@ -87,15 +96,35 @@ public class ButtonEntityBuilder extends EntityBuilder {
 		component(new CursorOverDetector("cursorOver")).withProperties(new ComponentProperties() {
 			{
 				property("bounds", parameters.get("bounds"));
-				property("onEnterTrigger", parameters.get("onEnterTrigger"), new NullTrigger());
-				property("onLeaveTrigger", parameters.get("onLeaveTrigger"), new NullTrigger());
+				property("onEnterTrigger", parameters.get("onEnterTrigger"), new NullTrigger() {
+					@Override
+					public void trigger(Object... parameters) {
+						messageQueue.enqueue(messageBuilder.newMessage("onButtonFocused").property("source", (Entity) parameters[0]).get());
+					}
+				});
+				property("onLeaveTrigger", parameters.get("onLeaveTrigger"), new NullTrigger() {
+					@Override
+					public void trigger(Object... parameters) {
+						messageQueue.enqueue(messageBuilder.newMessage("onButtonLostFocus").property("source", (Entity) parameters[0]).get());
+					}
+				});
 			}
 		});
 
 		component(new PressedReleasedComponent("onButtonPressedReleased")).withProperties(new ComponentProperties() {
 			{
-				property("onPressedTrigger", parameters.get("onPressedTrigger"), new NullTrigger());
-				property("onReleasedTrigger", parameters.get("onReleasedTrigger"), new NullTrigger());
+				property("onPressedTrigger", parameters.get("onPressedTrigger"), new NullTrigger() {
+					@Override
+					public void trigger(Object... parameters) {
+						messageQueue.enqueue(messageBuilder.newMessage("onButtonPressed").property("source", (Entity) parameters[0]).get());
+					}
+				});
+				property("onReleasedTrigger", parameters.get("onReleasedTrigger"), new NullTrigger() {
+					@Override
+					public void trigger(Object... parameters) {
+						messageQueue.enqueue(messageBuilder.newMessage("onButtonReleased").property("source", (Entity) parameters[0]).get());
+					}
+				});
 			}
 		});
 
