@@ -1,6 +1,5 @@
 package com.gemserk.componentsengine.java2d.render;
 
-import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RenderingHints;
@@ -58,8 +57,6 @@ public class Java2dRenderer implements Renderer {
 				RenderingHints renderingHints = new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 				renderingHints.put(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 				graphics.setRenderingHints(renderingHints);
-
-				graphics.setColor(Color.black);
 
 				AffineTransform tx = new AffineTransform();
 

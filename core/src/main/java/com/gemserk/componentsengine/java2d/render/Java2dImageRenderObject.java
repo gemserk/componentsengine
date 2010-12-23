@@ -29,11 +29,20 @@ public class Java2dImageRenderObject extends Java2dRenderObject {
 		return theta;
 	}
 
-	public Java2dImageRenderObject(int layer, Image image, float x, float y, float w, float h, double theta) {
+	/**
+	 * @param layer
+	 * @param image
+	 * @param x
+	 * @param y
+	 * @param sx horizontal scale value
+	 * @param sy vertical scale value
+	 * @param theta
+	 */
+	public Java2dImageRenderObject(int layer, Image image, float x, float y, float sx, float sy, double theta) {
 		super(layer);
 		this.image = image;
 		this.position = new Point2D.Float(x, y);
-		this.size = new Point2D.Float(w, h);
+		this.size = new Point2D.Float(sx, sy);
 		this.theta = theta;
 	}
 }
