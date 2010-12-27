@@ -9,6 +9,8 @@ import com.gemserk.componentsengine.properties.FixedProperty;
 import com.gemserk.componentsengine.properties.Properties;
 import com.gemserk.componentsengine.slick.utils.SlickUtils;
 import com.gemserk.componentsengine.templates.EntityBuilder;
+import com.gemserk.resources.Resource;
+import com.gemserk.resources.dataloaders.StaticDataLoader;
 import com.google.inject.Inject;
 
 public class LabelEntityBuilder extends EntityBuilder {
@@ -21,7 +23,7 @@ public class LabelEntityBuilder extends EntityBuilder {
 
 		tags("label");
 
-		Font defaultFont = slick.getResources().getFonts().getDefaultFont();
+		Resource<Font> defaultFont = new Resource<Font>(new StaticDataLoader<Font>(slick.getResources().getFonts().getDefaultFont()));
 
 		property("position", parameters.get("position"));
 		property("size", parameters.get("size"), slick.vector(1f, 1f));

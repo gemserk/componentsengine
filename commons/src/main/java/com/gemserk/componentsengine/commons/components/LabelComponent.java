@@ -54,6 +54,9 @@ public class LabelComponent extends FieldsReflectionComponent {
 		RenderQueue renderQueue = Properties.getValue(message, "renderer");
 		final String text = MessageFormat.format(this.message, value);
 		
+		if ("".equals(text.trim()))
+			return;
+		
 		final Font fnt = font.get();
 		
 		int textWidth = fnt.getWidth(text);

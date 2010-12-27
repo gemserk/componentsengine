@@ -1,7 +1,6 @@
 package com.gemserk.componentsengine.resources.images;
 
-import com.gemserk.componentsengine.resources.Resource;
-
+import com.gemserk.resources.Resource;
 
 public interface ImageManager<T> {
 
