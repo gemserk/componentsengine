@@ -39,6 +39,7 @@
 
 	<properties>
 		<soundSystem.version>0.0.1</soundSystem.version>
+		<resourcesmanager.version>0.0.8</resourcesmanager.version>
 	</properties>
 
 	<modules>
@@ -219,7 +220,7 @@
 			<dependency>
 				<groupId>com.gemserk.resources</groupId>
 				<artifactId>resourcesmanager-core</artifactId>
-				<version>0.0.8</version>
+				<version>${resourcesmanager.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
