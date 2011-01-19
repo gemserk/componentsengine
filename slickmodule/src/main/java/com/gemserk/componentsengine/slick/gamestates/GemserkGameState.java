@@ -1,10 +1,6 @@
 package com.gemserk.componentsengine.slick.gamestates;
 
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Map;
-
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
@@ -17,9 +13,6 @@ import com.gemserk.componentsengine.game.GameLoop;
 import com.gemserk.componentsengine.messages.ChildrenManagementMessageFactory;
 import com.gemserk.componentsengine.messages.Message;
 import com.gemserk.componentsengine.messages.MessageQueue;
-import com.gemserk.componentsengine.resources.images.PropertiesImageLoader;
-import com.gemserk.componentsengine.resources.sounds.SoundsManager;
-import com.gemserk.componentsengine.slick.resources.animations.PropertiesAnimationLoader;
 import com.gemserk.componentsengine.templates.TemplateProvider;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
@@ -88,33 +81,6 @@ public class GemserkGameState extends BasicGameState {
 	@Override
 	public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
 		gameLoop.update(delta);
-	}
-
-	public void images(String imagePropertiesFile) {
-		long loadIni = System.currentTimeMillis();
-		PropertiesImageLoader propertiesImageLoader = new PropertiesImageLoader(imagePropertiesFile);
-		injector.injectMembers(propertiesImageLoader);
-		propertiesImageLoader.load();
-		long loadTime = System.currentTimeMillis() - loadIni;
-		System.out.println("Loaded images (" + imagePropertiesFile + "): " + loadTime);
-	}
-
-	public void sounds(String soundsPropertiesFile) {
-		SoundsManager soundsManager = injector.getInstance(SoundsManager.class);
-		try {
-			java.util.Properties soundsProperties = new java.util.Properties();
-			InputStream soundsInputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(soundsPropertiesFile);
-			soundsProperties.load(soundsInputStream);
-			soundsManager.addSounds((Map) soundsProperties);
-		} catch (IOException e) {
-			throw new RuntimeException("failed to load sounds from " + soundsPropertiesFile, e);
-		}
-	}
-
-	public void animations(String animationPropertiesFile) {
-		PropertiesAnimationLoader loader = new PropertiesAnimationLoader();
-		injector.injectMembers(loader);
-		loader.load(animationPropertiesFile);
 	}
 
 	@Override
