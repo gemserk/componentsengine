@@ -37,7 +37,7 @@
 			<artifactId>slick</artifactId>
 			<version>274</version>
 			<exclusions>
-			
+
 				<exclusion>
 					<groupId>phys2d</groupId>
 					<artifactId>phys2d</artifactId>
@@ -81,14 +81,9 @@
 			</exclusions>
 		</dependency>
 		<dependency>
-			<groupId>org.lwjgl</groupId>
+			<groupId>org.lwjgl.lwjgl</groupId>
 			<artifactId>lwjgl</artifactId>
-			<version>2.6.0-GEMSERK</version>
-		</dependency>
-		<dependency>
-			<groupId>org.lwjgl</groupId>
-			<artifactId>jinput</artifactId>
-			<version>2.6.0-GEMSERK</version>
+			<version>2.7.0-GEMSERK</version>
 		</dependency>
 	</dependencies>
 
