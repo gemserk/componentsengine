@@ -81,9 +81,14 @@
 			</exclusions>
 		</dependency>
 		<dependency>
-			<groupId>org.lwjgl.lwjgl</groupId>
+			<groupId>org.lwjgl</groupId>
 			<artifactId>lwjgl</artifactId>
-			<version>2.7.0-GEMSERK</version>
+			<version>2.6.0-GEMSERK</version>
+		</dependency>
+		<dependency>
+			<groupId>org.lwjgl</groupId>
+			<artifactId>jinput</artifactId>
+			<version>2.6.0-GEMSERK</version>
 		</dependency>
 	</dependencies>
 
