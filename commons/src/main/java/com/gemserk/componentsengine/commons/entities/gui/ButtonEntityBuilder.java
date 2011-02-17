@@ -26,7 +26,6 @@ public class ButtonEntityBuilder extends EntityBuilder {
 		tags("button");
 
 		property("position", parameters.get("position"));
-
 		property("cursorOver", false);
 		property("cursorPosition", new Vector2f());
 
