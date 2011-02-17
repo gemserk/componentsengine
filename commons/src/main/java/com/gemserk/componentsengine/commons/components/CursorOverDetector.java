@@ -10,6 +10,9 @@ import com.gemserk.componentsengine.messages.Message;
 import com.gemserk.componentsengine.triggers.NullTrigger;
 import com.gemserk.componentsengine.triggers.Trigger;
 
+/**
+ * Detects whenever a cursor pointer is over a Slick2D shape or not.
+ */
 public class CursorOverDetector extends FieldsReflectionComponent {
 
 	@EntityProperty(readOnly = true)
