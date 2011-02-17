@@ -18,7 +18,7 @@ import com.google.inject.Inject;
 
 public class ButtonEntityBuilder extends EntityBuilder {
 
-	static class PressedReleasedComponent extends FieldsReflectionComponent {
+	public static class PressedReleasedComponent extends FieldsReflectionComponent {
 
 		@EntityProperty(readOnly = true)
 		Boolean cursorOver;
