@@ -61,6 +61,7 @@ public abstract class Java2dWindow {
 		canvas.addKeyListener(keyboardInput);
 		canvas.addMouseListener(mouseInput);
 		canvas.addMouseMotionListener(mouseInput);
+		canvas.addMouseWheelListener(mouseInput);
 
 		// canvas.createBufferStrategy(2);
 
@@ -161,9 +162,7 @@ public abstract class Java2dWindow {
 
 		while (!done) {
 
-			// should input polling be inside the while of the accumulator?
-			keyboardInput.poll();
-			mouseInput.poll();
+
 
 			double newTime = 0.001 * System.currentTimeMillis();
 			double frameTime = newTime - currentTime;
@@ -174,6 +173,11 @@ public abstract class Java2dWindow {
 			accumulator += frameTime;
 
 			while (accumulator >= dt) {
+				
+				// ¿should input polling be inside the while of the accumulator?
+				keyboardInput.poll();
+				mouseInput.poll();
+				
 				// previousState = currentState;
 				// integrate ( currentState, t, dt )
 				update((int) (dt * 1000));

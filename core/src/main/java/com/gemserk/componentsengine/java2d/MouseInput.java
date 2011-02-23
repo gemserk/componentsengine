@@ -4,11 +4,13 @@ import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 
 /**
  * Copied from http://www.gamedev.net/reference/programming/features/javainput/page3.asp
  */
-public class MouseInput implements MouseListener, MouseMotionListener {
+public class MouseInput implements MouseListener, MouseMotionListener, MouseWheelListener {
 
 	private static final int BUTTON_COUNT = 3;
 	// Polled position of the mouse cursor
@@ -19,6 +21,10 @@ public class MouseInput implements MouseListener, MouseMotionListener {
 	private boolean[] state = null;
 	// Polled mouse buttons
 	private MouseInput.MouseState[] poll = null;
+	
+	private float wheelRotationState;
+	
+	private float wheelRotationPolled;
 
 	private enum MouseState {
 		RELEASED, // Not down
@@ -57,16 +63,24 @@ public class MouseInput implements MouseListener, MouseMotionListener {
 				poll[i] = MouseState.RELEASED;
 			}
 		}
+		
+		wheelRotationPolled = wheelRotationState;
+		wheelRotationState = 0f;
 	}
 
 	public Point getPosition() {
 		return mousePos;
 	}
-
+	
 	public boolean buttonDownOnce(int button) {
 		return poll[button - 1] == MouseState.ONCE;
 	}
 
+	/**
+	 * Return if mouse button is down, based on MouseEvent.getButton().
+	 * @param button
+	 * @return
+	 */
 	public boolean buttonDown(int button) {
 		return poll[button - 1] == MouseState.ONCE || poll[button - 1] == MouseState.PRESSED;
 	}
@@ -98,4 +112,17 @@ public class MouseInput implements MouseListener, MouseMotionListener {
 	public void mouseClicked(MouseEvent e) {
 		// Not needed
 	}
+
+	@Override
+	public void mouseWheelMoved(MouseWheelEvent e) {
+		wheelRotationState = e.getWheelRotation();
+		System.out.println("MOUSE WHEEL.wheelRotation: " + e.getWheelRotation());
+		System.out.println("MOUSE WHEEL.scrollAmount: " + e.getScrollAmount());
+		System.out.println("MOUSE WHEEL.scrollType: " + e.getScrollType());
+	}
+
+	public float getWheelRotation() {
+		return wheelRotationPolled;
+	}
+
 }
