@@ -49,7 +49,17 @@ public abstract class MouseMappingBuilder {
 				return cordinatesMonitor.hasChanged();
 			}
 		});
-		
+	}
+	
+	public void wheel(String eventId) {
+		final CoordinatesMonitor cordinatesMonitor = monitorFactory.mouseWheelMonitor();
+		inputMapping.addAction(new AbstractInputAction(eventId) {
+			
+			@Override
+			public boolean shouldRun() {
+				return cordinatesMonitor.hasChanged();
+			}
+		});
 	}
 
 	public abstract void build();
