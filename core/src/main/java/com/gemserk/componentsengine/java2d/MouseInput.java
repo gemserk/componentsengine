@@ -116,9 +116,6 @@ public class MouseInput implements MouseListener, MouseMotionListener, MouseWhee
 	@Override
 	public void mouseWheelMoved(MouseWheelEvent e) {
 		wheelRotationState = e.getWheelRotation();
-		System.out.println("MOUSE WHEEL.wheelRotation: " + e.getWheelRotation());
-		System.out.println("MOUSE WHEEL.scrollAmount: " + e.getScrollAmount());
-		System.out.println("MOUSE WHEEL.scrollType: " + e.getScrollType());
 	}
 
 	public float getWheelRotation() {
