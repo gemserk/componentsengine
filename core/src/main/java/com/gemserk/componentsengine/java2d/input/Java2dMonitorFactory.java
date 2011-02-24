@@ -63,12 +63,12 @@ public class Java2dMonitorFactory implements MonitorFactory {
 			
 			@Override
 			protected float readY() {
-				return (float) mouseInput.getPosition().getX();
+				return (float) mouseInput.getPosition().getY();
 			}
 			
 			@Override
 			protected float readX() {
-				return (float) mouseInput.getPosition().getY();
+				return (float) mouseInput.getPosition().getX();
 			}
 		};
 	}
