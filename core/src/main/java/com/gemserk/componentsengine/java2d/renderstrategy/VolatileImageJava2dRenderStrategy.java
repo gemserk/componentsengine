@@ -6,7 +6,7 @@ import java.awt.Graphics2D;
 import java.awt.GraphicsConfiguration;
 import java.awt.image.VolatileImage;
 
-import com.gemserk.componentsengine.java2d.Java2dWindow;
+import com.gemserk.componentsengine.java2d.Java2dGame;
 
 public class VolatileImageJava2dRenderStrategy implements Java2dRenderStrategy {
 
@@ -21,7 +21,7 @@ public class VolatileImageJava2dRenderStrategy implements Java2dRenderStrategy {
 	}
 
 	@Override
-	public void render(Java2dWindow window) {
+	public void render(Java2dGame game) {
 		GraphicsConfiguration gc = canvas.getGraphicsConfiguration();
 
 		int validated = backBufferImage.validate(gc);
@@ -29,7 +29,7 @@ public class VolatileImageJava2dRenderStrategy implements Java2dRenderStrategy {
 			createBackBufferImage(gc);
 		}
 
-		window.render((Graphics2D) backBufferImage.getGraphics());
+		game.render((Graphics2D) backBufferImage.getGraphics());
 
 		Graphics graphics = canvas.getGraphics();
 		graphics.drawImage(backBufferImage, 0, 0, null);

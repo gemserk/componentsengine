@@ -4,8 +4,11 @@ import java.awt.Canvas;
 import java.awt.Graphics2D;
 import java.awt.image.BufferStrategy;
 
-import com.gemserk.componentsengine.java2d.Java2dWindow;
+import com.gemserk.componentsengine.java2d.Java2dGame;
 
+/**
+ * @deprecated it is not working right (on linux at least).
+ */
 public class BufferStrategyJava2dRenderStrategy implements Java2dRenderStrategy {
 
 	private final Canvas canvas;
@@ -16,11 +19,11 @@ public class BufferStrategyJava2dRenderStrategy implements Java2dRenderStrategy 
 	}
 
 	@Override
-	public void render(Java2dWindow window) {
+	public void render(Java2dGame game) {
 		BufferStrategy bufferStrategy = canvas.getBufferStrategy();
 		Graphics2D graphics2d = (Graphics2D) bufferStrategy.getDrawGraphics();
 
-		window.render(graphics2d);
+		game.render(graphics2d);
 
 		bufferStrategy.show();
 		graphics2d.dispose();
