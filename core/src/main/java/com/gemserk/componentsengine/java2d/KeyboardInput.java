@@ -57,6 +57,7 @@ public class KeyboardInput implements KeyListener {
 	}
 
 	public synchronized void keyPressed(KeyEvent e) {
+		/* Linux implementation has a bug for the autorepeat events: http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=4504217 */
 		int keyCode = e.getKeyCode();
 		if (keyCode >= 0 && keyCode < KEY_COUNT) {
 			currentKeys[keyCode] = true;

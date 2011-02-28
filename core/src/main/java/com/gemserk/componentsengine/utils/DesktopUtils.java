@@ -27,6 +27,8 @@ public class DesktopUtils {
 		}
 
 		try {
+			if (logger.isDebugEnabled())
+				logger.debug("Opening URL " + url + " in default Browser.");
 			desktop.browse(new URI(url));
 		} catch (Exception e) {
 			if (logger.isErrorEnabled())
