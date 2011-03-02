@@ -24,10 +24,8 @@ public class KeyEventCodeMapping {
 				     && Modifier.isFinal(field.getModifiers())
 				     && field.getType().equals(int.class)
 				     && field.getName().startsWith("VK_") ) {
-
 					int key = field.getInt(null);
 					String name = field.getName().substring(3);
-					System.out.println(name);
 					keyCodesMap.put(name, key);
 				}
 

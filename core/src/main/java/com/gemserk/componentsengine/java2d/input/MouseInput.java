@@ -1,4 +1,4 @@
-package com.gemserk.componentsengine.java2d;
+package com.gemserk.componentsengine.java2d.input;
 
 import java.awt.Point;
 import java.awt.event.MouseEvent;

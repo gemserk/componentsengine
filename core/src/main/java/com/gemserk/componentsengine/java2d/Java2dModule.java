@@ -4,6 +4,8 @@ import com.gemserk.componentsengine.input.CachedMonitorFactory;
 import com.gemserk.componentsengine.input.MonitorFactory;
 import com.gemserk.componentsengine.input.MonitorUpdater;
 import com.gemserk.componentsengine.java2d.input.Java2dMonitorFactory;
+import com.gemserk.componentsengine.java2d.input.KeyboardInput;
+import com.gemserk.componentsengine.java2d.input.MouseInput;
 import com.gemserk.componentsengine.java2d.render.CurrentGraphicsProvider;
 import com.gemserk.componentsengine.resources.images.ImageLoader;
 import com.google.inject.AbstractModule;

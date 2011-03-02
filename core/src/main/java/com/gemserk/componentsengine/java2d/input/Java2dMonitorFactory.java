@@ -5,8 +5,6 @@ import java.awt.event.MouseEvent;
 import com.gemserk.componentsengine.input.ButtonMonitor;
 import com.gemserk.componentsengine.input.CoordinatesMonitor;
 import com.gemserk.componentsengine.input.MonitorFactory;
-import com.gemserk.componentsengine.java2d.KeyboardInput;
-import com.gemserk.componentsengine.java2d.MouseInput;
 import com.google.inject.Inject;
 
 public class Java2dMonitorFactory implements MonitorFactory {

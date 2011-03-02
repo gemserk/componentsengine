@@ -6,6 +6,8 @@ import java.awt.Frame;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
+import com.gemserk.componentsengine.java2d.input.KeyboardInput;
+import com.gemserk.componentsengine.java2d.input.MouseInput;
 import com.gemserk.componentsengine.java2d.renderstrategy.Java2dRenderStrategy;
 import com.gemserk.componentsengine.java2d.renderstrategy.VolatileImageJava2dRenderStrategy;
 import com.google.inject.Injector;

@@ -5,6 +5,8 @@ import java.awt.Canvas;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.gemserk.componentsengine.java2d.input.KeyboardInput;
+import com.gemserk.componentsengine.java2d.input.MouseInput;
 import com.gemserk.componentsengine.java2d.renderstrategy.Java2dRenderStrategy;
 import com.google.inject.Inject;
 
