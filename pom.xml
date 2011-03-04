@@ -3,13 +3,14 @@
 	<groupId>com.gemserk.componentsengine</groupId>
 	<artifactId>componentsengine</artifactId>
 	<name>Components Engine</name>
+	<description>A java game engine based in entities and components.</description>
 	<version>0.0.9-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<organization>
 		<name>Gemserk</name>
 		<url>http://www.gemserk.com</url>
 	</organization>
-	<url>https://trac.gemserk.com/componentsengine</url>
+	<url>https://github.com/gemserk/componentsengine</url>
 	<issueManagement>
 		<system>Trac</system>
 		<url>https://trac.gemserk.com/componentsengine</url>
@@ -19,9 +20,9 @@
 		<url>https://ci.gemserk.com/hudson/job/componentsengine/</url>
 	</ciManagement>
 	<scm>
-		<url>https://svn.gemserk.com/componentsengine/trunk/componentsengine</url>
-		<connection>scm:https://svn.gemserk.com/componentsengine/trunk/componentsengine</connection>
-		<developerConnection>scm:svn:https://svn.gemserk.com/componentsengine/trunk/componentsengine</developerConnection>
+		<url>https://github.com/gemserk/componentsengine.git</url>
+		<connection>scm:git://github.com/gemserk/componentsengine.git</connection>
+		<developerConnection>scm:git:git@github.com:gemserk/componentsengine.git</developerConnection>
 	</scm>
 	<distributionManagement>
 		<repository>
@@ -35,7 +36,6 @@
 			<url>https://maven.gemserk.com/nexus/content/repositories/snapshots/</url>
 		</snapshotRepository>
 	</distributionManagement>
-
 
 	<properties>
 		<soundSystem.version>0.0.1</soundSystem.version>
