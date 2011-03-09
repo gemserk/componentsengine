@@ -1,4 +1,7 @@
 .project
+.classpath
+.settings/
+target/
 androidmodule/.classpath
 androidmodule/.project
 androidmodule/.settings/
