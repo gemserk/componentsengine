@@ -1,5 +1,8 @@
 package com.gemserk.componentsengine.java2d.render;
 
+import java.awt.AlphaComposite;
+import java.awt.Color;
+import java.awt.Composite;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RenderingHints;
@@ -50,6 +53,7 @@ public class Java2dRenderer implements Renderer {
 			Point2D size = renderObject.getSize();
 			Image image = renderObject.getImage();
 			double theta = renderObject.getTheta();
+			Color color = renderObject.getColor();
 
 			graphicsHelper.pushTransform();
 			{
@@ -73,7 +77,20 @@ public class Java2dRenderer implements Renderer {
 
 				graphics.transform(tx);
 
+				Composite previousComposite = graphics.getComposite();
+
+				if (color.getAlpha() < 255) {
+					float alpha = ((float) color.getAlpha()) /255f;
+					// TODO: make the alpha composite rule a parameter
+					graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
+				}
+
 				graphics.drawImage(image, 0, 0, null);
+				
+				if (color.getAlpha() < 255) {
+					graphics.setComposite(previousComposite);
+				}
+
 			}
 			graphicsHelper.popTransform();
 
