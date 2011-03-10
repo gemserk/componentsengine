@@ -2,9 +2,10 @@ package com.gemserk.componentsengine.java2d;
 
 import java.awt.Canvas;
 import java.awt.Dimension;
-import java.awt.Frame;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+
+import javax.swing.JFrame;
 
 import com.gemserk.componentsengine.java2d.input.KeyboardInput;
 import com.gemserk.componentsengine.java2d.input.MouseInput;
@@ -39,12 +40,13 @@ public class Java2dDesktopApplication {
 		canvas.addMouseMotionListener(mouseInput);
 		canvas.addMouseWheelListener(mouseInput);
 
-		Frame frame = new Frame(title);
+		final JFrame frame = new JFrame(title);
+		
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
 		frame.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
 				Java2dDesktopApplication.this.stop();
-				System.exit(0);
 			}
 		});
 
