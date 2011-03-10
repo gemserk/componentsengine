@@ -12,8 +12,8 @@
 	</organization>
 	<url>https://github.com/gemserk/componentsengine</url>
 	<issueManagement>
-		<system>Trac</system>
-		<url>https://trac.gemserk.com/componentsengine</url>
+		<system>Github</system>
+		<url>https://github.com/gemserk/componentsengine/issues</url>
 	</issueManagement>
 	<ciManagement>
 		<system>Hudson</system>
