@@ -78,7 +78,8 @@ public class Java2dRenderer implements Renderer {
 
 				Composite previousComposite = graphics.getComposite();
 				// maybe if color is white avoid using the composite to improve performance.
-				graphics.setComposite(new ColorMultiplyComposite(color));
+				if (!Color.white.equals(color))
+					graphics.setComposite(new ColorMultiplyComposite(color));
 				graphics.drawImage(image, 0, 0, null);
 				graphics.setComposite(previousComposite);
 

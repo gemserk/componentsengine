@@ -53,14 +53,14 @@ public class ColorMultiplyComposite implements Composite {
 					dstIn.getPixel(x, y, dstInColors);
 
 					float a = colorAlpha * (srcColors[3] / 255f);
-					float r = colorRed * (srcColors[0] / 255f);
-					float g = colorGreen * (srcColors[1] / 255f);
-					float b = colorBlue * (srcColors[2] / 255f);
+					float r = colorRed;
+					float g = colorGreen;
+					float b = colorBlue;
 
 					dstOutColors[0] = srcColors[0] * a * r + dstInColors[0] * (1 - a);
 					dstOutColors[1] = srcColors[1] * a * g + dstInColors[1] * (1 - a);
 					dstOutColors[2] = srcColors[2] * a * b + dstInColors[2] * (1 - a);
-					dstOutColors[3] = srcColors[3] * a + dstInColors[3] * (1 - a);
+					dstOutColors[3] = srcColors[3] * a; 
 
 					dstOut.setPixel(x, y, dstOutColors);
 				}
