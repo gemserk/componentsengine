@@ -32,7 +32,8 @@ public class VolatileImageJava2dRenderStrategy implements Java2dRenderStrategy {
 		game.render((Graphics2D) backBufferImage.getGraphics());
 
 		Graphics graphics = canvas.getGraphics();
-		graphics.drawImage(backBufferImage, 0, 0, null);
+		if (graphics!=null)
+			graphics.drawImage(backBufferImage, 0, 0, null);
 	}
 
 	private void createBackBufferImage(GraphicsConfiguration gc) {
