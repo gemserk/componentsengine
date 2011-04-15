@@ -7,6 +7,10 @@ public class Container {
 	private float total;
 
 	public void setCurrent(float current) {
+		if (current > total)
+			current = total;
+		if (current < 0f)
+			current = 0f;
 		this.current = current;
 	}
 
