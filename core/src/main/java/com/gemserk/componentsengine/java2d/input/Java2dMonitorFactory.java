@@ -83,8 +83,6 @@ public class Java2dMonitorFactory implements MonitorFactory {
 			
 			@Override
 			protected float readY() {
-				// It would be better to call it using a slick api, but there isn't a method on Input class.
-				// return MouseInput.getDWheel();
 				return mouseInput.getWheelRotation();
 			}
 			
