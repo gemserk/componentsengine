@@ -9,6 +9,13 @@ public class InputDevicesMonitorImpl<K> implements ButtonsMonitor<K>, AnalogsMon
 	Map<K, ButtonMonitor> digitalMonitorsMap = new HashMap<K, ButtonMonitor>();
 
 	ArrayList<ButtonMonitor> digitalMonitors = new ArrayList<ButtonMonitor>();
+	
+	static final AnalogInputMonitor nullAnalogInputMonitor = new AnalogInputMonitor() {
+		@Override
+		protected float newValue() {
+			return 0;
+		}
+	};
 
 	@Override
 	public boolean isHolded(K id) {
@@ -50,31 +57,17 @@ public class InputDevicesMonitorImpl<K> implements ButtonsMonitor<K>, AnalogsMon
 	}
 
 	@Override
-	public float getValue(K id) {
-		if (!analogMonitorsMap.containsKey(id))
-			return 0f;
-		return analogMonitorsMap.get(id).getValue();
-	}
-	
-	@Override
-	public float getOldValue(K id) {
-		if (!analogMonitorsMap.containsKey(id))
-			return 0f;
-		return analogMonitorsMap.get(id).getOldValue();
-	}
-	
-	@Override
-	public boolean hasChanged(K id) {
-		if (!analogMonitorsMap.containsKey(id))
-			return false;
-		return analogMonitorsMap.get(id).hasChanged();
-	}
-
-	@Override
 	public void analog(K id, AnalogInputMonitor monitor) {
 		// overrides previous registered monitor with same id
 		analogMonitorsMap.put(id, monitor);
 		analogMonitors.add(monitor);
+	}
+
+	@Override
+	public AnalogInputMonitor get(K id) {
+		if (!analogMonitorsMap.containsKey(id))
+			return nullAnalogInputMonitor;
+		return analogMonitorsMap.get(id);
 	}
 
 }
