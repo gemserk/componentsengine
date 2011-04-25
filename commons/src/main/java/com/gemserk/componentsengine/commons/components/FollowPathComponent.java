@@ -25,8 +25,6 @@ public class FollowPathComponent extends ReflectionComponent {
 	
 	PropertyLocator<Vector2f> positionProperty;
 
-	private AngleUtils angleUtils = new AngleUtils();
-
 	public FollowPathComponent(String id) {
 		super(id);
 		pathProperty = Properties.property(id, "path");
@@ -51,7 +49,7 @@ public class FollowPathComponent extends ReflectionComponent {
 		Vector2f direction = nextPosition.copy().sub(position).normalise();
 		Vector2f velocity = Properties.getValue(entity, "movement.velocity");
 		
-		velocity.add(angleUtils.minimumDifference(velocity.getTheta(), direction.getTheta()));
+		velocity.add(AngleUtils.minimumDifference(velocity.getTheta(), direction.getTheta()));
 		
 		//Vector2f currentForce = forceProperty.getValue(entity).copy();
 

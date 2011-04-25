@@ -24,8 +24,6 @@ public class FaceTargetComponent extends FieldsReflectionComponent {
 	@EntityProperty
 	Entity targetEntity;
 	
-	private final AngleUtils angleUtils = new AngleUtils();
-	
 	public FaceTargetComponent(String id) {
 		super(id);
 	}
@@ -50,7 +48,7 @@ public class FaceTargetComponent extends FieldsReflectionComponent {
 	}
 
 	double calculateNextAngle(int delta, double currentAngle, double desiredAngle) {
-		return angleUtils.calculateTruncatedNextAngle(turnRate * delta, currentAngle, desiredAngle);
+		return AngleUtils.calculateTruncatedNextAngle(turnRate * delta, currentAngle, desiredAngle);
 	}
 	
 

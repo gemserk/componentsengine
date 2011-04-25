@@ -1,16 +1,17 @@
-/**
- * 
- */
 package com.gemserk.componentsengine.utils;
 
+/**
+ * Provides common utilities when working with angles.
+ */
 public class AngleUtils {
+	
 	/**
 	 * Returns the difference between two angles in degrees between -180 and 180
 	 * @param currentAngle
 	 * @param desiredAngle
 	 * @return
 	 */
-	public double minimumDifference(double currentAngle, double desiredAngle) {
+	public static double minimumDifference(double currentAngle, double desiredAngle) {
 		double diffAngle = desiredAngle-currentAngle;
 		
 		if (diffAngle > 180)
@@ -27,7 +28,7 @@ public class AngleUtils {
 	 * @param desiredAngle
 	 * @return
 	 */
-	public double calculateTruncatedNextAngle(double angle, double currentAngle, double desiredAngle) {
+	public static double calculateTruncatedNextAngle(double angle, double currentAngle, double desiredAngle) {
 		double theta = currentAngle;
 		
 		double diffAngle = minimumDifference(currentAngle, desiredAngle);
@@ -47,5 +48,5 @@ public class AngleUtils {
 		
 		return theta;
 	}
-
+	
 }
