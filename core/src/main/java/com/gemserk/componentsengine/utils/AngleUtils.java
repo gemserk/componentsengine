@@ -22,11 +22,10 @@ public class AngleUtils {
 	}
 	
 	/**
-	 * Returns 
+	 * Returns a truncated angle.
 	 * @param angle
 	 * @param currentAngle
 	 * @param desiredAngle
-	 * @return
 	 */
 	public static double calculateTruncatedNextAngle(double angle, double currentAngle, double desiredAngle) {
 		double theta = currentAngle;
@@ -47,6 +46,16 @@ public class AngleUtils {
 			theta = desiredAngle;
 		
 		return theta;
+	}
+	
+	/**
+	 * Returns true whenever the angle is between minAngle and maxAngle, false otherwise.
+	 * @param angle The angle to evaluate.
+	 * @param minAngle The minimum angle.
+	 * @param maxAngle the maximum angle.
+	 */
+	public static boolean between(float angle, float minAngle, float maxAngle) {
+		return (AngleUtils.minimumDifference(angle, minAngle) < 0) && (AngleUtils.minimumDifference(angle, maxAngle) > 0);
 	}
 	
 }
