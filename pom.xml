@@ -50,6 +50,7 @@
 		<module>paulsoundsystemmodule</module>
 		<module>jbulletmodule</module>
 		<module>androidmodule</module>
+		<module>componentsengine-properties</module>
 	</modules>
 
 	<build>
@@ -117,6 +118,11 @@
 
 			<dependency>
 				<groupId>${project.groupId}</groupId>
+				<artifactId>componentsengine-properties</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
 				<artifactId>core</artifactId>
 				<version>${project.version}</version>
 			</dependency>
@@ -143,7 +149,7 @@
 			<dependency>
 				<groupId>junit</groupId>
 				<artifactId>junit</artifactId>
-				<version>4.7</version>
+				<version>4.8</version>
 				<scope>test</scope>
 			</dependency>
 			<dependency>

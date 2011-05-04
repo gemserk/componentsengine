@@ -31,5 +31,10 @@ slickmodule/.project
 slickmodule/.settings/
 slickmodule/target/
 
+componentsengine-properties/.classpath
+componentsengine-properties/.project
+componentsengine-properties/.settings/
+componentsengine-properties/target/
+
 
 
