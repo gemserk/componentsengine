@@ -3,11 +3,11 @@
 	<parent>
 		<artifactId>componentsengine</artifactId>
 		<groupId>com.gemserk.componentsengine</groupId>
-		<version>0.0.9</version>
+		<version>0.0.10-SNAPSHOT</version>
 	</parent>
 	<groupId>com.gemserk.componentsengine</groupId>
 	<artifactId>slickmodule</artifactId>
-	<version>0.0.9</version>
+	<version>0.0.10-SNAPSHOT</version>
 	<name>Slick Module</name>
 	<description>Slick Module</description>
 
