@@ -4,11 +4,11 @@
 	<parent>
 		<artifactId>componentsengine</artifactId>
 		<groupId>com.gemserk.componentsengine</groupId>
-		<version>0.0.9-SNAPSHOT</version>
+		<version>0.0.10-SNAPSHOT</version>
 	</parent>
 	<groupId>com.gemserk.componentsengine</groupId>
 	<artifactId>androidmodule</artifactId>
-	<version>0.0.9-SNAPSHOT</version>
+	<version>0.0.10-SNAPSHOT</version>
 	<name>Android Module</name>
 	<dependencies>
 		<dependency>
