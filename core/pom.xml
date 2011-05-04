@@ -54,6 +54,10 @@
 			<artifactId>resourcesmanager-core</artifactId>
 		</dependency>
 		
+		<dependency>
+			<groupId>com.gemserk.componentsengine</groupId>
+			<artifactId>componentsengine-properties</artifactId>
+		</dependency>
 	</dependencies>
 
 </project>
