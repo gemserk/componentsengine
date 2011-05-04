@@ -2,9 +2,12 @@ package com.gemserk.componentsengine.properties;
 
 import java.util.Map;
 
+/**
+ * Provides a basic implementation of the PropertiesHolder interface.
+ */
 public class PropertiesHolderImpl implements PropertiesHolder {
 
-	Map<String, Property<Object>> properties;
+	private Map<String, Property<Object>> properties;
 	
 	public PropertiesHolderImpl(Map<String, Property<Object>> properties) {
 		this.properties = properties;
@@ -20,6 +23,7 @@ public class PropertiesHolderImpl implements PropertiesHolder {
 		return this.properties.get(key);
 	}
 	
+	@Override
 	public Map<String, Property<Object>> getProperties() {
 		return properties;
 	}
@@ -28,4 +32,5 @@ public class PropertiesHolderImpl implements PropertiesHolder {
 	public String toString() {
 		return properties.toString();
 	}
+	
 }

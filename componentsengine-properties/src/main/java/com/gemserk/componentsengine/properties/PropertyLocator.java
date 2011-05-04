@@ -1,5 +1,8 @@
 package com.gemserk.componentsengine.properties;
 
+/**
+ * Provides a way to retrieve a Property from a PropertiesHolder
+ */
 @SuppressWarnings("unchecked")
 public class PropertyLocator<T> {
 
