@@ -51,6 +51,7 @@
 		<module>jbulletmodule</module>
 		<module>androidmodule</module>
 		<module>componentsengine-properties</module>
+		<module>componentsengine-input</module>
 	</modules>
 
 	<build>
@@ -119,6 +120,11 @@
 			<dependency>
 				<groupId>${project.groupId}</groupId>
 				<artifactId>componentsengine-properties</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>componentsengine-input</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
