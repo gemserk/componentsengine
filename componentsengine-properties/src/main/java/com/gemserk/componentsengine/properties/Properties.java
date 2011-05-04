@@ -16,7 +16,7 @@ public class Properties {
 		return property != null ? property.get() : null;
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public static void setValue(PropertiesHolder propertiesHolder, String key, Object value) {
 		Property property = propertiesHolder.getProperty(key);
 		if (property == null) {

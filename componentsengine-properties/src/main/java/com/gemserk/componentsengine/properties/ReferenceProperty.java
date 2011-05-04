@@ -2,19 +2,21 @@ package com.gemserk.componentsengine.properties;
 
 public class ReferenceProperty<T extends Object> implements Property<T> {
 
-	String referencedPropertyName;
-	PropertiesHolder holder;
-	Property<T> cachedProperty;
+	private String referencedPropertyName;
 	
+	private PropertiesHolder holder;
+	
+	private Property<T> cachedProperty;
+
 	public ReferenceProperty(String referencedPropertyName) {
-		this(referencedPropertyName,null);
+		this(referencedPropertyName, null);
 	}
-	
+
 	public ReferenceProperty(String referencedPropertyName, PropertiesHolder holder) {
 		this.referencedPropertyName = referencedPropertyName.intern();
 		this.holder = holder;
 	}
-	
+
 	public void setPropertiesHolder(PropertiesHolder entity) {
 		this.holder = entity;
 		this.cachedProperty = null;
@@ -25,10 +27,10 @@ public class ReferenceProperty<T extends Object> implements Property<T> {
 		return (T) getProperty().get();
 	}
 
+	@SuppressWarnings("unchecked")
 	private Property<T> getProperty() {
-		if(cachedProperty==null){
+		if (cachedProperty == null)
 			cachedProperty = (Property<T>) holder.getProperty(referencedPropertyName);
-		}
 		return cachedProperty;
 	}
 

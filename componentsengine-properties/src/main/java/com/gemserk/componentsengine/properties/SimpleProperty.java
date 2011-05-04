@@ -2,9 +2,10 @@ package com.gemserk.componentsengine.properties;
 
 public class SimpleProperty<T extends Object> implements Property<T> {
 
-	T value;
+	protected T value;
 
 	public SimpleProperty() {
+		
 	}
 
 	public SimpleProperty(T value) {
@@ -23,4 +24,5 @@ public class SimpleProperty<T extends Object> implements Property<T> {
 	public String toString() {
 		return "PROP: " + value;
 	}
+	
 }
