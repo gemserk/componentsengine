@@ -4,6 +4,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.gemserk.componentsengine.utils.RandomAccessMap;
+
 public class ReferencePropertyWithFallbackTest {
 
 	private static final String TESTVALUE1 = "testValue1";
@@ -17,7 +19,7 @@ public class ReferencePropertyWithFallbackTest {
 	@Before
 	public void setUp() {
 		property = new ReferencePropertyWithFallback<String>(PROPNAME, FALLBACKPROPNAME);
-		holder = new PropertiesHolderImpl();
+		holder = new PropertiesHolderImpl(new RandomAccessMap<String, Property<Object>>());
 	}
 
 	@Test

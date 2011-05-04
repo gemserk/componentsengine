@@ -23,7 +23,7 @@ public class Entity implements PropertiesHolder, ComponentsHolder {
 
 	private final String id;
 
-	PropertiesHolder propertiesHolder = new PropertiesHolderImpl();
+	PropertiesHolder propertiesHolder = new PropertiesHolderImpl(new RandomAccessMap<String, Property<Object>>());
 
 	ComponentsHolderImpl componentsHolder = new ComponentsHolderImpl();
 

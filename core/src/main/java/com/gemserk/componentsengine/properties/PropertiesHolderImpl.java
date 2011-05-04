@@ -1,24 +1,13 @@
-/**
- * 
- */
 package com.gemserk.componentsengine.properties;
 
 import java.util.Map;
-
-import com.gemserk.componentsengine.utils.RandomAccessMap;
-
 
 public class PropertiesHolderImpl implements PropertiesHolder {
 
 	Map<String, Property<Object>> properties;
 	
-	public PropertiesHolderImpl() {
-		this(new RandomAccessMap<String, Property<Object>>());
-	}
-	
 	public PropertiesHolderImpl(Map<String, Property<Object>> properties) {
 		this.properties = properties;
-		
 	}
 
 	@Override
@@ -34,7 +23,6 @@ public class PropertiesHolderImpl implements PropertiesHolder {
 	public Map<String, Property<Object>> getProperties() {
 		return properties;
 	}
-	
 	
 	@Override
 	public String toString() {
