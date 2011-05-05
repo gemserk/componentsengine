@@ -7,9 +7,9 @@
 		<version>0.0.10-SNAPSHOT</version>
 	</parent>
 	<groupId>com.gemserk.componentsengine</groupId>
-	<artifactId>androidmodule</artifactId>
+	<artifactId>componentsengine-android</artifactId>
 	<version>0.0.10-SNAPSHOT</version>
-	<name>Android Module</name>
+	<name>Components Engine - Android Module</name>
 	<dependencies>
 		<dependency>
 			<groupId>com.google.android</groupId>

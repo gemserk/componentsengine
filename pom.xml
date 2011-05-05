@@ -49,7 +49,7 @@
 		<module>groovymodule</module>
 		<module>paulsoundsystemmodule</module>
 		<module>jbulletmodule</module>
-		<module>androidmodule</module>
+		<module>componentsengine-android</module>
 		<module>componentsengine-properties</module>
 		<module>componentsengine-input</module>
 		<module>componentsengine-java2d</module>
