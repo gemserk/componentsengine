@@ -2,7 +2,6 @@ package com.gemserk.componentsengine.input;
 
 import static org.junit.Assert.assertThat;
 
-
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -11,8 +10,6 @@ import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.junit.Before;
 import org.junit.Test;
-
-import com.gemserk.componentsengine.input.ButtonMonitor;
 
 
 public class ButtonMonitorTest {
@@ -27,6 +24,7 @@ public class ButtonMonitorTest {
 		}
 
 		public String toString() {
+			@SuppressWarnings("serial")
 			Map<String, Boolean> actual = new LinkedHashMap<String, Boolean>() {
 				{
 					put("pressed", pressed);
@@ -144,6 +142,7 @@ public class ButtonMonitorTest {
 
 		@Override
 		public void describeTo(Description arg0) {
+			@SuppressWarnings("serial")
 			Map<String, Boolean> expected = new LinkedHashMap<String, Boolean>() {
 				{
 					put("pressed", isPressed);
