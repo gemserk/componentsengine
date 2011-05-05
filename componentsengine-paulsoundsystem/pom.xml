@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<artifactId>componentsengine</artifactId>
@@ -11,6 +12,10 @@
 	<name>Components Engine - Paul sound system module</name>
 	<description>Components Engine module for Paul sound system integration</description>
 
+	<properties>
+		<soundSystem.version>0.0.1</soundSystem.version>
+	</properties>
+	
 	<dependencies>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
@@ -19,10 +24,12 @@
 		<dependency>
 			<groupId>com.paulscode.soundsystem</groupId>
 			<artifactId>soundsystem</artifactId>
+			<version>${soundSystem.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.paulscode.soundsystem</groupId>
 			<artifactId>codecjorbis</artifactId>
+			<version>${soundSystem.version}</version>
 		</dependency>
 	</dependencies>
 </project>
