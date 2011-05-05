@@ -9,6 +9,7 @@ public class CachedMonitorFactory implements MonitorFactory, MonitorUpdater {
 	MonitorFactory monitorFactory;
 
 	Map<String, ButtonMonitor> keyboardButtonMonitors = new HashMap<String, ButtonMonitor>();
+	
 	Map<String, ButtonMonitor> mouseButtonMonitors = new HashMap<String, ButtonMonitor>();
 
 	Map<String, CoordinatesMonitor> coordinateMonitors = new HashMap<String, CoordinatesMonitor>();
