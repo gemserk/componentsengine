@@ -41,5 +41,9 @@ componentsengine-input/.project
 componentsengine-input/.settings/
 componentsengine-input/target/
 
+componentsengine-java2d/.classpath
+componentsengine-java2d/.project
+componentsengine-java2d/.settings/
+componentsengine-java2d/target/
 
 

@@ -52,6 +52,7 @@
 		<module>androidmodule</module>
 		<module>componentsengine-properties</module>
 		<module>componentsengine-input</module>
+		<module>componentsengine-java2d</module>
 	</modules>
 
 	<build>
@@ -112,8 +113,6 @@
 		</plugins>
 	</build>
 
-
-
 	<dependencyManagement>
 		<dependencies>
 
@@ -125,6 +124,11 @@
 			<dependency>
 				<groupId>${project.groupId}</groupId>
 				<artifactId>componentsengine-input</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>componentsengine-java2d</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
