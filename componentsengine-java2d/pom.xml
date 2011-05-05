@@ -27,5 +27,9 @@
 			<artifactId>jmock-legacy</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>com.gemserk.componentsengine</groupId>
+			<artifactId>core</artifactId>
+		</dependency>
 	</dependencies>
 </project>
