@@ -37,7 +37,7 @@
 		</dependency>
 		<dependency>
 			<groupId>com.gemserk.componentsengine</groupId>
-			<artifactId>commons</artifactId>
+			<artifactId>componentsengine-commons</artifactId>
 			<exclusions>
 				<exclusion>
 					<groupId>com.gemserk.componentsengine</groupId>
