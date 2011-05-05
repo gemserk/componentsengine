@@ -65,7 +65,7 @@
 		</dependency>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
-			<artifactId>groovymodule</artifactId>
+			<artifactId>componentsengine-groovy</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>com.gemserk.resources</groupId>

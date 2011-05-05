@@ -6,10 +6,10 @@
 		<version>0.0.10-SNAPSHOT</version>
 	</parent>
 	<groupId>com.gemserk.componentsengine</groupId>
-	<artifactId>groovymodule</artifactId>
+	<artifactId>componentsengine-groovy</artifactId>
 	<version>0.0.10-SNAPSHOT</version>
-	<name>Groovy module</name>
-	<description>Groovy module</description>
+	<name>Components Engine - Groovy module</name>
+	<description>Components Engine module for Groovy integration</description>
 
 	<dependencies>
 		<dependency>
