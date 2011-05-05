@@ -43,7 +43,7 @@
 	</properties>
 
 	<modules>
-		<module>core</module>
+		<module>componentsengine-core</module>
 		<module>componentsengine-commons</module>
 		<module>componentsengine-slick</module>
 		<module>componentsengine-groovy</module>
@@ -133,7 +133,7 @@
 			</dependency>
 			<dependency>
 				<groupId>${project.groupId}</groupId>
-				<artifactId>core</artifactId>
+				<artifactId>componentsengine-core</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>

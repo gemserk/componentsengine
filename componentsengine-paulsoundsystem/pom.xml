@@ -14,7 +14,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
-			<artifactId>core</artifactId>
+			<artifactId>componentsengine-core</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>com.paulscode.soundsystem</groupId>

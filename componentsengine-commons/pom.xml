@@ -9,9 +9,8 @@
 	<artifactId>componentsengine-commons</artifactId>
 	<packaging>jar</packaging>
 
-	<name>Commons</name>
-	<description>Common utilities and components used by the games
-	</description>
+	<name>Components Engine - Commons Module</name>
+	<description>Common utilities and components used by the games</description>
 
 	<build>
 		<plugins>
@@ -57,7 +56,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
-			<artifactId>core</artifactId>
+			<artifactId>componentsengine-core</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>${project.groupId}</groupId>

@@ -29,7 +29,7 @@
 		</dependency>
 		<dependency>
 			<groupId>com.gemserk.componentsengine</groupId>
-			<artifactId>core</artifactId>
+			<artifactId>componentsengine-core</artifactId>
 		</dependency>
 	</dependencies>
 </project>

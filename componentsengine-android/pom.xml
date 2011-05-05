@@ -19,7 +19,7 @@
 		</dependency>
 		<dependency>
 			<groupId>com.gemserk.componentsengine</groupId>
-			<artifactId>core</artifactId>
+			<artifactId>componentsengine-core</artifactId>
 			<exclusions>
 				<exclusion>
 					<artifactId>guice</artifactId>
