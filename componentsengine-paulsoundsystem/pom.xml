@@ -6,10 +6,10 @@
 		<version>0.0.10-SNAPSHOT</version>
 	</parent>
 	<groupId>com.gemserk.componentsengine</groupId>
-	<artifactId>paulsoundsystemmodule</artifactId>
+	<artifactId>componentsengine-paulsoundsystem</artifactId>
 	<version>0.0.10-SNAPSHOT</version>
-	<name>Paul sound system module</name>
-	<description>Paul sound system module</description>
+	<name>Components Engine - Paul sound system module</name>
+	<description>Components Engine module for Paul sound system integration</description>
 
 	<dependencies>
 		<dependency>

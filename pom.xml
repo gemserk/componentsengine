@@ -47,7 +47,7 @@
 		<module>componentsengine-commons</module>
 		<module>componentsengine-slick</module>
 		<module>groovymodule</module>
-		<module>paulsoundsystemmodule</module>
+		<module>componentsengine-paulsoundsystem</module>
 		<module>componentsengine-jbullet</module>
 		<module>componentsengine-android</module>
 		<module>componentsengine-properties</module>
@@ -153,7 +153,7 @@
 			</dependency>
 			<dependency>
 				<groupId>${project.groupId}</groupId>
-				<artifactId>paulsoundsystemmodule</artifactId>
+				<artifactId>componentsengine-paulsoundsystem</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
