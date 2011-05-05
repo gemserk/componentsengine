@@ -61,7 +61,7 @@
 		</dependency>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
-			<artifactId>slickmodule</artifactId>
+			<artifactId>componentsengine-slick</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>${project.groupId}</groupId>

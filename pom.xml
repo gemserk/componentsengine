@@ -45,7 +45,7 @@
 	<modules>
 		<module>core</module>
 		<module>componentsengine-commons</module>
-		<module>slickmodule</module>
+		<module>componentsengine-slick</module>
 		<module>groovymodule</module>
 		<module>paulsoundsystemmodule</module>
 		<module>componentsengine-jbullet</module>
@@ -138,7 +138,7 @@
 			</dependency>
 			<dependency>
 				<groupId>${project.groupId}</groupId>
-				<artifactId>slickmodule</artifactId>
+				<artifactId>componentsengine-slick</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
