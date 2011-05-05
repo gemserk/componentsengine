@@ -48,7 +48,7 @@
 		<module>slickmodule</module>
 		<module>groovymodule</module>
 		<module>paulsoundsystemmodule</module>
-		<module>jbulletmodule</module>
+		<module>componentsengine-jbullet</module>
 		<module>componentsengine-android</module>
 		<module>componentsengine-properties</module>
 		<module>componentsengine-input</module>
