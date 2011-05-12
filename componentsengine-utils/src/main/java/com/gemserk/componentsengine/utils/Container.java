@@ -48,12 +48,24 @@ public class Container {
 		return current == 0;
 	}
 
+	/**
+	 * Removes from the container the specified amount.
+	 * 
+	 * @param value
+	 *            The amount to be remove.
+	 */
 	public void remove(float value) {
 		current -= value;
 		if (current < 0)
 			current = 0;
 	}
 
+	/**
+	 * Fills the container the specified amount.
+	 * 
+	 * @param value
+	 *            The amount to fill.
+	 */
 	public void add(float value) {
 		current += value;
 		if (current > total)
