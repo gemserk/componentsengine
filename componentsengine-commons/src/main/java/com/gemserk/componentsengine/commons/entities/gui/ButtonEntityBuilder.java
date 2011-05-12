@@ -7,7 +7,7 @@ import com.gemserk.componentsengine.commons.components.SlickMouseHandlerComponen
 import com.gemserk.componentsengine.commons.components.SlickMouseMoveHandlerComponent;
 import com.gemserk.componentsengine.entities.Entity;
 import com.gemserk.componentsengine.messages.MessageQueue;
-import com.gemserk.componentsengine.messages.messageBuilder.MessageBuilder;
+import com.gemserk.componentsengine.messages.messagebuilder.MessageBuilder;
 import com.gemserk.componentsengine.templates.EntityBuilder;
 import com.gemserk.componentsengine.triggers.NullTrigger;
 import com.google.inject.Inject;

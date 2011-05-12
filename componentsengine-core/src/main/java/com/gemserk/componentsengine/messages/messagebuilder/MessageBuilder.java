@@ -1,4 +1,4 @@
-package com.gemserk.componentsengine.messages.messageBuilder;
+package com.gemserk.componentsengine.messages.messagebuilder;
 
 import com.gemserk.componentsengine.messages.Message;
 

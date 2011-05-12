@@ -10,7 +10,7 @@ import com.gemserk.componentsengine.entities.Entity;
 import com.gemserk.componentsengine.messages.ChildrenManagementMessageFactory;
 import com.gemserk.componentsengine.messages.Message;
 import com.gemserk.componentsengine.messages.MessageQueue;
-import com.gemserk.componentsengine.messages.messageBuilder.MessageBuilder;
+import com.gemserk.componentsengine.messages.messagebuilder.MessageBuilder;
 import com.gemserk.componentsengine.properties.Properties;
 import com.gemserk.componentsengine.properties.PropertiesMapBuilder;
 import com.gemserk.componentsengine.templates.EntityBuilder;

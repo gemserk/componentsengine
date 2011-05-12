@@ -1,4 +1,4 @@
-package com.gemserk.componentsengine.messages.messageBuilder;
+package com.gemserk.componentsengine.messages.messagebuilder;
 
 import junit.framework.Assert;
 
@@ -7,6 +7,7 @@ import org.junit.Test;
 
 import com.gemserk.componentsengine.messages.Message;
 import com.gemserk.componentsengine.messages.MessageProvider;
+import com.gemserk.componentsengine.messages.messagebuilder.MessageBuilderImpl;
 import com.gemserk.componentsengine.properties.Property;
 import com.gemserk.componentsengine.properties.SimpleProperty;
 import com.gemserk.componentsengine.properties.SimplePropertyProvider;
