@@ -52,6 +52,7 @@
 		<module>componentsengine-properties</module>
 		<module>componentsengine-input</module>
 		<module>componentsengine-java2d</module>
+		<module>componentsengine-utils</module>
 	</modules>
 
 	<build>
