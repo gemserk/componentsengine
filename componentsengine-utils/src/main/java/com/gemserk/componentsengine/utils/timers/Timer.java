@@ -1,4 +1,4 @@
-package com.gemserk.componentsengine.timers;
+package com.gemserk.componentsengine.utils.timers;
 
 public interface Timer {
 

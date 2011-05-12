@@ -7,8 +7,8 @@ import com.gemserk.componentsengine.components.annotations.Handles;
 import com.gemserk.componentsengine.messages.Message;
 import com.gemserk.componentsengine.properties.Properties;
 import com.gemserk.componentsengine.properties.PropertyLocator;
-import com.gemserk.componentsengine.timers.Timer;
 import com.gemserk.componentsengine.triggers.Trigger;
+import com.gemserk.componentsengine.utils.timers.Timer;
 
 public class TimerComponent extends ReflectionComponent {
 

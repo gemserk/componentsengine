@@ -1,9 +1,11 @@
-package com.gemserk.componentsengine.timers;
+package com.gemserk.componentsengine.utils.timers;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
+
+import com.gemserk.componentsengine.utils.timers.CountDownTimer;
 
 
 public class CountDownTimerTest {
