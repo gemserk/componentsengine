@@ -55,9 +55,7 @@ public class Container {
 	 *            The amount to be remove.
 	 */
 	public void remove(float value) {
-		current -= value;
-		if (current < 0)
-			current = 0;
+		setCurrent(current - value);
 	}
 
 	/**
@@ -67,9 +65,7 @@ public class Container {
 	 *            The amount to fill.
 	 */
 	public void add(float value) {
-		current += value;
-		if (current > total)
-			current = total;
+		setCurrent(current + value);
 	}
 
 	@Override
