@@ -19,19 +19,19 @@ public class Java2dWindow {
 
 	@Inject
 	MouseInput mouseInput;
-	
+
 	Canvas canvas;
-	
+
 	Java2dRenderStrategy renderStrategy;
-	
+
 	public void setKeyboardInput(KeyboardInput keyboardInput) {
 		this.keyboardInput = keyboardInput;
 	}
-	
+
 	public void setMouseInput(MouseInput mouseInput) {
 		this.mouseInput = mouseInput;
 	}
-	
+
 	public void setCanvas(Canvas canvas) {
 		this.canvas = canvas;
 	}
@@ -65,7 +65,7 @@ public class Java2dWindow {
 	public long getFramesPerSecond() {
 		return fps;
 	}
-	
+
 	public void start() {
 
 		java2dGame.init();
@@ -75,7 +75,7 @@ public class Java2dWindow {
 		long frames = 0;
 		long time = 0;
 
-		double t = 0.0;
+		// double t = 0.0;
 		final double dt = 0.01;
 
 		double currentTime = 0.001 * System.currentTimeMillis();
@@ -101,7 +101,7 @@ public class Java2dWindow {
 				// integrate ( currentState, t, dt )
 				java2dGame.update((int) (dt * 1000));
 
-				t += dt;
+				// t += dt;
 				accumulator -= dt;
 			}
 
