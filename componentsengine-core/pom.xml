@@ -62,6 +62,11 @@
 			<groupId>com.gemserk.componentsengine</groupId>
 			<artifactId>componentsengine-input</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>com.gemserk.componentsengine</groupId>
+			<artifactId>componentsengine-utils</artifactId>
+		</dependency>
+
 	</dependencies>
 
 </project>

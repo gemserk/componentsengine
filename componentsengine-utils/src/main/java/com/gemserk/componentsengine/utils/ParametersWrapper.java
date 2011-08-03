@@ -1,4 +1,4 @@
-package com.gemserk.componentsengine.templates;
+package com.gemserk.componentsengine.utils;
 
 import java.util.Map;
 

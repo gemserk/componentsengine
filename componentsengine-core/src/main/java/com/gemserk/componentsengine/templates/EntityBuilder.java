@@ -9,6 +9,7 @@ import com.gemserk.componentsengine.entities.Entity;
 import com.gemserk.componentsengine.properties.Property;
 import com.gemserk.componentsengine.properties.ReferenceProperty;
 import com.gemserk.componentsengine.properties.SimpleProperty;
+import com.gemserk.componentsengine.utils.ParametersWrapper;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 
@@ -17,8 +18,6 @@ public abstract class EntityBuilder {
 
 	protected Entity entity;
 
-//	protected Map<String, Object> parameters;
-	
 	protected ParametersWrapper parameters = new ParametersWrapper();
 
 	@Inject
