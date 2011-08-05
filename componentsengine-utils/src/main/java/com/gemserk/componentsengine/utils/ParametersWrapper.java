@@ -1,11 +1,14 @@
 package com.gemserk.componentsengine.utils;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
  * Lets you work with a map<string, object> in an easy way, using generic methods.
  */
 public class ParametersWrapper {
+
+	// TODO: change name to Parameters or make an interface with that name.
 
 	private Map<String, Object> wrappedParameters;
 
@@ -24,6 +27,20 @@ public class ParametersWrapper {
 	 */
 	public Map<String, Object> getWrappedParameters() {
 		return wrappedParameters;
+	}
+
+	/**
+	 * Builds a new ParametersWrapper using a new instance of a HashMap<String, Object>
+	 */
+	public ParametersWrapper() {
+		this(new HashMap<String, Object>());
+	}
+
+	/**
+	 * Builds a new ParametersWrapper using the specified map of parameters.
+	 */
+	public ParametersWrapper(Map<String, Object> wrappedParameters) {
+		this.wrappedParameters = wrappedParameters;
 	}
 
 	/**
