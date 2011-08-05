@@ -6,9 +6,7 @@ import java.util.Map;
 /**
  * Lets you work with a map<string, object> in an easy way, using generic methods.
  */
-public class ParametersWrapper {
-
-	// TODO: change name to Parameters or make an interface with that name.
+public class ParametersWrapper implements Parameters {
 
 	private Map<String, Object> wrappedParameters;
 
@@ -43,29 +41,13 @@ public class ParametersWrapper {
 		this.wrappedParameters = wrappedParameters;
 	}
 
-	/**
-	 * Returns the object from the map identified by id auto casting it to specified type.
-	 * 
-	 * @param <T>
-	 *            The type of the returned object.
-	 * @param id
-	 *            The identifier of the object in the map.
-	 */
+	@Override
 	@SuppressWarnings("unchecked")
 	public <T> T get(String id) {
 		return (T) wrappedParameters.get(id);
 	}
 
-	/**
-	 * Returns the object from the map identified by id auto casting it to specified type.
-	 * 
-	 * @param <T>
-	 *            The type of the returned object.
-	 * @param id
-	 *            The identifier of the object in the map.
-	 * @param defaultValue
-	 *            The default value of the returned object if the map doesn't contains any object identified by id.
-	 */
+	@Override
 	@SuppressWarnings("unchecked")
 	public <T> T get(String id, T defaultValue) {
 		if (!wrappedParameters.containsKey(id))
@@ -73,14 +55,7 @@ public class ParametersWrapper {
 		return (T) wrappedParameters.get(id);
 	}
 
-	/**
-	 * Puts a new object in the map.
-	 * 
-	 * @param id
-	 *            The identifier of the object.
-	 * @param value
-	 *            The object to add to the map.
-	 */
+	@Override
 	public void put(String id, Object value) {
 		wrappedParameters.put(id, value);
 	}
