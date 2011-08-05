@@ -39,6 +39,11 @@ public class Container {
 		this.current = current;
 		this.total = total;
 	}
+	
+	public Container(Container container) {
+		this.current = container.getCurrent();
+		this.total = container.getTotal();
+	}
 
 	public boolean isFull() {
 		return current == total;
