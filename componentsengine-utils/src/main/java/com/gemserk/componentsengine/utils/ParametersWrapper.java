@@ -2,6 +2,7 @@ package com.gemserk.componentsengine.utils;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Lets you work with a map<string, object> in an easy way, using generic methods.
@@ -58,6 +59,13 @@ public class ParametersWrapper implements Parameters {
 	@Override
 	public void put(String id, Object value) {
 		wrappedParameters.put(id, value);
+	}
+
+	@Override
+	public void putAll(Map<String, Object> values) {
+		Set<String> keySet = values.keySet();
+		for (String key : keySet) 
+			put(key, values.get(key));
 	}
 
 }

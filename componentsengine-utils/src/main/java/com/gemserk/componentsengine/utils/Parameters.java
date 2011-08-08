@@ -1,5 +1,7 @@
 package com.gemserk.componentsengine.utils;
 
+import java.util.Map;
+
 public interface Parameters {
 
 	/**
@@ -33,5 +35,13 @@ public interface Parameters {
 	 *            The object to add to the map.
 	 */
 	void put(String id, Object value);
+
+	/**
+	 * Puts all the values from the specified map.
+	 * 
+	 * @param values
+	 *            A map of values to add to the parameters.
+	 */
+	void putAll(Map<String, Object> values);
 
 }
