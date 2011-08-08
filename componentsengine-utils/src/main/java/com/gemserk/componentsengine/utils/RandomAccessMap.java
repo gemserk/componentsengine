@@ -6,7 +6,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class RandomAccessMap<K, V> implements Map<K, V>, RandomAccessWithKey<K,V> {
+public class RandomAccessMap<K, V> implements Map<K, V>, RandomAccessWithKey<K, V> {
 
 	ArrayList<V> items = new ArrayList<V>();
 	ArrayList<K> keys = new ArrayList<K>();
@@ -35,7 +35,7 @@ public class RandomAccessMap<K, V> implements Map<K, V>, RandomAccessWithKey<K,V
 	@Override
 	public V get(Object key) {
 		int position = positions.get(key);
-		if (position == positions.NOT_PRESENT_VALUE)
+		if (position == CachingFastMapIntValue.NOT_PRESENT_VALUE)
 			return null;
 
 		return items.get(position);
@@ -44,7 +44,7 @@ public class RandomAccessMap<K, V> implements Map<K, V>, RandomAccessWithKey<K,V
 	@Override
 	public V put(K key, V value) {
 		int position = positions.get(key);
-		if (position == positions.NOT_PRESENT_VALUE) {
+		if (position == CachingFastMapIntValue.NOT_PRESENT_VALUE) {
 			items.add(value);
 			keys.add(key);
 			positions.put(key, items.size() - 1);
@@ -57,7 +57,7 @@ public class RandomAccessMap<K, V> implements Map<K, V>, RandomAccessWithKey<K,V
 	@Override
 	public V remove(Object key) {
 		int position = positions.get(key);
-		if (position == positions.NOT_PRESENT_VALUE)
+		if (position == CachingFastMapIntValue.NOT_PRESENT_VALUE)
 			return null;
 
 		int lastPosition = items.size() - 1;
@@ -86,7 +86,7 @@ public class RandomAccessMap<K, V> implements Map<K, V>, RandomAccessWithKey<K,V
 	public V get(int index) {
 		return items.get(index);
 	}
-	
+
 	@Override
 	public K getKey(int index) {
 		return keys.get(index);
@@ -111,20 +111,18 @@ public class RandomAccessMap<K, V> implements Map<K, V>, RandomAccessWithKey<K,V
 
 	@Override
 	public Set<java.util.Map.Entry<K, V>> entrySet() {
-		Set<java.util.Map.Entry<K, V>> result = new HashSet<Map.Entry<K,V>>();
+		Set<java.util.Map.Entry<K, V>> result = new HashSet<Map.Entry<K, V>>();
 		for (int i = 0; i < size(); i++) {
-			result.add(new Entry(keys.get(i),items.get(i)));
+			result.add(new Entry(keys.get(i), items.get(i)));
 		}
 		return result;
 	}
-	
+
 	class Entry implements Map.Entry<K, V> {
 
 		K key;
 		V value;
-		
-		
-		
+
 		public Entry(K key, V value) {
 			this.key = key;
 			this.value = value;
@@ -144,9 +142,7 @@ public class RandomAccessMap<K, V> implements Map<K, V>, RandomAccessWithKey<K,V
 		public V setValue(V value) {
 			throw new UnsupportedOperationException("not implemented");
 		}
-		
-	}
 
-	
+	}
 
 }
