@@ -68,4 +68,9 @@ public class ParametersWrapper implements Parameters {
 			put(key, values.get(key));
 	}
 
+	@Override
+	public void clear() {
+		wrappedParameters.clear();
+	}
+
 }

@@ -43,5 +43,10 @@ public interface Parameters {
 	 *            A map of values to add to the parameters.
 	 */
 	void putAll(Map<String, Object> values);
+	
+	/**
+	 * Clears the map removing all the values from it.
+	 */
+	void clear();
 
 }
