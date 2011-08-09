@@ -61,7 +61,7 @@ public class RandomAccessSet<T> implements Set<T>, RandomAccess<T> {
 	@Override
 	public boolean add(T e) {
 		int position = positions.get(e);
-		if (position == positions.NOT_PRESENT_VALUE) {
+		if (position == CachingFastMapIntValue.NOT_PRESENT_VALUE) {
 			items.add(e);
 			positions.put(e, items.size() - 1);
 			return true;
@@ -73,7 +73,7 @@ public class RandomAccessSet<T> implements Set<T>, RandomAccess<T> {
 	@Override
 	public boolean remove(Object e) {
 		int position = positions.get(e);
-		if (position == positions.NOT_PRESENT_VALUE)
+		if (position == CachingFastMapIntValue.NOT_PRESENT_VALUE)
 			return false;
 
 		int lastPosition = items.size() - 1;
