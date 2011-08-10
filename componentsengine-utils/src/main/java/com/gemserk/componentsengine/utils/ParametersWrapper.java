@@ -57,15 +57,17 @@ public class ParametersWrapper implements Parameters {
 	}
 
 	@Override
-	public void put(String id, Object value) {
+	public Parameters put(String id, Object value) {
 		wrappedParameters.put(id, value);
+		return this;
 	}
 
 	@Override
-	public void putAll(Map<String, Object> values) {
+	public Parameters putAll(Map<String, Object> values) {
 		Set<String> keySet = values.keySet();
 		for (String key : keySet) 
 			put(key, values.get(key));
+		return this;
 	}
 
 	@Override

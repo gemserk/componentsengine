@@ -34,7 +34,7 @@ public interface Parameters {
 	 * @param value
 	 *            The object to add to the map.
 	 */
-	void put(String id, Object value);
+	Parameters put(String id, Object value);
 
 	/**
 	 * Puts all the values from the specified map.
@@ -42,7 +42,7 @@ public interface Parameters {
 	 * @param values
 	 *            A map of values to add to the parameters.
 	 */
-	void putAll(Map<String, Object> values);
+	Parameters putAll(Map<String, Object> values);
 	
 	/**
 	 * Clears the map removing all the values from it.
